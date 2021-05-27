@@ -2,6 +2,7 @@ package com.example.covid_form;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -17,22 +18,30 @@ import org.w3c.dom.Text;
 
 import java.util.Locale;
 
-public class SelectLanguageActivity extends AppCompatActivity  {
-    CheckBox cbEnglish,cbHindi;
-    Button btnProceed;
+public class SelectLanguageActivity extends AppCompatActivity {
+    Button cbEnglish,cbHindi;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_language);
 
-        cbEnglish = (CheckBox) findViewById(R.id.cb_English);
-        cbHindi = (CheckBox) findViewById(R.id.cb_Hindi);
-        btnProceed = (Button)findViewById(R.id.btn_Proced);
+        cbEnglish = (Button) findViewById(R.id.cb_English);
+        cbHindi = (Button) findViewById(R.id.cb_Hindi);
 
-        btnProceed.setOnClickListener(new View.OnClickListener() {
+        cbEnglish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setLanguage(SelectLanguageActivity.this,"en");
+                startActivity(new Intent(SelectLanguageActivity.this,CovidFormActivity.class));
+            }
+        });
+
+        cbHindi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLanguage(SelectLanguageActivity.this,"hi");
                 startActivity(new Intent(SelectLanguageActivity.this,CovidFormActivity.class));
             }
         });
@@ -41,7 +50,7 @@ public class SelectLanguageActivity extends AppCompatActivity  {
 
     }
 
-   
+
 
     public void setLanguage(Activity activity,String language){
         Locale locale = new Locale(language);
@@ -51,5 +60,6 @@ public class SelectLanguageActivity extends AppCompatActivity  {
         resources.updateConfiguration(configuration,resources.getDisplayMetrics());
     }
 
-   
+
+
 }

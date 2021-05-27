@@ -17,32 +17,29 @@
         android:textColor="@color/black"
         android:textStyle="bold"/>
 
-   <CheckBox
+   <Button
        android:id="@+id/cb_English"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:text="@string/english"
        android:textAllCaps="false"
-       android:textSize="18sp"
-       android:textColor="@color/black"
-       android:layout_margin="5dp"/>
-    <CheckBox
+       android:textSize="20sp"
+       android:background="@color/white"
+       android:textColor="@color/white"
+       android:textStyle="bold"
+       android:layout_margin="15dp"/>
+    <Button
         android:id="@+id/cb_Hindi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
         android:text="@string/hindi"
-        android:textSize="18sp"
-        android:textColor="@color/black"
-        android:layout_margin="5dp"/>
+        android:textSize="20sp"
+        android:background="@color/white"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        android:layout_margin="15dp"/>
 
-    <Button
-        android:id="@+id/btn_Proced"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:textAllCaps="false"
-        android:text="@string/proceed"
-        android:layout_margin="30dp"/>
+
 
 </LinearLayout>
