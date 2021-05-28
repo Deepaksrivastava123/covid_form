@@ -1,4 +1,4 @@
-package com.example.covid_form;
+package com.sdbiosensor.form;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+
+import com.sdbiosensor.covicatch.R;
 
 public class CovidFormActivity2 extends AppCompatActivity {
     EditText etTime;

@@ -1,8 +1,7 @@
-package com.example.covid_form;
+package com.sdbiosensor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -10,11 +9,9 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import org.w3c.dom.Text;
+import com.sdbiosensor.covicatch.R;
+import com.sdbiosensor.form.CovidFormActivity;
 
 import java.util.Locale;
 
@@ -34,7 +31,7 @@ public class SelectLanguageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setLanguage(SelectLanguageActivity.this,"en");
-                startActivity(new Intent(SelectLanguageActivity.this,CovidFormActivity.class));
+                startActivity(new Intent(SelectLanguageActivity.this, CovidFormActivity.class));
             }
         });
 

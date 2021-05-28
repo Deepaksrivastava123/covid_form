@@ -1,4 +1,4 @@
-package com.example.covid_form;
+package com.sdbiosensor;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,8 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import com.sdbiosensor.covicatch.R;
 
 public class MainActivity extends AppCompatActivity {
     ImageView logo;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
         new Handler().postDelayed(() -> {
 
-                Intent intent=new Intent(MainActivity.this,SelectLanguageActivity.class);
+                Intent intent=new Intent(MainActivity.this, SelectLanguageActivity.class);
                 startActivity(intent);
                 finish();
 

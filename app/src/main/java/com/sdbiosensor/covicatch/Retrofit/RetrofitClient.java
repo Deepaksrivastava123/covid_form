@@ -1,4 +1,4 @@
-package com.example.covid_form.Retrofit;
+package com.sdbiosensor.covicatch.Retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
