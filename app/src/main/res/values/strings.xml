@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">covid_form</string>
+    <string name="app_name">Covi-Catch</string>
     <string name="covid_form">Covid Form</string>
     <string name="patient_name">Patient name</string>
     <string name="first_name">First name</string>

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/splashcolor"
     tools:context="com.sdbiosensor.MainActivity">
 
     <ImageView
@@ -13,8 +14,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="20dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/logo"
         android:layout_centerInParent="true"/>
+
+    <ImageView
+        android:id="@+id/bottomlogo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:src="@drawable/bottomcompanyname"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="20dp"/>
 
 
 </RelativeLayout>

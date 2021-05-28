@@ -13,7 +13,8 @@ import android.widget.ImageView;
 import com.sdbiosensor.covicatch.R;
 
 public class MainActivity extends AppCompatActivity {
-    ImageView logo;
+    ImageView logo,bottomlogo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,8 +23,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         logo = (ImageView) findViewById(R.id.logo);
+        bottomlogo = (ImageView) findViewById(R.id.bottomlogo);
+
         Animation myanim = AnimationUtils.loadAnimation(this, R.anim.my_animation);
         logo.startAnimation(myanim);
+
+        Animation myanim1 = AnimationUtils.loadAnimation(this, R.anim.my_animation);
+        bottomlogo.startAnimation(myanim1);
 
         new Handler().postDelayed(() -> {
 
