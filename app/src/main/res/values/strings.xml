@@ -5,10 +5,11 @@
     <string name="first_name">First name</string>
     <string name="last_name">Last name</string>
     <string name="select_language">Select Language</string>
+    <string name="tnc">Terms and Conditions</string>
     <string name="hindi">Hindi</string>
     <string name="english">English</string>
     <string name="proceed">Continue</string>
-    <string name="step_1">Step 1</string>
+    <string name="step_1">Before proceeding with the test, fill in the details in the fields below. All information is mandatory</string>
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
@@ -42,8 +43,24 @@
     <string name="submit">Submit</string>
     <string name="select_symptom">Select Symptom</string>
     <string name="select_medical_condition">Select Medical Condition</string>
-    <string name="condition">I understand that the data form the Covi-Catch app of my mobile phone will be shared with Indian Council for Medical Research(ICMR)</string>
-    <string name="instruction">Before proceeding with the Test,Please read the Quick Reference Guide provided in the kit box carefully to make yourself familiar with the test</string>
-    <string name="instruction1">Once the sample is added in the test cassette,press Start Timer button below.Do not Start the timer before adding the sample in the test cassette</string>
+    <string name="tnc_agreement">I understand that the data form the Covi-Catch app of my mobile phone will be shared with Indian Council for Medical Research(ICMR)</string>
+    <string name="instruction_1">Before proceeding with the Test,Please read the Quick Reference Guide provided in the kit box carefully to make yourself familiar with the test</string>
+    <string name="instruction_2">Once the sample is added in the test cassette,press Start Timer button below.Do not Start the timer before adding the sample in the test cassette</string>
     <string name="start_the_timer">Start the Timer</string>
+
+    <string name="error_server_error">We\'ve encountered a technical error. Please try again.</string>
+    <string name="error_email_invalid">Please input valid email id</string>
+    <string name="error_text_blank">This field cannot be left blank</string>
+    <string name="error_select_valid_state">Please select a valid state first</string>
+    <string name="error">Error</string>
+    <string name="select">Select</string>
+    <string name="cancel">Cancel</string>
+    <string name="type_of_id">ID Type</string>
+    <string name="aadhar_card">Aadhaar Card</string>
+    <string name="driving_license">Driving License</string>
+    <string name="pan_card">PAN Card</string>
+    <string name="voter_id_card">Voter ID Card</string>
+    <string name="passport">Passport</string>
+    <string name="id_card_no">ID Card No</string>
+    <string name="ok">OK</string>
 </resources>

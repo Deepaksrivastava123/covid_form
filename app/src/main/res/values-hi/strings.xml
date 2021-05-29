@@ -5,11 +5,12 @@
     <string name="patient_name">रोगी का नाम</string>
     <string name="first_name">पहला नाम</string>
     <string name="last_name">अंतिम नाम</string>
-    <string name="select_language">Select Language</string>
+    <string name="select_language">भाषा का चयन करें</string>
+    <string name="tnc">नियम और शर्तें</string>
     <string name="hindi">हिंदी</string>
-    <string name="english">English</string>
+    <string name="english">अंग्रेज़ी</string>
     <string name="proceed">जारी रखें</string>
-    <string name="step_1">Step 1</string>
+    <string name="step_1">परीक्षण के साथ आगे बढ़ने से पहले, नीचे दिए गए क्षेत्रों में विवरण भरें। सभी जानकारी अनिवार्य</string>
     <string name="gender">लिंग</string>
     <string name="male">पुरुष</string>
     <string name="female">महिला</string>
@@ -22,7 +23,7 @@
     <string name="pin_code">पिन कोड</string>
     <string name="enter_pincode">पिनकोड दर्ज करें</string>
     <string name="next">अगला</string>
-    <string name="step_2">Step 2</string>
+    <string name="step_2">चरण 2</string>
     <string name="state">राज्य</string>
     <string name="city">शहर</string>
     <string name="adhar_number">आईडी का प्रकार</string>
@@ -31,7 +32,7 @@
     <string name="symptoms">लक्षण</string>
     <string name="underlying_medical_condition">अंतर्निहित चिकित्सा स्थिति</string>
     <string name="sample_collection_by">नमूना संग्रह</string>
-    <string name="step_3">Step 3</string>
+    <string name="step_3">चरण 3</string>
     <string name="result_interpretation_time_in_mins">परिणाम व्याख्या समय (मिनटों में)</string>
     <string name="enter_time_in_mins">समय दर्ज करें (मिनटों में)</string>
     <string name="upload_test_result_use_camera">परीक्षा परिणाम अपलोड करें (कैमरा का उपयोग करें)</string>
@@ -41,10 +42,26 @@
     <string name="invalid">अमान्य</string>
     <string name="preview_form">पूर्वावलोकन प्रपत्र</string>
     <string name="submit">प्रस्तुत</string>
-    <string name="select_symptom">Select Symptom</string>
-    <string name="select_medical_condition">Select Medical Condition</string>
-    <string name="condition">मैं समझता/समझती हूं कि मेरे मोबाइल फ़ोन के Covi-Catch ऐप का डेटा भारतीय चिकित्सा अनुसंधान परिषद के साथ साझा किया जाएगा(ICMR)</string>
-    <string name="instruction">परीक्षण के साथ आगे बढ़ने से पहले, कृपया अपने आप को परीक्षण से परिचित कराने के लिए किट बॉक्स में दिए गए त्वरित संदर्भ गाइड को ध्यान से पढ़ें</string>
-    <string name="instruction1">एक बार परीक्षण कैसेट में नमूना जोड़ने के बाद, नीचे स्टार्ट टाइमर बटन दबाएं। परीक्षण कैसेट में नमूना जोड़ने से पहले टाइमर शुरू न करें</string>
+    <string name="select_symptom">लक्षण चुनें</string>
+    <string name="select_medical_condition">चिकित्सा स्थिति का चयन करें</string>
+    <string name="tnc_agreement">मैं समझता/समझती हूं कि मेरे मोबाइल फ़ोन के Covi-Catch ऐप का डेटा भारतीय चिकित्सा अनुसंधान परिषद के साथ साझा किया जाएगा(ICMR)</string>
+    <string name="instruction_1">परीक्षण के साथ आगे बढ़ने से पहले, कृपया अपने आप को परीक्षण से परिचित कराने के लिए किट बॉक्स में दिए गए त्वरित संदर्भ गाइड को ध्यान से पढ़ें</string>
+    <string name="instruction_2">एक बार परीक्षण कैसेट में नमूना जोड़ने के बाद, नीचे स्टार्ट टाइमर बटन दबाएं। परीक्षण कैसेट में नमूना जोड़ने से पहले टाइमर शुरू न करें</string>
     <string name="start_the_timer">टाइमर शुरू करें</string>
+
+    <string name="error_server_error">हमें एक तकनीकी त्रुटि का सामना करना पड़ा है। कृपया पुन: प्रयास करें।</string>
+    <string name="error_email_invalid">कृपया मान्य ईमेल आईडी इनपुट करें</string>
+    <string name="error_text_blank">इस इनपुट को खाली नहीं छोड़ा जा सकता</string>
+    <string name="error_select_valid_state">कृपया पहले एक मान्य राज्य चुनें</string>
+    <string name="error">त्रुटि</string>
+    <string name="select">चुनें</string>
+    <string name="cancel">रद्द</string>
+    <string name="type_of_id">आईडी का प्रकार</string>
+    <string name="aadhar_card">आधार कार्ड</string>
+    <string name="driving_license">ड्राइविंग लाइसेंस</string>
+    <string name="pan_card">पैन कार्ड</string>
+    <string name="voter_id_card">मतदाता पहचान पत्र</string>
+    <string name="passport">पासपोर्ट</string>
+    <string name="id_card_no">पहचान पत्र क्रमांक</string>
+    <string name="ok">OK</string>
 </resources>

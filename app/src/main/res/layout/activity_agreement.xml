@@ -1,35 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_blue"
     android:orientation="vertical"
-    android:background="@color/splashcolor"
-    tools:context="com.sdbiosensor.AgreementActivity">
+    tools:context="com.sdbiosensor.covicatch.screens.AgreementActivity">
 
-    <LinearLayout
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/tnc"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_margin="10dp">
 
         <CheckBox
-           android:id="@+id/cb_Condition"
-           android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-            android:buttonTint="@color/white"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:text="@string/condition"
+            android:id="@+id/check_tnc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:buttonTint="@color/white"
+            android:text="@string/tnc_agreement"
             android:textColor="@color/white"
+            android:gravity="top"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            android:drawablePadding="30dp"
+            android:paddingStart="20dp"/>
 
-    </LinearLayout>
-
+    </RelativeLayout>
 
 </LinearLayout>
