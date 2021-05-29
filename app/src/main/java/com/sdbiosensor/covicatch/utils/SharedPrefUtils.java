@@ -35,6 +35,16 @@ public class SharedPrefUtils {
         return preferences.getInt(key, defaultValue);
     }
 
+    public void putLong(String key, long value) {
+        Editor editor = preferences.edit();
+        editor.putLong(key, value);
+        editor.apply();
+    }
+
+    public long getLong(String key, int defaultValue) {
+        return preferences.getLong(key, defaultValue);
+    }
+
     public  void putString(String key, String value) {
         Editor editor = preferences.edit();
         editor.putString(key, value);

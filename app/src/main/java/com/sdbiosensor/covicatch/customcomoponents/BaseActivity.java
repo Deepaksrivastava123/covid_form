@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog;
 import com.akexorcist.localizationactivity.ui.LocalizationActivity;
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
-import com.sdbiosensor.covicatch.events.TestEvent;
+import com.sdbiosensor.covicatch.events.CloseAllScreens;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,7 +36,9 @@ public class BaseActivity extends LocalizationActivity {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onMessageEvent(TestEvent event) { }
+    public void onMessageEvent(CloseAllScreens event) {
+        finish();
+    }
 
     public void showErrorDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

@@ -3,8 +3,6 @@ package com.sdbiosensor.covicatch.screens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.sdbiosensor.covicatch.R;
@@ -25,7 +23,6 @@ public class SplashActivity extends BaseActivity {
         IS_ALIVE = true;
 
         initView();
-        startAnimation();
     }
 
     @Override
@@ -64,17 +61,15 @@ public class SplashActivity extends BaseActivity {
         SharedPrefUtils.getInstance(this).putString(Constants.PREF_LANG, Constants.LANGUAGES.en.name());
     }
 
-    private void startAnimation() {
-        Animation fadeAnim = AnimationUtils.loadAnimation(this, R.anim.animation_fade);
-        img_logo.startAnimation(fadeAnim);
-        img_bottom_logo.startAnimation(fadeAnim);
-    }
-
     private void moveToNextActivity() {
         if (IS_ALIVE) {
             IS_ALIVE = false;
-            //TODO move to timer screen if obj exists and timer in progress
-            Intent intent = new Intent(SplashActivity.this, SelectLanguageActivity.class);
+            Intent intent;
+            if (SharedPrefUtils.getInstance(this).getLong(Constants.PREF_TIMER_ALARM_TIME, -1) == -1) {
+                intent = new Intent(SplashActivity.this, SelectLanguageActivity.class);
+            } else {
+                intent = new Intent(SplashActivity.this, TimerActivity.class);
+            }
             startActivity(intent);
             finish();
         }

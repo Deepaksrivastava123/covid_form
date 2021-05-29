@@ -18,7 +18,6 @@ import com.sdbiosensor.covicatch.adapters.MultiRecyclerAdapter;
 import com.sdbiosensor.covicatch.adapters.StringRecyclerAdapter;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
-import com.sdbiosensor.covicatch.events.AfterSubmitCloseEvent;
 import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import com.sdbiosensor.covicatch.utils.Utils;

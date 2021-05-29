@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sdbiosensor.covicatch">
 
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="ANDROID.PERMISSION.READ_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -9,7 +15,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Covid_form">
-
         <activity android:name=".screens.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,8 +25,13 @@
         <activity android:name=".screens.TimerActivity"/>
         <activity android:name=".screens.InstructionActivity" />
         <activity android:name=".screens.AgreementActivity" />
+        <activity android:name=".screens.PleaseWaitActivity" />
         <activity android:name=".screens.FormActivity" />
         <activity android:name=".screens.SelectLanguageActivity" />
+        <receiver
+            android:name=".receiver.AlarmReceiver"
+            android:enabled="true"
+            android:process=":remote"/>
     </application>
 
 </manifest>

@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 public class Utils {
 
@@ -25,6 +27,27 @@ public class Utils {
             }
         }
         return str.substring(0, str.lastIndexOf(","));
+    }
+
+    public static long secondsBetween(Calendar startDate, Calendar endDate) {
+        long end = endDate.getTimeInMillis();
+        long start = startDate.getTimeInMillis();
+        return TimeUnit.MILLISECONDS.toSeconds(Math.abs(end - start));
+    }
+
+    public static String convertMillisToMS(long millis) {
+        try {
+            return String.format("%02d:%02d",
+                    //Minutes
+                    TimeUnit.MILLISECONDS.toMinutes(millis) -
+                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                    //Seconds
+                    TimeUnit.MILLISECONDS.toSeconds(millis) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 }
