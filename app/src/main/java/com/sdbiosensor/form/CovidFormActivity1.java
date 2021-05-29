@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -18,10 +20,11 @@ import java.util.ArrayList;
 
 public class CovidFormActivity1 extends AppCompatActivity {
     Spinner spState,spCity,spSymptomstatus,spSample;
-    EditText etAdharnumber;
+    EditText etIdnumber;
     Button btnNext;
     TextView txtSymptom,txtCondition;
     boolean[] selectedSymp;
+    Spinner spIdtype;
     ArrayList<Integer> sympList = new ArrayList<>();
     String[] sympArray = {"Fever","Cough","Cold","Diarrhea","Stomach pain","Sore throat",
             "Vomiting","Chest pain","Nasal discharge","Body pain",
@@ -39,17 +42,16 @@ public class CovidFormActivity1 extends AppCompatActivity {
 
         spState = (Spinner)findViewById(R.id.sp_State);
         spCity = (Spinner)findViewById(R.id.sp_City);
-        spSymptomstatus = (Spinner)findViewById(R.id.sp_Symptomstatus);
         txtSymptom = (TextView) findViewById(R.id.txt_Symptom);
         txtCondition = (TextView) findViewById(R.id.txt_Condition);
-        spSample = (Spinner)findViewById(R.id.sp_Sample);
-        etAdharnumber = (EditText) findViewById(R.id.edit_Adharnumber);
+        etIdnumber = (EditText) findViewById(R.id.edit_Idnumber);
         btnNext = (Button) findViewById(R.id.btn_Next);
+        spIdtype = (Spinner) findViewById(R.id.sp_IdType);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(CovidFormActivity1.this,CovidFormActivity2.class));
+                startActivity(new Intent(CovidFormActivity1.this,InstructionActivity.class));
                 finish();
             }
         });
@@ -67,6 +69,43 @@ public class CovidFormActivity1 extends AppCompatActivity {
                 openConditionDialog();
             }
         });
+
+        loadIdType();
+    }
+
+    private void loadIdType() {
+
+        ArrayList<String> idType = new ArrayList<String>();
+        idType.add("Select Id Type");
+        idType.add("Adhar Card");
+        idType.add("Driving License");
+        idType.add("Pan Card");
+        idType.add("Voter Id Card ");
+        idType.add("Passport ");
+
+       ArrayAdapter<String>arrayAdapter = new ArrayAdapter<>(this,android.R.layout.simple_spinner_item,idType);
+       arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+       spIdtype.setAdapter(arrayAdapter);
+
+       spIdtype.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+           @Override
+           public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+               if (position == 0){
+                   //do nothing
+               }
+               else {
+                   spIdtype.setSelection(position);
+                   String selIdtype = spIdtype.getItemAtPosition(position).toString();
+                   etIdnumber.setVisibility(view.VISIBLE);
+               }
+           }
+
+           @Override
+           public void onNothingSelected(AdapterView<?> parent) {
+
+           }
+       });
     }
 
     private void openConditionDialog() {

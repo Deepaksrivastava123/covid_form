@@ -24,8 +24,8 @@
     <string name="step_2">Step 2</string>
     <string name="state">State</string>
     <string name="city">City</string>
-    <string name="adhar_number">Adhar Number</string>
-    <string name="enter_adhar_number">Enter adhar number</string>
+    <string name="adhar_number">ID Type</string>
+    <string name="enter_adhar_number">Enter Id number</string>
     <string name="symptom_status">Symptom Status</string>
     <string name="symptoms">Symptoms</string>
     <string name="underlying_medical_condition">Underlying Medical Condition</string>
@@ -42,4 +42,8 @@
     <string name="submit">Submit</string>
     <string name="select_symptom">Select Symptom</string>
     <string name="select_medical_condition">Select Medical Condition</string>
+    <string name="condition">I understand that the data form the Covi-Catch app of my mobile phone will be shared with Indian Council for Medical Research(ICMR)</string>
+    <string name="instruction">Before proceeding with the Test,Please read the Quick Reference Guide provided in the kit box carefully to make yourself familiar with the test</string>
+    <string name="instruction1">Once the sample is added in the test cassette,press Start Timer button below.Do not Start the timer before adding the sample in the test cassette</string>
+    <string name="start_the_timer">Start the Timer</string>
 </resources>

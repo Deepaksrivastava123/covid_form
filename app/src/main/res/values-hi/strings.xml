@@ -25,8 +25,8 @@
     <string name="step_2">Step 2</string>
     <string name="state">राज्य</string>
     <string name="city">शहर</string>
-    <string name="adhar_number">आधार नंबर</string>
-    <string name="enter_adhar_number">आधार नंबर दर्ज करें</string>
+    <string name="adhar_number">आईडी का प्रकार</string>
+    <string name="enter_adhar_number">आईडी नंबर दर्ज करें</string>
     <string name="symptom_status">लक्षण स्थिति</string>
     <string name="symptoms">लक्षण</string>
     <string name="underlying_medical_condition">अंतर्निहित चिकित्सा स्थिति</string>
@@ -43,4 +43,8 @@
     <string name="submit">प्रस्तुत</string>
     <string name="select_symptom">Select Symptom</string>
     <string name="select_medical_condition">Select Medical Condition</string>
+    <string name="condition">मैं समझता/समझती हूं कि मेरे मोबाइल फ़ोन के Covi-Catch ऐप का डेटा भारतीय चिकित्सा अनुसंधान परिषद के साथ साझा किया जाएगा(ICMR)</string>
+    <string name="instruction">परीक्षण के साथ आगे बढ़ने से पहले, कृपया अपने आप को परीक्षण से परिचित कराने के लिए किट बॉक्स में दिए गए त्वरित संदर्भ गाइड को ध्यान से पढ़ें</string>
+    <string name="instruction1">एक बार परीक्षण कैसेट में नमूना जोड़ने के बाद, नीचे स्टार्ट टाइमर बटन दबाएं। परीक्षण कैसेट में नमूना जोड़ने से पहले टाइमर शुरू न करें</string>
+    <string name="start_the_timer">टाइमर शुरू करें</string>
 </resources>

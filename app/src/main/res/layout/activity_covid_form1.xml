@@ -31,7 +31,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="5dp"
-        android:background="@drawable/edittextbackground"/>
+        android:spinnerMode="dialog"
+        android:background="@drawable/spinnerbackground"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -46,7 +47,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="5dp"
-        android:background="@drawable/edittextbackground"/>
+        android:spinnerMode="dialog"
+        android:background="@drawable/spinnerbackground"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,31 +57,25 @@
         android:textColor="@color/black"
         android:layout_margin="5dp"
         android:text="@string/adhar_number"/>
-
-    <EditText
-        android:id="@+id/edit_Adharnumber"
+    <Spinner
+        android:id="@+id/sp_IdType"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_margin="5dp"
+        android:spinnerMode="dialog"
+        android:background="@drawable/spinnerbackground"/>
+
+    <EditText
+        android:id="@+id/edit_Idnumber"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:visibility="gone"
         android:hint="@string/enter_adhar_number"
         android:padding="10dp"
         android:inputType="number"
         android:background="@drawable/edittextbackground"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:layout_margin="5dp"
-        android:text="@string/symptom_status"/>
 
-    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-        android:id="@+id/sp_Symptomstatus"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="5dp"
-        android:background="@drawable/edittextbackground"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -118,27 +114,17 @@
         android:layout_margin="5dp"
         android:background="@drawable/edittextbackground"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:textAllCaps="false"
-        android:textColor="@color/black"
-        android:layout_margin="5dp"
-        android:text="@string/sample_collection_by"/>
-
-    <com.toptoche.searchablespinnerlibrary.SearchableSpinner
-        android:id="@+id/sp_Sample"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_margin="5dp"
-        android:background="@drawable/edittextbackground"/>
+  
 
     <Button
         android:id="@+id/btn_Next"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
+        android:background="@drawable/custombutton"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/white"
         android:layout_margin="30dp"
         android:text="@string/next"/>
 

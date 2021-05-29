@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/launchericonround"
         android:supportsRtl="true"
         android:theme="@style/Theme.Covid_form">
-        <activity android:name="com.sdbiosensor.form.CovidFormActivity2"></activity>
+        <activity android:name="com.sdbiosensor.form.TimerActivity"></activity>
+        <activity android:name="com.sdbiosensor.form.InstructionActivity" />
+        <activity android:name="com.sdbiosensor.AgreementActivity" />
         <activity android:name="com.sdbiosensor.form.CovidFormActivity1" />
         <activity android:name="com.sdbiosensor.form.CovidFormActivity" />
         <activity android:name="com.sdbiosensor.SelectLanguageActivity" />

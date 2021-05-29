@@ -5,16 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.sdbiosensor.covicatch.R;
 
+import java.util.ArrayList;
+
 public class CovidFormActivity extends AppCompatActivity {
     EditText etFirstname,etLastname,etMobilenumber,etAddress,etPincode;
-    RadioGroup radioGroup;
+    Spinner spGender;
     Button btnNext;
 
     @Override
@@ -27,8 +32,8 @@ public class CovidFormActivity extends AppCompatActivity {
         etMobilenumber = (EditText)findViewById(R.id.edit_MobileNumber);
         etAddress = (EditText)findViewById(R.id.edit_Address);
         etPincode = (EditText)findViewById(R.id.edit_Pincode);
-        radioGroup = (RadioGroup)findViewById(R.id.radio_group);
         btnNext = (Button)findViewById(R.id.btn_Next);
+        spGender = (Spinner)findViewById(R.id.sp_Gender);
 
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +43,42 @@ public class CovidFormActivity extends AppCompatActivity {
                 }
             }
         });
+
+        loadGender();
+    }
+
+    private void loadGender() {
+
+        ArrayList<String> gender = new ArrayList<String>();
+        gender.add("Select gender");
+        gender.add("Male");
+        gender.add("Female");
+        gender.add("Others");
+
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,gender);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spGender.setAdapter(arrayAdapter);
+
+        spGender.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0){
+                    //do nothing
+                }
+                else {
+                    spGender.setSelection(position);
+                    String selGender = spGender.getItemAtPosition(position).toString();
+
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     private void nextStep() {
@@ -47,7 +88,7 @@ public class CovidFormActivity extends AppCompatActivity {
 
     private boolean validation() {
 
-        int isSelected = radioGroup.getCheckedRadioButtonId();
+
 
         if (etFirstname.getText().toString().isEmpty()){
             etFirstname.setError("Enter first name");
@@ -59,10 +100,6 @@ public class CovidFormActivity extends AppCompatActivity {
             return false;
         }
 
-        if(isSelected == -1){
-            Toast.makeText(this, "Please select gender", Toast.LENGTH_SHORT).show();
-            return false;
-        }
 
         if (etAddress.getText().toString().isEmpty()){
             etFirstname.setError("Enter Address");

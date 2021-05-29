@@ -60,36 +60,13 @@
         android:layout_margin="5dp"
         android:text="@string/gender"/>
 
-    <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="3dp">
-        <RadioButton
-            android:id="@+id/rb_Male"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:textAllCaps="false"
-            android:text="@string/male"/>
-        <RadioButton
-            android:id="@+id/rb_Female"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:text="@string/female"/>
-        <RadioButton
-            android:id="@+id/rb_Others"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAllCaps="false"
-            android:textSize="18sp"
-            android:textColor="@color/black"
-            android:text="@string/others"/>
-    </RadioGroup>
+    <Spinner
+        android:id="@+id/sp_Gender"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:spinnerMode="dialog"
+        android:layout_margin="5dp"
+        android:background="@drawable/spinnerbackground"/>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -148,6 +125,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAllCaps="false"
+        android:background="@drawable/custombutton"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="@color/white"
         android:layout_margin="30dp"
         android:text="@string/next"/>
 

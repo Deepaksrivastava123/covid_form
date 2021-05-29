@@ -31,7 +31,8 @@ public class SelectLanguageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setLanguage(SelectLanguageActivity.this,"en");
-                startActivity(new Intent(SelectLanguageActivity.this, CovidFormActivity.class));
+                startActivity(new Intent(SelectLanguageActivity.this, AgreementActivity.class));
+                finish();
             }
         });
 
@@ -39,7 +40,8 @@ public class SelectLanguageActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setLanguage(SelectLanguageActivity.this,"hi");
-                startActivity(new Intent(SelectLanguageActivity.this,CovidFormActivity.class));
+                startActivity(new Intent(SelectLanguageActivity.this,AgreementActivity.class));
+                finish();
             }
         });
 
