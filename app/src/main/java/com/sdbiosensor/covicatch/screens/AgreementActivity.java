@@ -22,8 +22,13 @@ public class AgreementActivity extends BaseActivity {
         ((CheckBox) findViewById(R.id.check_tnc)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                startActivity(new Intent(AgreementActivity.this, FormActivity.class));
-                finish();
+                buttonView.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(new Intent(AgreementActivity.this, FormActivity.class));
+                        finish();
+                    }
+                }, 500);
             }
         });
     }

@@ -14,6 +14,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Covid_form">
         <activity android:name=".screens.SplashActivity">
             <intent-filter>
@@ -26,6 +27,7 @@
         <activity android:name=".screens.InstructionActivity" />
         <activity android:name=".screens.AgreementActivity" />
         <activity android:name=".screens.PleaseWaitActivity" />
+        <activity android:name=".screens.ReportActivity" />
         <activity android:name=".screens.FormActivity" />
         <activity android:name=".screens.SelectLanguageActivity" />
         <receiver

@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 public class TimerActivity extends BaseActivity implements View.OnClickListener {
 
-    public static final int TIMER_INTERVAL = 1;
+    public static final int TIMER_INTERVAL = 15;
     private TextView text_timer;
     private Button button_take_picture;
     private Calendar savedCalendar;
@@ -131,7 +131,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == this.RESULT_CANCELED) {
+        if (resultCode == RESULT_CANCELED) {
             return;
         }
         if (requestCode == CAMERA) {

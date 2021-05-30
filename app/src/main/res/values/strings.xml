@@ -68,5 +68,7 @@
     <string name="wait_for_timer">Please wait for the 15 minute timer to complete</string>
     <string name="wait_for_report">Please wait... Your Test Report is being prepared</string>
     <string name="cannot_go_back">Cannot go back while data is processing</string>
+    <string name="retry">Retry</string>
+    <string name="cancel_and_start_again">Cancel, and start the process again</string>
 
 </resources>

@@ -18,18 +18,12 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="10dp"
-            android:text="@string/wait_for_report"
+            android:text="Form submitted\n\nReport generation pending"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold" />
 
-        <ProgressBar
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:indeterminate="true"
-            android:layout_marginTop="20dp"
-            android:indeterminateTint="@color/white"/>
 
     </LinearLayout>
 

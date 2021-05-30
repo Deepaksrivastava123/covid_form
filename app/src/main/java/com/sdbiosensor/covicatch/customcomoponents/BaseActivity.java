@@ -1,5 +1,6 @@
 package com.sdbiosensor.covicatch.customcomoponents;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
