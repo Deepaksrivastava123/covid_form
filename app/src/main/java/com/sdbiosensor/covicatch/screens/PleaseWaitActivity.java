@@ -170,9 +170,8 @@ public class PleaseWaitActivity extends BaseActivity {
         addressModel.setPinCode(localDataModel.getPincode());
         addressModel.setState(localDataModel.getState());
 
-        //TODO change in api to send card no and card type instead of aadhaar no
         model.setAddress(addressModel);
-        model.setAadharNo(localDataModel.getId_no());
+        model.setAadharNo(localDataModel.getId_type() + "_" + localDataModel.getId_no());
         model.setAge(0);
         model.setCity(localDataModel.getCity());
         model.setCollectedBy("");
