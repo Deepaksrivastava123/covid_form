@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 public class CreatePatientRequestModel {
 
-    private String aadharNo;
+    private String idType;
+    private String userIdNo;
     private AddressRequestModel address;
     private int age;
     private String city;
@@ -30,12 +31,20 @@ public class CreatePatientRequestModel {
     public CreatePatientRequestModel() {
     }
 
-    public String getAadharNo() {
-        return aadharNo;
+    public String getIdType() {
+        return idType;
     }
 
-    public void setAadharNo(String aadharNo) {
-        this.aadharNo = aadharNo;
+    public void setIdType(String idType) {
+        this.idType = idType;
+    }
+
+    public String getUserIdNo() {
+        return userIdNo;
+    }
+
+    public void setUserIdNo(String userIdNo) {
+        this.userIdNo = userIdNo;
     }
 
     public AddressRequestModel getAddress() {

@@ -171,7 +171,8 @@ public class PleaseWaitActivity extends BaseActivity {
         addressModel.setState(localDataModel.getState());
 
         model.setAddress(addressModel);
-        model.setAadharNo(localDataModel.getId_type() + "_" + localDataModel.getId_no());
+        model.setUserIdNo(localDataModel.getId_no());
+        model.setIdType(localDataModel.getId_type());
         model.setAge(0);
         model.setCity(localDataModel.getCity());
         model.setCollectedBy("");
