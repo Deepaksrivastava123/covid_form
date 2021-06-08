@@ -27,6 +27,7 @@ public class CreatePatientRequestModel {
     private String symtomStatus;
     private ArrayList<String> underlyingMedicalCondition;
     private String uploadedImageRef;
+    private String kitSerialNumber;
 
     public CreatePatientRequestModel() {
     }
@@ -213,5 +214,13 @@ public class CreatePatientRequestModel {
 
     public void setUploadedImageRef(String uploadedImageRef) {
         this.uploadedImageRef = uploadedImageRef;
+    }
+
+    public String getKitSerialNumber() {
+        return kitSerialNumber;
+    }
+
+    public void setKitSerialNumber(String kitSerialNumber) {
+        this.kitSerialNumber = kitSerialNumber;
     }
 }

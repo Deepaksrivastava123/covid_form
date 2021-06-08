@@ -38,6 +38,7 @@ import retrofit2.Response;
 public class PleaseWaitActivity extends BaseActivity {
 
     private Bitmap imageToUpload;
+    private String scannedQr;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class PleaseWaitActivity extends BaseActivity {
 
     private void initViews() {
         imageToUpload = (Bitmap) getIntent().getExtras().get("photo");
+        scannedQr = getIntent().getStringExtra("qr");
     }
 
     private void sendFormData() {
@@ -188,6 +190,7 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setRemarks("");
         model.setResult("");
         model.setState(localDataModel.getState());
+        model.setKitSerialNumber(scannedQr);
 
         ArrayList<String> symptomList = localDataModel.getSymptoms();
         if (symptomList.contains("Others")) {

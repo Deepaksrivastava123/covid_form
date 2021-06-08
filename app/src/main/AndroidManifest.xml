@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.sdbiosensor.covicatch">
 
 
@@ -7,6 +8,7 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="ANDROID.PERMISSION.READ_EXTERNAL_STORAGE" />
+    <uses-sdk tools:overrideLibrary="com.google.zxing.client.android" />
 
     <application
         android:allowBackup="true"
@@ -14,6 +16,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Covid_form">
         <activity android:name=".screens.SplashActivity">
@@ -24,6 +27,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".screens.TimerActivity"/>
+        <activity android:name=".screens.TakePhotoActivity"/>
         <activity android:name=".screens.InstructionActivity" />
         <activity android:name=".screens.AgreementActivity" />
         <activity android:name=".screens.PleaseWaitActivity" />

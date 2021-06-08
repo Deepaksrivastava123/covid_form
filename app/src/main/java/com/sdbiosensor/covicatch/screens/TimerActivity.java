@@ -1,17 +1,14 @@
 package com.sdbiosensor.covicatch.screens;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.core.app.ActivityCompat;
-
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
@@ -22,19 +19,13 @@ import java.util.Calendar;
 
 public class TimerActivity extends BaseActivity implements View.OnClickListener {
 
-    public static final int TIMER_INTERVAL = 15;
+    public static final int TIMER_INTERVAL = 1;     //In minutes
     private TextView text_timer;
-    private Button button_take_picture;
+    private Button button_scan_qr;
     private Calendar savedCalendar;
     private Calendar currentCalendar;
     private boolean isTimerUp = false;
     private CountDownTimer mainCountdownTimer;
-    private int PERMISSION_ALL = 1, CAMERA = 1001;
-    private String[] PERMISSIONS = {
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.CAMERA
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,11 +39,11 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
 
     private void initViews() {
         text_timer = findViewById(R.id.text_timer);
-        button_take_picture = findViewById(R.id.button_take_picture);
+        button_scan_qr = findViewById(R.id.button_scan_qr);
     }
 
     private void handleClicks() {
-        button_take_picture.setOnClickListener(this);
+        button_scan_qr.setOnClickListener(this);
     }
 
     private void loadTimer() {
@@ -101,57 +92,42 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
 
     private void handleViewBasedOnTimer() {
         if (isTimerUp) {
-            button_take_picture.setTextColor(getResources().getColor(R.color.app_blue));
+            button_scan_qr.setTextColor(getResources().getColor(R.color.app_blue));
         } else {
-            button_take_picture.setTextColor(getResources().getColor(R.color.grey));
+            button_scan_qr.setTextColor(getResources().getColor(R.color.grey));
         }
     }
 
     @Override
     public void onClick(View view) {
-        if (view.getId() == R.id.button_take_picture) {
+        if (view.getId() == R.id.button_scan_qr) {
             if (isTimerUp) {
-                if (!hasPermissions(this, PERMISSIONS)) {
-                    ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-                } else {
-                    clickPhoto();
-                }
+                scanQr();
             } else {
                 showErrorDialog(getString(R.string.wait_for_timer));
             }
         }
     }
 
-    private void clickPhoto() {
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, CAMERA);
+    private void scanQr() {
+        new IntentIntegrator(this).initiateScan();
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_CANCELED) {
-            return;
-        }
-        if (requestCode == CAMERA) {
-            Bitmap clickedPhoto = (Bitmap) data.getExtras().get("data");
-            Intent intent = new Intent(this, PleaseWaitActivity.class);
-            intent.putExtra("photo", clickedPhoto);
-            startActivity(intent);
-            finish();
-        }
-    }
-
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+               showErrorDialog("Cancelled");
+            } else {
+                Intent intent= new Intent(TimerActivity.this, TakePhotoActivity.class);
+                intent.putExtra("qr", result.getContents());
+                startActivity(intent);
+                finish();
             }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
         }
-        return true;
     }
 
 }

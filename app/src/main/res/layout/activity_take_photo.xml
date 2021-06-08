@@ -10,36 +10,13 @@
     android:gravity="center"
     tools:context=".screens.TimerActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="@string/countdown_timer"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="30sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/text_timer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="10dp"
-        android:text="00:00"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="40sp"
-        android:textStyle="bold" />
-
     <Button
         android:id="@+id/button_scan_qr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/scan_cassette_qr_code"
+        android:text="@string/take_picture"
         android:textAllCaps="false"
-        android:textColor="@color/grey"
+        android:textColor="@color/app_blue"
         android:textSize="18sp"
         android:padding="15dp"
         android:textStyle="bold"
