@@ -72,5 +72,12 @@
     <string name="cannot_go_back">डेटा संसाधित होने के दौरान वापस नहीं जा सकता</string>
     <string name="retry">पुन: प्रयास करें</string>
     <string name="cancel_and_start_again">रद्द करें, और प्रक्रिया फिर से शुरू करें</string>
+    <string name="otp_sent">OTP Sent</string>
+    <string name="otp_sent_message">OTP sent to your number. Please enter.</string>
+    <string name="nationality">Nationality</string>
+    <string name="dob">Date of birth</string>
+    <string name="error_valid_mobile_number">Please enter a valid mobile number</string>
+    <string name="occupation">Occupation</string>
+    <string name="district">District</string>
 
 </resources>

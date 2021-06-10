@@ -71,5 +71,12 @@
     <string name="cannot_go_back">Cannot go back while data is processing</string>
     <string name="retry">Retry</string>
     <string name="cancel_and_start_again">Cancel, and start the process again</string>
+    <string name="otp_sent">OTP Sent</string>
+    <string name="otp_sent_message">OTP sent to your number. Please enter.</string>
+    <string name="nationality">Nationality</string>
+    <string name="dob">Date of birth</string>
+    <string name="error_valid_mobile_number">Please enter a valid mobile number</string>
+    <string name="occupation">Occupation</string>
+    <string name="district">District</string>
 
 </resources>

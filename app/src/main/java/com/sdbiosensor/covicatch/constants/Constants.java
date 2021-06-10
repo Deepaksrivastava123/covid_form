@@ -23,8 +23,12 @@ public class Constants {
         MALE, FEMALE, OTHERS
     }
 
+    public enum OCCUPATION {
+        HCW, POLICE, SNTN, SECG, OTHER
+    }
+
     public enum ID_TYPE {
-        AADHAAR_CARD, DRIVING_LICENSE, PAN_CARD, VOTER_ID_CARD, PASSPORT
+        AADHAR_CARD, DRIVING_LICENSE, PAN_CARD, VOTER_ID_CARD, PASSPORT
     }
 
     public enum CATEGORIES {

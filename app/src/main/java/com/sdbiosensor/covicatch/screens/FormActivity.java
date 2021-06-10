@@ -1,11 +1,23 @@
 package com.sdbiosensor.covicatch.screens;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,34 +25,44 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.sdbiosensor.covicatch.R;
+import com.sdbiosensor.covicatch.adapters.DistrictRecyclerAdapter;
 import com.sdbiosensor.covicatch.adapters.JsonArrayRecyclerAdapter;
 import com.sdbiosensor.covicatch.adapters.MultiRecyclerAdapter;
+import com.sdbiosensor.covicatch.adapters.StateRecyclerAdapter;
 import com.sdbiosensor.covicatch.adapters.StringRecyclerAdapter;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
+import com.sdbiosensor.covicatch.network.ApiClient;
+import com.sdbiosensor.covicatch.network.models.CreatePatientResponseModel;
 import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import com.sdbiosensor.covicatch.utils.Utils;
 import com.sdbiosensor.covicatch.utils.ValidationUtils;
 
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class FormActivity extends BaseActivity implements View.OnClickListener{
 
-    private EditText edit_first_name, edit_last_name, edit_mobile, edit_address, edit_pincode, edit_id_no;
-    private TextView edit_gender, edit_state, edit_city, edit_id_type, edit_symptoms, edit_conditions;
+    private EditText edit_first_name, edit_last_name, edit_mobile, edit_address, edit_pincode, edit_id_no,
+            edit_city;
+    private TextView edit_gender, edit_state, edit_district, edit_id_type, edit_symptoms,
+            edit_conditions, edit_nationality, edit_dob, edit_occupation;
     private View progress;
     private int selectedGender = -1, selectedIdType = -1;
-    private JSONObject stateCityMapping;
-    private JSONArray statesList;
+    private JSONArray stateMaster, stateDistrictMaster, selectedStateDistrictMaster, nationalityList;
     private ArrayList<String> selectedSymptoms = new ArrayList<>(), selectedConditions = new ArrayList<>();
     private String otherSymptoms, otherConditions;
+    private String selectedStateId, selectedDistrictId;
+    private Calendar dobCalendar = Calendar.getInstance();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +71,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
         initView();
         handleClicks();
-        initStateCityArray();
+        initJsonArray();
     }
 
     private void initView() {
@@ -60,29 +82,78 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         edit_pincode = findViewById(R.id.edit_pin_code);
         edit_gender = findViewById(R.id.edit_gender);
         edit_state = findViewById(R.id.edit_state);
-        edit_city = findViewById(R.id.edit_city);
+        edit_district = findViewById(R.id.edit_district);
         edit_id_type = findViewById(R.id.edit_id_type);
         edit_id_no = findViewById(R.id.edit_id_no);
         edit_symptoms = findViewById(R.id.edit_symptoms);
         edit_conditions = findViewById(R.id.edit_conditions);
+        edit_nationality = findViewById(R.id.edit_nationality);
+        edit_dob = findViewById(R.id.edit_dob);
+        edit_occupation = findViewById(R.id.edit_occupation);
+        edit_city = findViewById(R.id.edit_city);
         progress = findViewById(R.id.progress);
+
+        handleMobileEditText();
+    }
+
+    private void handleMobileEditText() {
+        edit_mobile.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    sendOtp(edit_mobile.getText().toString().trim());
+                }
+            }
+        });
+
+        edit_mobile.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_DONE || i==EditorInfo.IME_ACTION_NEXT) {
+                    InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
+                    sendOtp(edit_mobile.getText().toString().trim());
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void handleClicks() {
         findViewById(R.id.button_next).setOnClickListener(this);
         edit_gender.setOnClickListener(this);
         edit_state.setOnClickListener(this);
-        edit_city.setOnClickListener(this);
+        edit_district.setOnClickListener(this);
         edit_id_type.setOnClickListener(this);
         edit_symptoms.setOnClickListener(this);
         edit_conditions.setOnClickListener(this);
+        edit_nationality.setOnClickListener(this);
+        edit_dob.setOnClickListener(this);
+        edit_occupation.setOnClickListener(this);
     }
 
-    private void initStateCityArray() {
+    private void initJsonArray() {
         try {
-            stateCityMapping = new JSONObject(Constants.STATE_CITY_JSON);
-            statesList = stateCityMapping.names();
+            stateMaster = Utils.stateMasterJson(this);
+            stateDistrictMaster = Utils.stateDistrictJson(this);
+            nationalityList = Utils.nationalityJson(this);
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void createSelectedStateDistrictArray(String state) {
+        try {
+            selectedStateDistrictMaster = new JSONArray();
+            for (int i = 0; i < stateDistrictMaster.length(); i++) {
+                JSONObject item = stateDistrictMaster.getJSONObject(i);
+                if (item.getString("State").equalsIgnoreCase(state)) {
+                    selectedStateDistrictMaster.put(item);
+                }
+            }
+        } catch(Exception e){
             e.printStackTrace();
         }
     }
@@ -93,14 +164,20 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             openChooseGenderDialog();
         } else if (view.getId() == R.id.edit_state) {
             openChooseStateDialog();
-        } else if (view.getId() == R.id.edit_city) {
-            openChooseCityDialog();
+        } else if (view.getId() == R.id.edit_district) {
+            openChooseDistrictDialog();
         } else if (view.getId() == R.id.edit_id_type) {
             openChooseIdTypeDialog();
         } else if (view.getId() == R.id.edit_symptoms) {
             openChooseSymptomsDialog();
         } else if (view.getId() == R.id.edit_conditions) {
             openChooseConditionsDialog();
+        } else if (view.getId() == R.id.edit_nationality) {
+            openChooseNationalityDialog();
+        } else if (view.getId() == R.id.edit_dob) {
+            openDobDialog();
+        } else if (view.getId() == R.id.edit_occupation) {
+            openChooseOccupationDialog();
         } else {
             Utils.hideKeyboard(this);
             validateForm();
@@ -147,11 +224,17 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
         RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
         dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        dialogRecyclerView.setAdapter(new JsonArrayRecyclerAdapter(this, statesList, new JsonArrayRecyclerAdapter.OnItemClickListener() {
+        dialogRecyclerView.setAdapter(new StateRecyclerAdapter(this, stateMaster, new StateRecyclerAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(String item, int positon) {
-                edit_state.setText(item);
-                edit_city.setText("");
+            public void onItemClick(JSONObject item, int positon) {
+                try {
+                    edit_state.setText(item.getString("State"));
+                    selectedStateId = item.getString("State Code");
+                    createSelectedStateDistrictArray(item.getString("State"));
+                } catch (JSONException jsonException) {
+                    jsonException.printStackTrace();
+                }
+                edit_district.setText("");
                 alertDialog.dismiss();
             }
         }));
@@ -166,41 +249,116 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         alertDialog.show();
     }
 
-    private void openChooseCityDialog() {
-        if (edit_state.getText().toString().isEmpty() || !stateCityMapping.has(edit_state.getText().toString())) {
+    private void openChooseDistrictDialog() {
+        if (edit_state.getText().toString().isEmpty()) {
             showErrorDialog(getResources().getString(R.string.error_select_valid_state));
             return;
         }
 
-        try {
-            JSONArray cityList = stateCityMapping.getJSONArray(edit_state.getText().toString());
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(dialogView);
 
-            LayoutInflater inflater = LayoutInflater.from(this);
-            final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
-            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
-            alertDialog.setView(dialogView);
-
-            RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
-            dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-            dialogRecyclerView.setAdapter(new JsonArrayRecyclerAdapter(this, cityList, new JsonArrayRecyclerAdapter.OnItemClickListener() {
-                @Override
-                public void onItemClick(String item, int positon) {
-                    edit_city.setText(item);
+        RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
+        dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dialogRecyclerView.setAdapter(new DistrictRecyclerAdapter(this, selectedStateDistrictMaster, new DistrictRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(JSONObject item, int positon) {
+                try {
+                    edit_district.setText(item.getString("District"));
+                    selectedDistrictId = item.getString("District Code");
                     alertDialog.dismiss();
+                } catch (JSONException jsonException) {
+                    jsonException.printStackTrace();
                 }
-            }));
+            }
+        }));
 
-            dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    alertDialog.dismiss();
+        dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    private void openChooseNationalityDialog() {
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(dialogView);
+
+        RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
+        dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dialogRecyclerView.setAdapter(new JsonArrayRecyclerAdapter(this, nationalityList, new JsonArrayRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String item, int positon) {
+                edit_nationality.setText(item);
+                if (!item.equalsIgnoreCase("Indian")) {
+                    selectedIdType = 4;
+                    edit_id_type.setText(getString(R.string.passport));
+                    edit_id_type.setOnClickListener(null);
+                } else {
+                    edit_id_type.setOnClickListener(FormActivity.this::onClick);
                 }
-            });
+                alertDialog.dismiss();
+            }
+        }));
 
-            alertDialog.show();
-        } catch (JSONException jsonException) {
-            jsonException.printStackTrace();
-        }
+        dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
+    private void openDobDialog() {
+        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dobCalendar.set(year, monthOfYear, dayOfMonth);
+                edit_dob.setText(Utils.getFormattedDate(dobCalendar));
+            }
+        }, dobCalendar.get(Calendar.YEAR), dobCalendar.get(Calendar.MONTH), dobCalendar.get(Calendar.DATE)).show();
+    }
+
+    private void openChooseOccupationDialog() {
+        ArrayList<String> genderList = new ArrayList<String>();
+        genderList.add(Constants.OCCUPATION.HCW.name());
+        genderList.add(Constants.OCCUPATION.POLICE.name());
+        genderList.add(Constants.OCCUPATION.SNTN.name());
+        genderList.add(Constants.OCCUPATION.SECG.name());
+        genderList.add(Constants.OCCUPATION.OTHER.name());
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(dialogView);
+
+        RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
+        dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dialogRecyclerView.setAdapter(new StringRecyclerAdapter(this, genderList, new StringRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String item, int positon) {
+                edit_occupation.setText(item);
+                alertDialog.dismiss();
+            }
+        }));
+
+        dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     private void openChooseIdTypeDialog() {
@@ -357,14 +515,19 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         if (!ValidationUtils.blankValidation(edit_first_name) ||
                 !ValidationUtils.blankValidation(edit_last_name) ||
                 !ValidationUtils.blankValidation(edit_gender) ||
+                !ValidationUtils.blankValidation(edit_dob) ||
+                !ValidationUtils.blankValidation(edit_nationality) ||
                 !ValidationUtils.blankValidation(edit_mobile) ||
                 !ValidationUtils.blankValidation(edit_address) ||
                 !ValidationUtils.blankValidation(edit_pincode) ||
-                !ValidationUtils.blankValidation(edit_pincode) ||
                 !ValidationUtils.blankValidation(edit_state) ||
+                !ValidationUtils.blankValidation(edit_district) ||
                 !ValidationUtils.blankValidation(edit_city) ||
                 !ValidationUtils.blankValidation(edit_id_type) ||
-                !ValidationUtils.blankValidation(edit_id_no)) {
+                !ValidationUtils.blankValidation(edit_id_no) ||
+                !ValidationUtils.blankValidation(edit_occupation) ||
+                !ValidationUtils.blankValidation(edit_symptoms) ||
+                !ValidationUtils.blankValidation(edit_conditions)) {
             return;
         }
 
@@ -373,10 +536,13 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
     private void saveModelAndMoveToNextScreen() {
         LocalDataModel model = new LocalDataModel();
+        model.setNationality(edit_nationality.getText().toString().trim());
+        model.setDob(edit_dob.getText().toString().trim());
         model.setFirstName(edit_first_name.getText().toString().trim());
         model.setLastName(edit_last_name.getText().toString().trim());
         model.setMobile(edit_mobile.getText().toString().trim());
         model.setAddress(edit_address.getText().toString().trim());
+        model.setOccupation(edit_occupation.getText().toString().trim());
         model.setPincode(edit_pincode.getText().toString().trim());
         switch (selectedGender) {
             case 0:
@@ -393,10 +559,13 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 break;
         }
         model.setState(edit_state.getText().toString().trim());
+        model.setStateId(selectedStateId);
+        model.setDistrict(edit_district.getText().toString().trim());
+        model.setDistrictId(selectedDistrictId);
         model.setCity(edit_city.getText().toString().trim());
         switch (selectedIdType) {
             case 0:
-                model.setId_type(Constants.ID_TYPE.AADHAAR_CARD.name());
+                model.setId_type(Constants.ID_TYPE.AADHAR_CARD.name());
                 break;
             case 1:
                 model.setId_type(Constants.ID_TYPE.DRIVING_LICENSE.name());
@@ -428,6 +597,159 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOCAL_MODEL, new Gson().toJson(model));
         startActivity(new Intent(FormActivity.this, InstructionActivity.class));
         finish();
+    }
+
+    private void sendOtp(String mobileNo) {
+        if (mobileNo.isEmpty() || mobileNo.length() < 10) {
+            edit_mobile.setText("");
+            showErrorDialog(getString(R.string.error_valid_mobile_number));
+            return;
+        }
+        progress.setVisibility(View.VISIBLE);
+        if (ApiClient.getBaseInstance(this) != null) {
+            ApiClient.getBaseInstance(this).sendOtp(mobileNo).enqueue(new Callback<CreatePatientResponseModel>() {
+                @Override
+                public void onResponse(Call<CreatePatientResponseModel> call, Response<CreatePatientResponseModel> response) {
+                    progress.setVisibility(View.GONE);
+                    if (response.errorBody() == null) {
+                        showOtpDialog(response, mobileNo);
+                    } else {
+                        try {
+                            JSONObject errorJSON = new JSONObject(response.errorBody().string());
+                            JSONArray errorArray = errorJSON.optJSONArray("errors");
+
+                            StringBuffer finalMessage = new StringBuffer();
+                            if (errorArray != null && errorArray.length() > 0) {
+                                for (int i = 0; i < errorArray.length(); i++) {
+                                    if (i == 0) {
+                                        finalMessage.append(errorArray.getString(i));
+                                    } else {
+                                        finalMessage.append("\n" + errorArray.getString(i));
+                                    }
+                                }
+                            }
+                            showErrorDialog(finalMessage.toString());
+                            edit_mobile.setText("");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            edit_mobile.setText("");
+                            showErrorDialog(response.errorBody().toString());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CreatePatientResponseModel> call, Throwable t) {
+                    progress.setVisibility(View.GONE);
+                    Log.v("Debug", t.getLocalizedMessage());
+                    edit_mobile.setText("");
+                    showErrorDialog(t.getLocalizedMessage());
+                }
+            });
+        }
+    }
+
+    private void showOtpDialog(Response<CreatePatientResponseModel> response, String mobileNo) {
+        LinearLayout lin = new LinearLayout(this);
+        lin.setPadding(50, 0, 50, 0);
+        final EditText editText = new EditText(this);
+        editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+        lin.addView(editText);
+
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+        builder.setTitle(R.string.otp_sent);
+        builder.setMessage(R.string.otp_sent_message);
+        builder.setCancelable(false);
+        builder.setView(lin);
+        builder.setPositiveButton(R.string.ok, null);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                edit_mobile.setText("");
+                dialog.cancel();
+            }
+        });
+
+        final androidx.appcompat.app.AlertDialog dialog = builder.create();
+
+        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+
+            public void onShow(DialogInterface dialogInterface) {
+
+                Button button = ((androidx.appcompat.app.AlertDialog) dialog).getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View view) {
+                        String otp = editText.getText().toString();
+                        if (!otp.trim().isEmpty()) {
+                            verifyOtp(otp, mobileNo);
+                            dialog.cancel();
+                        } else {
+                            editText.setError(getString(R.string.error_text_blank));
+                        }
+                    }
+                });
+            }
+        });
+
+        dialog.show();
+    }
+
+    private void verifyOtp(String otp, String mobileNo) {
+        progress.setVisibility(View.VISIBLE);
+        if (ApiClient.getBaseInstance(this) != null) {
+            ApiClient.getBaseInstance(this).verifyOtp(mobileNo, otp).enqueue(new Callback<CreatePatientResponseModel>() {
+                @Override
+                public void onResponse(Call<CreatePatientResponseModel> call, Response<CreatePatientResponseModel> response) {
+                    progress.setVisibility(View.GONE);
+                    if (response.errorBody() == null) {
+                        handleOtpVerifyResponse(response.body());
+                    } else {
+                        try {
+                            JSONObject errorJSON = new JSONObject(response.errorBody().string());
+                            JSONArray errorArray = errorJSON.optJSONArray("errors");
+
+                            StringBuffer finalMessage = new StringBuffer();
+                            if (errorArray != null && errorArray.length() > 0) {
+                                for (int i = 0; i < errorArray.length(); i++) {
+                                    if (i == 0) {
+                                        finalMessage.append(errorArray.getString(i));
+                                    } else {
+                                        finalMessage.append("\n" + errorArray.getString(i));
+                                    }
+                                }
+                            }
+                            showErrorDialog(finalMessage.toString());
+                            edit_mobile.setText("");
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            edit_mobile.setText("");
+                            showErrorDialog(response.errorBody().toString());
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CreatePatientResponseModel> call, Throwable t) {
+                    progress.setVisibility(View.GONE);
+                    Log.v("Debug", t.getLocalizedMessage());
+                    edit_mobile.setText("");
+                    showErrorDialog(t.getLocalizedMessage());
+                }
+            });
+        }
+    }
+
+    private void handleOtpVerifyResponse(CreatePatientResponseModel response) {
+        if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
+            edit_address.requestFocus();
+            Utils.hideKeyboard(this);
+        } else {
+            edit_mobile.setText("");
+            showErrorDialog(response.getMessage());
+        }
     }
 
 }

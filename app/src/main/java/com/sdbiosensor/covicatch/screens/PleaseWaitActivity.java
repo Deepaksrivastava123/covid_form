@@ -2,9 +2,8 @@ package com.sdbiosensor.covicatch.screens;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.appcompat.app.AlertDialog;
@@ -23,10 +22,7 @@ import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import okhttp3.MediaType;
@@ -38,7 +34,7 @@ import retrofit2.Response;
 
 public class PleaseWaitActivity extends BaseActivity {
 
-    private Bitmap imageToUpload;
+    private String imageToUpload;
     private String scannedQr;
 
     @Override
@@ -46,12 +42,23 @@ public class PleaseWaitActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_please_wait);
 
-        initViews();
-        sendFormData();
+//        initViews();
+//        sendFormData();
+        moveToTempReport();
+    }
+
+    private void moveToTempReport() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startActivity(new Intent(PleaseWaitActivity.this, PdfCreatorActivity.class));
+                finish();
+            }
+        }, 1000);
     }
 
     private void initViews() {
-        imageToUpload = BitmapFactory.decodeFile(getIntent().getExtras().getString("photo"));
+        imageToUpload = getIntent().getExtras().getString("photo");
         scannedQr = getIntent().getStringExtra("qr");
     }
 
@@ -103,7 +110,7 @@ public class PleaseWaitActivity extends BaseActivity {
     }
 
     private void sendImageData(String uniqueId) {
-        File file = writeImageToCache(uniqueId);
+        File file = new File(imageToUpload);
         RequestBody reqFile = RequestBody.create(MediaType.parse("image/*"), file);
         MultipartBody.Part imageReq = MultipartBody.Part.createFormData("file", file.getName(), reqFile);
 
@@ -149,12 +156,11 @@ public class PleaseWaitActivity extends BaseActivity {
 
     private void handleImageResponse(Response<CreatePatientResponseModel> response, String uniqueId) {
         if(response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
-            if (imageToUpload != null) {
-                imageToUpload.recycle();
-            }
+            String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
             SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAll();
             Intent intent = new Intent(PleaseWaitActivity.this, ReportActivity.class);
             intent.putExtra("response", new Gson().toJson(response.body()));
+            intent.putExtra("data", tempString);
             startActivity(intent);
             finish();
         } else {
@@ -173,7 +179,7 @@ public class PleaseWaitActivity extends BaseActivity {
         addressModel.setAddress2("");
         addressModel.setAddress3("");
         addressModel.setAddressType("");
-        addressModel.setCity(localDataModel.getCity());
+        addressModel.setCity(localDataModel.getDistrict());
         addressModel.setCountry("INDIA");
         addressModel.setLocality("");
         addressModel.setPinCode(localDataModel.getPincode());
@@ -185,6 +191,7 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setAge(0);
         model.setCity(localDataModel.getCity());
         model.setCollectedBy("");
+        model.setAadharNo("");
         model.setDeviceId("");
         model.setDeviceOS("ANDROID");
         model.setFirstName(localDataModel.getFirstName());
@@ -196,8 +203,13 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setPinCode(localDataModel.getPincode());
         model.setRemarks("");
         model.setResult("");
-        model.setState(localDataModel.getState());
+        model.setIpAddress("");
+        model.setState(localDataModel.getStateId());
         model.setKitSerialNumber(scannedQr);
+//        model.setDistrict(localDataModel.getDistrictId());
+//        model.setNationality(localDataModel.getNationality());
+//        model.setDate_of_birth(localDataModel.getDob());
+//        model.setOccupation(localDataModel.getOccupation());
 
         ArrayList<String> symptomList = localDataModel.getSymptoms();
         if (symptomList.contains("Others")) {
@@ -212,34 +224,33 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setUnderlyingMedicalCondition(conditionsList);
 
         model.setSymtomStatus("");
-        model.setUploadedImageRef("");
 
         return model;
     }
 
-    private File writeImageToCache(String uniqueId) {
-        File file = new File(getCacheDir(), "IMG_" + uniqueId + ".jpeg");
-        try {
-            file.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        imageToUpload.compress(Bitmap.CompressFormat.JPEG, 0, bos);
-        byte[] bitmapData = bos.toByteArray();
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file);
-            fos.write(bitmapData);
-            fos.flush();
-            fos.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return file;
-    }
+//    private File writeImageToCache(String uniqueId) {
+//        File file = new File(getCacheDir(), "IMG_" + uniqueId + ".jpeg");
+//        try {
+//            file.createNewFile();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
+//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//        imageToUpload.compress(Bitmap.CompressFormat.JPEG, 0, bos);
+//        byte[] bitmapData = bos.toByteArray();
+//        FileOutputStream fos = null;
+//        try {
+//            fos = new FileOutputStream(file);
+//            fos.write(bitmapData);
+//            fos.flush();
+//            fos.close();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//        return file;
+//    }
 
     @Override
     public void onBackPressed() {
@@ -254,7 +265,7 @@ public class PleaseWaitActivity extends BaseActivity {
         builder.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                if (uniqueId.isEmpty()) {
+                if (!uniqueId.isEmpty()) {
                     sendImageData(uniqueId);
                 } else {
                     sendFormData();

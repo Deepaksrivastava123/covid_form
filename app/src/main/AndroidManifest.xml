@@ -4,6 +4,7 @@
     package="com.sdbiosensor.covicatch">
 
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -35,6 +36,7 @@
         <activity android:name=".screens.ReportActivity" />
         <activity android:name=".screens.FormActivity" />
         <activity android:name=".screens.SelectLanguageActivity" />
+        <activity android:name=".screens.PdfCreatorActivity" />
         <receiver
             android:name=".receiver.AlarmReceiver"
             android:enabled="true"

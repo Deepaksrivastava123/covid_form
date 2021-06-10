@@ -12,6 +12,9 @@ public class LocalDataModel implements Serializable {
     private String address;
     private String pincode;
     private String state;
+    private String district;
+    private String stateId;
+    private String districtId;
     private String city;
     private String id_type;
     private String id_no;
@@ -19,6 +22,9 @@ public class LocalDataModel implements Serializable {
     private ArrayList<String> conditions;
     private String otherSymptoms;
     private String otherConditions;
+    private String nationality;
+    private String dob;
+    private String occupation;
 
     public String getFirstName() {
         return firstName;
@@ -76,12 +82,12 @@ public class LocalDataModel implements Serializable {
         this.state = state;
     }
 
-    public String getCity() {
-        return city;
+    public String getDistrict() {
+        return district;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setDistrict(String district) {
+        this.district = district;
     }
 
     public String getId_type() {
@@ -130,5 +136,53 @@ public class LocalDataModel implements Serializable {
 
     public void setOtherConditions(String otherConditions) {
         this.otherConditions = otherConditions;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getStateId() {
+        return stateId;
+    }
+
+    public void setStateId(String stateId) {
+        this.stateId = stateId;
+    }
+
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 }

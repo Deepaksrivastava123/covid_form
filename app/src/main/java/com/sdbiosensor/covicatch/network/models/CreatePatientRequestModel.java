@@ -6,6 +6,7 @@ public class CreatePatientRequestModel {
 
     private String idType;
     private String userIdNo;
+    private String aadharNo;
     private AddressRequestModel address;
     private int age;
     private String city;
@@ -26,10 +27,22 @@ public class CreatePatientRequestModel {
     private ArrayList<String> symptoms;
     private String symtomStatus;
     private ArrayList<String> underlyingMedicalCondition;
-    private String uploadedImageRef;
     private String kitSerialNumber;
 
+//    private String date_of_birth;
+//    private String nationality;
+//    private String district;
+//    private String occupation;
+
     public CreatePatientRequestModel() {
+    }
+
+    public String getAadharNo() {
+        return aadharNo;
+    }
+
+    public void setAadharNo(String aadharNo) {
+        this.aadharNo = aadharNo;
     }
 
     public String getIdType() {
@@ -208,14 +221,6 @@ public class CreatePatientRequestModel {
         this.underlyingMedicalCondition = underlyingMedicalCondition;
     }
 
-    public String getUploadedImageRef() {
-        return uploadedImageRef;
-    }
-
-    public void setUploadedImageRef(String uploadedImageRef) {
-        this.uploadedImageRef = uploadedImageRef;
-    }
-
     public String getKitSerialNumber() {
         return kitSerialNumber;
     }
@@ -223,4 +228,36 @@ public class CreatePatientRequestModel {
     public void setKitSerialNumber(String kitSerialNumber) {
         this.kitSerialNumber = kitSerialNumber;
     }
+
+//    public String getDate_of_birth() {
+//        return date_of_birth;
+//    }
+//
+//    public void setDate_of_birth(String date_of_birth) {
+//        this.date_of_birth = date_of_birth;
+//    }
+//
+//    public String getNationality() {
+//        return nationality;
+//    }
+//
+//    public void setNationality(String nationality) {
+//        this.nationality = nationality;
+//    }
+//
+//    public String getDistrict() {
+//        return district;
+//    }
+//
+//    public void setDistrict(String district) {
+//        this.district = district;
+//    }
+//
+//    public String getOccupation() {
+//        return occupation;
+//    }
+//
+//    public void setOccupation(String occupation) {
+//        this.occupation = occupation;
+//    }
 }

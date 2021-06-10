@@ -4,14 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class Utils {
@@ -23,6 +26,16 @@ public class Utils {
                 imm.hideSoftInputFromWindow(activity.getWindow().getDecorView().getWindowToken(), 0);
             }
         }catch (Exception e) {}
+    }
+
+    public static String getFormattedDate(Calendar c) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH);
+            return df.format(c.getTime());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     public static String getCsvFromArrayList(ArrayList<String> list) {
@@ -57,30 +70,30 @@ public class Utils {
     }
 
 
-    public JSONObject stateMasterJson(Context context) {
-        JSONObject json = new JSONObject();
+    public static JSONArray stateMasterJson(Context context) {
+        JSONArray json = new JSONArray();
         try {
-            json = new JSONObject(readFileFromAssets(context, "state_master.json"));
+            json = new JSONArray(readFileFromAssets(context, "state_master.json"));
         } catch(Exception e) {
             e.printStackTrace();
         }
         return json;
     }
 
-    public JSONObject stateDistrictJson(Context context) {
-        JSONObject json = new JSONObject();
+    public static JSONArray stateDistrictJson(Context context) {
+        JSONArray json = new JSONArray();
         try {
-            json = new JSONObject(readFileFromAssets(context, "state_district.json"));
+            json = new JSONArray(readFileFromAssets(context, "state_district.json"));
         } catch(Exception e) {
             e.printStackTrace();
         }
         return json;
     }
 
-    public JSONObject nationalityJson(Context context) {
-        JSONObject json = new JSONObject();
+    public static JSONArray nationalityJson(Context context) {
+        JSONArray json = new JSONArray();
         try {
-            json = new JSONObject(readFileFromAssets(context, "nationality.json"));
+            json = new JSONArray(readFileFromAssets(context, "nationality.json"));
         } catch(Exception e) {
             e.printStackTrace();
         }
@@ -88,7 +101,7 @@ public class Utils {
 
     }
 
-    public String readFileFromAssets(Context context, String fileName) {
+    public static String readFileFromAssets(Context context, String fileName) {
         StringBuffer sb = new StringBuffer();
         BufferedReader br = null;
         InputStream iStream = null;
