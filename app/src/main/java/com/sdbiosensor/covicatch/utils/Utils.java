@@ -4,6 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.concurrent.TimeUnit;
@@ -49,5 +55,68 @@ public class Utils {
         }
         return "";
     }
+
+
+    public JSONObject stateMasterJson(Context context) {
+        JSONObject json = new JSONObject();
+        try {
+            json = new JSONObject(readFileFromAssets(context, "state_master.json"));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    public JSONObject stateDistrictJson(Context context) {
+        JSONObject json = new JSONObject();
+        try {
+            json = new JSONObject(readFileFromAssets(context, "state_district.json"));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return json;
+    }
+
+    public JSONObject nationalityJson(Context context) {
+        JSONObject json = new JSONObject();
+        try {
+            json = new JSONObject(readFileFromAssets(context, "nationality.json"));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+        return json;
+
+    }
+
+    public String readFileFromAssets(Context context, String fileName) {
+        StringBuffer sb = new StringBuffer();
+        BufferedReader br = null;
+        InputStream iStream = null;
+        try {
+            iStream = context.getAssets().open(fileName);
+            br = new BufferedReader(new InputStreamReader(iStream));
+            String temp;
+            while ((temp = br.readLine()) != null)
+                sb.append(temp);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                br.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            try {
+                if(iStream!=null) {
+                    iStream.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return sb.toString();
+    }
+
 
 }
