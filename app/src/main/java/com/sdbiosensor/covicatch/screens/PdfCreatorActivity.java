@@ -173,5 +173,6 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
 
     @Override
     protected void onNextClicked(final File savedPDFFile) {
+        //TODO save PDF and open form again, finish this activity
     }
 }
