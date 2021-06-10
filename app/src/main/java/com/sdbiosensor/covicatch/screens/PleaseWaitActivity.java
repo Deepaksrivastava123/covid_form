@@ -3,6 +3,7 @@ package com.sdbiosensor.covicatch.screens;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -50,7 +51,7 @@ public class PleaseWaitActivity extends BaseActivity {
     }
 
     private void initViews() {
-        imageToUpload = (Bitmap) getIntent().getExtras().get("photo");
+        imageToUpload = BitmapFactory.decodeFile(getIntent().getExtras().getString("photo"));
         scannedQr = getIntent().getStringExtra("qr");
     }
 
@@ -111,6 +112,8 @@ public class PleaseWaitActivity extends BaseActivity {
                 @Override
                 public void onResponse(Call<CreatePatientResponseModel> call, Response<CreatePatientResponseModel> response) {
                     if (response.errorBody() == null) {
+                        Log.v("Debug", "Image Uniqe ID: " + uniqueId);
+                        Log.v("Debug", "Response: " + new Gson().toJson(response.body()));
                         handleImageResponse(response, uniqueId);
                     } else {
                         try {
@@ -146,9 +149,13 @@ public class PleaseWaitActivity extends BaseActivity {
 
     private void handleImageResponse(Response<CreatePatientResponseModel> response, String uniqueId) {
         if(response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
+            if (imageToUpload != null) {
+                imageToUpload.recycle();
+            }
             SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAll();
-            startActivity(new Intent(PleaseWaitActivity.this, ReportActivity.class));
-            //TODO can send patient info in intent if required
+            Intent intent = new Intent(PleaseWaitActivity.this, ReportActivity.class);
+            intent.putExtra("response", new Gson().toJson(response.body()));
+            startActivity(intent);
             finish();
         } else {
             showErrorDialogWithRetry(response.body().getMessage(), uniqueId);

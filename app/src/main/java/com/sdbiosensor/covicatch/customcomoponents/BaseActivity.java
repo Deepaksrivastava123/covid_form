@@ -41,6 +41,13 @@ public class BaseActivity extends LocalizationActivity {
         finish();
     }
 
+    public void showDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.create().show();
+    }
+
     public void showErrorDialog(String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.error));
