@@ -5,8 +5,10 @@ import java.util.Arrays;
 
 public class Constants {
 
-
-    public static final String BASE_URL = "http://164.52.210.8:9090/covicatch/service/api/";
+    // old Optima Server URL
+    // public static final String BASE_URL = "http://164.52.210.8:9090/covicatch/service/api/";
+    // http://159.89.224.69:9090/covicatch/service/swagger-ui/#/API%20services%20for%20Patiensts%20API
+    public static final String BASE_URL = "http://159.89.224.69:9090/covicatch/service/api/";
     public static final String SHARED_PREF_NAME = "shared_pref";
 
     public static final String PREF_LANG = "PREF_LANG";
