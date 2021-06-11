@@ -24,6 +24,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.adapters.DistrictRecyclerAdapter;
 import com.sdbiosensor.covicatch.adapters.JsonArrayRecyclerAdapter;
@@ -61,10 +63,9 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private JSONArray stateMaster, stateDistrictMaster, selectedStateDistrictMaster, nationalityList;
     private ArrayList<String> selectedSymptoms = new ArrayList<>(), selectedConditions = new ArrayList<>();
     private String otherSymptoms, otherConditions;
-    private String selectedStateId, selectedDistrictId;
+    private String selectedStateId, selectedDistrictId, verifiedMobileNumber = "";
     private Calendar dobCalendar = Calendar.getInstance();
-
-    boolean hasOTPVerified = false;
+    private boolean hasOTPVerified = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,20 +106,6 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 if (!hasFocus) {
                     sendOtp(edit_mobile.getText().toString().trim());
                 }
-            }
-        });
-
-        edit_mobile.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int i, KeyEvent keyEvent) {
-                if (i == EditorInfo.IME_ACTION_DONE || i==EditorInfo.IME_ACTION_NEXT) {
-                    InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
-                    sendOtp(edit_mobile.getText().toString().trim());
-                    return true;
-                }
-                return false;
             }
         });
     }
@@ -533,76 +520,11 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             return;
         }
 
-        saveModelAndMoveToNextScreen();
-    }
-
-    private void saveModelAndMoveToNextScreen() {
-        LocalDataModel model = new LocalDataModel();
-        model.setNationality(edit_nationality.getText().toString().trim());
-        model.setDob(edit_dob.getText().toString().trim());
-        model.setFirstName(edit_first_name.getText().toString().trim());
-        model.setLastName(edit_last_name.getText().toString().trim());
-        model.setMobile(edit_mobile.getText().toString().trim());
-        model.setAddress(edit_address.getText().toString().trim());
-        model.setOccupation(edit_occupation.getText().toString().trim());
-        model.setPincode(edit_pincode.getText().toString().trim());
-        switch (selectedGender) {
-            case 0:
-                model.setGender(Constants.GENDER.MALE.name());
-                break;
-            case 1:
-                model.setGender(Constants.GENDER.FEMALE.name());
-                break;
-            case 2:
-                model.setGender(Constants.GENDER.OTHERS.name());
-                break;
-            default:
-                edit_gender.setError(getString(R.string.error_text_blank));
-                break;
-        }
-        model.setState(edit_state.getText().toString().trim());
-        model.setStateId(selectedStateId);
-        model.setDistrict(edit_district.getText().toString().trim());
-        model.setDistrictId(selectedDistrictId);
-        model.setCity(edit_city.getText().toString().trim());
-        switch (selectedIdType) {
-            case 0:
-                model.setId_type(Constants.ID_TYPE.AADHAR_CARD.name());
-                break;
-            case 1:
-                model.setId_type(Constants.ID_TYPE.DRIVING_LICENSE.name());
-                break;
-            case 2:
-                model.setId_type(Constants.ID_TYPE.PAN_CARD.name());
-                break;
-            case 3:
-                model.setId_type(Constants.ID_TYPE.VOTER_ID_CARD.name());
-                break;
-            case 4:
-                model.setId_type(Constants.ID_TYPE.PASSPORT.name());
-                break;
-            default:
-                edit_id_type.setError(getString(R.string.error_text_blank));
-                break;
-        }
-        model.setId_no(edit_id_no.getText().toString().trim());
-        model.setSymptoms(selectedSymptoms);
-        model.setConditions(selectedConditions);
-
-        if (selectedSymptoms.contains("Others")) {
-            model.setOtherSymptoms(otherSymptoms);
-        }
-
-        if (selectedConditions.contains("Others")) {
-            model.setOtherConditions(otherConditions);
-        }
-        SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOCAL_MODEL, new Gson().toJson(model));
-        startActivity(new Intent(FormActivity.this, InstructionActivity.class));
-        finish();
+        scanQr();
     }
 
     private void sendOtp(String mobileNo) {
-        if(hasOTPVerified) return;
+        if(hasOTPVerified && verifiedMobileNumber.equals(mobileNo)) return;
 
         if (mobileNo.isEmpty() || mobileNo.length() < 10) {
             edit_mobile.setText("");
@@ -709,7 +631,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 public void onResponse(Call<CreatePatientResponseModel> call, Response<CreatePatientResponseModel> response) {
                     progress.setVisibility(View.GONE);
                     if (response.errorBody() == null) {
-                        handleOtpVerifyResponse(response.body());
+                        handleOtpVerifyResponse(mobileNo, response.body());
                     } else {
                         try {
                             JSONObject errorJSON = new JSONObject(response.errorBody().string());
@@ -746,15 +668,101 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private void handleOtpVerifyResponse(CreatePatientResponseModel response) {
+    private void handleOtpVerifyResponse(String mobileNo, CreatePatientResponseModel response) {
         if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
             edit_address.requestFocus();
             Utils.hideKeyboard(this);
             hasOTPVerified = true;
+            verifiedMobileNumber = mobileNo;
+            showDialog(response.getMessage());
         } else {
             edit_mobile.setText("");
             showErrorDialog(response.getMessage());
         }
+    }
+
+    private void scanQr() {
+        new IntentIntegrator(this).initiateScan();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                showErrorDialog("Cancelled");
+            } else {
+                saveLocalModel(result.getContents());
+                startActivity(new Intent(FormActivity.this, InstructionActivity.class));
+                finish();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void saveLocalModel(String qrCode) {
+        LocalDataModel model = new LocalDataModel();
+        model.setQrCode(qrCode);
+        model.setNationality(edit_nationality.getText().toString().trim());
+        model.setDob(edit_dob.getText().toString().trim());
+        model.setFirstName(edit_first_name.getText().toString().trim());
+        model.setLastName(edit_last_name.getText().toString().trim());
+        model.setMobile(edit_mobile.getText().toString().trim());
+        model.setAddress(edit_address.getText().toString().trim());
+        model.setOccupation(edit_occupation.getText().toString().trim());
+        model.setPincode(edit_pincode.getText().toString().trim());
+        switch (selectedGender) {
+            case 0:
+                model.setGender(Constants.GENDER.MALE.name());
+                break;
+            case 1:
+                model.setGender(Constants.GENDER.FEMALE.name());
+                break;
+            case 2:
+                model.setGender(Constants.GENDER.OTHERS.name());
+                break;
+            default:
+                edit_gender.setError(getString(R.string.error_text_blank));
+                break;
+        }
+        model.setState(edit_state.getText().toString().trim());
+        model.setStateId(selectedStateId);
+        model.setDistrict(edit_district.getText().toString().trim());
+        model.setDistrictId(selectedDistrictId);
+        model.setCity(edit_city.getText().toString().trim());
+        switch (selectedIdType) {
+            case 0:
+                model.setId_type(Constants.ID_TYPE.AADHAR_CARD.name());
+                break;
+            case 1:
+                model.setId_type(Constants.ID_TYPE.DRIVING_LICENSE.name());
+                break;
+            case 2:
+                model.setId_type(Constants.ID_TYPE.PAN_CARD.name());
+                break;
+            case 3:
+                model.setId_type(Constants.ID_TYPE.VOTER_ID_CARD.name());
+                break;
+            case 4:
+                model.setId_type(Constants.ID_TYPE.PASSPORT.name());
+                break;
+            default:
+                edit_id_type.setError(getString(R.string.error_text_blank));
+                break;
+        }
+        model.setId_no(edit_id_no.getText().toString().trim());
+        model.setSymptoms(selectedSymptoms);
+        model.setConditions(selectedConditions);
+
+        if (selectedSymptoms.contains("Others")) {
+            model.setOtherSymptoms(otherSymptoms);
+        }
+
+        if (selectedConditions.contains("Others")) {
+            model.setOtherConditions(otherConditions);
+        }
+        SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOCAL_MODEL, new Gson().toJson(model));
     }
 
 }

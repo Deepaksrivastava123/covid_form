@@ -25,6 +25,15 @@ public class LocalDataModel implements Serializable {
     private String nationality;
     private String dob;
     private String occupation;
+    private String qrCode;
+
+    public String getQrCode() {
+        return qrCode;
+    }
+
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
 
     public String getFirstName() {
         return firstName;

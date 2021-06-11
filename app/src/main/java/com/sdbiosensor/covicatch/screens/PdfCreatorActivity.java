@@ -3,6 +3,7 @@ package com.sdbiosensor.covicatch.screens;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -14,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
 import com.google.gson.Gson;
 import com.sdbiosensor.covicatch.R;
@@ -32,6 +34,11 @@ import com.tejpratapsingh.pdfcreator.views.basic.PDFLineSeparatorView;
 import com.tejpratapsingh.pdfcreator.views.basic.PDFTextView;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.channels.FileChannel;
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -53,7 +60,15 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
         createPDF("Result", new PDFUtil.PDFUtilListener() {
             @Override
             public void pdfGenerationSuccess(File savedPDFFile) {
-                Toast.makeText(PdfCreatorActivity.this, "PDF Created", Toast.LENGTH_SHORT).show();
+                File downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+                File resultFile = new File(downloadsPath, "Result.pdf");
+                try {
+                    exportFile(savedPDFFile, resultFile);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                SharedPrefUtils.getInstance(PdfCreatorActivity.this).resetAll();
+                showDialog("Result PDF saved to Downloads as Result.pdf");
             }
 
             @Override
@@ -61,6 +76,34 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
                 Toast.makeText(PdfCreatorActivity.this, "PDF NOT Created", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void showDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(message);
+        builder.setPositiveButton(android.R.string.ok, null);
+        builder.create().show();
+    }
+
+    private void exportFile(File src, File dst) throws IOException {
+        FileChannel inChannel = null;
+        FileChannel outChannel = null;
+
+        try {
+            inChannel = new FileInputStream(src).getChannel();
+            outChannel = new FileOutputStream(dst).getChannel();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            inChannel.transferTo(0, inChannel.size(), outChannel);
+        } finally {
+            if (inChannel != null)
+                inChannel.close();
+            if (outChannel != null)
+                outChannel.close();
+        }
     }
 
     @Override
@@ -122,8 +165,11 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
                 "Medical Condition : " + Utils.getCsvFromArrayList(localDataModel.getConditions()) + "\n");
         pdfBody.addView(pdfUserDetailsView);
 
+        String result = new String[] {"Negative", "Positive", "Inconclusive",
+                "Negative", "Positive", "Inconclusive",
+                "Negative", "Positive", "Inconclusive"}[(int)(Math.random()*9)];
         PDFTextView pdfResultView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H3);
-        pdfResultView.setText("Result : Negative\n\n");
+        pdfResultView.setText("Result : " + result + "\n\n");
         pdfBody.addView(pdfResultView);
 
         PDFTextView pdfNoteView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
@@ -173,6 +219,6 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
 
     @Override
     protected void onNextClicked(final File savedPDFFile) {
-        //TODO save PDF and open form again, finish this activity
+        finish();
     }
 }

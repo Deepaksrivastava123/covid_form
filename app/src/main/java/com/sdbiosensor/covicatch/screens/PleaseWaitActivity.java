@@ -35,7 +35,6 @@ import retrofit2.Response;
 public class PleaseWaitActivity extends BaseActivity {
 
     private String imageToUpload;
-    private String scannedQr;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +58,6 @@ public class PleaseWaitActivity extends BaseActivity {
 
     private void initViews() {
         imageToUpload = getIntent().getExtras().getString("photo");
-        scannedQr = getIntent().getStringExtra("qr");
     }
 
     private void sendFormData() {
@@ -205,7 +203,7 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setResult("");
         model.setIpAddress("");
         model.setState(localDataModel.getStateId());
-        model.setKitSerialNumber(scannedQr);
+        model.setKitSerialNumber(localDataModel.getQrCode());
 //        model.setDistrict(localDataModel.getDistrictId());
 //        model.setNationality(localDataModel.getNationality());
 //        model.setDate_of_birth(localDataModel.getDob());
@@ -227,30 +225,6 @@ public class PleaseWaitActivity extends BaseActivity {
 
         return model;
     }
-
-//    private File writeImageToCache(String uniqueId) {
-//        File file = new File(getCacheDir(), "IMG_" + uniqueId + ".jpeg");
-//        try {
-//            file.createNewFile();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-//        imageToUpload.compress(Bitmap.CompressFormat.JPEG, 0, bos);
-//        byte[] bitmapData = bos.toByteArray();
-//        FileOutputStream fos = null;
-//        try {
-//            fos = new FileOutputStream(file);
-//            fos.write(bitmapData);
-//            fos.flush();
-//            fos.close();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        return file;
-//    }
 
     @Override
     public void onBackPressed() {
