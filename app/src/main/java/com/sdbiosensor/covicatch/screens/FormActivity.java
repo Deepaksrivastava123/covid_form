@@ -64,6 +64,8 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private String selectedStateId, selectedDistrictId;
     private Calendar dobCalendar = Calendar.getInstance();
 
+    boolean hasOTPVerified = false;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -600,6 +602,8 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void sendOtp(String mobileNo) {
+        if(hasOTPVerified) return;
+
         if (mobileNo.isEmpty() || mobileNo.length() < 10) {
             edit_mobile.setText("");
             showErrorDialog(getString(R.string.error_valid_mobile_number));
@@ -746,6 +750,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
             edit_address.requestFocus();
             Utils.hideKeyboard(this);
+            hasOTPVerified = true;
         } else {
             edit_mobile.setText("");
             showErrorDialog(response.getMessage());
