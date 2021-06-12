@@ -26,6 +26,7 @@ public class LocalDataModel implements Serializable {
     private String dob;
     private String occupation;
     private String qrCode;
+    private String contactNumberBelongsTo;
 
     public String getQrCode() {
         return qrCode;
@@ -193,5 +194,13 @@ public class LocalDataModel implements Serializable {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public void setContactNumberBelongsTo(String contactNumberBelongsTo) {
+        this.contactNumberBelongsTo = contactNumberBelongsTo;
+    }
+
+    public String getContactNumberBelongsTo() {
+        return contactNumberBelongsTo;
     }
 }

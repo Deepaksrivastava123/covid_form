@@ -27,6 +27,10 @@ public class Constants {
         HCW, POLICE, SNTN, SECG, OTHER
     }
 
+    public enum CONTACT_BELONGS {
+        PATIENT, RELATIVE
+    }
+
     public enum ID_TYPE {
         AADHAR_CARD, DRIVING_LICENSE, PAN_CARD, VOTER_ID_CARD, PASSPORT
     }

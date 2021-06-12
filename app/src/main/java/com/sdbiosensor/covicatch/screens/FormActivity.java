@@ -2,18 +2,14 @@ package com.sdbiosensor.covicatch.screens;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -57,7 +53,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private EditText edit_first_name, edit_last_name, edit_mobile, edit_address, edit_pincode, edit_id_no,
             edit_city;
     private TextView edit_gender, edit_state, edit_district, edit_id_type, edit_symptoms,
-            edit_conditions, edit_nationality, edit_dob, edit_occupation;
+            edit_conditions, edit_nationality, edit_dob, edit_occupation, edit_contact_number_belongs;
     private View progress;
     private int selectedGender = -1, selectedIdType = -1;
     private JSONArray stateMaster, stateDistrictMaster, selectedStateDistrictMaster, nationalityList;
@@ -91,9 +87,11 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         edit_symptoms = findViewById(R.id.edit_symptoms);
         edit_conditions = findViewById(R.id.edit_conditions);
         edit_nationality = findViewById(R.id.edit_nationality);
+        edit_nationality = findViewById(R.id.edit_nationality);
         edit_dob = findViewById(R.id.edit_dob);
         edit_occupation = findViewById(R.id.edit_occupation);
         edit_city = findViewById(R.id.edit_city);
+        edit_contact_number_belongs = findViewById(R.id.edit_contact_number_belongs);
         progress = findViewById(R.id.progress);
 
         handleMobileEditText();
@@ -121,6 +119,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         edit_nationality.setOnClickListener(this);
         edit_dob.setOnClickListener(this);
         edit_occupation.setOnClickListener(this);
+        edit_contact_number_belongs.setOnClickListener(this);
     }
 
     private void initJsonArray() {
@@ -167,6 +166,8 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             openDobDialog();
         } else if (view.getId() == R.id.edit_occupation) {
             openChooseOccupationDialog();
+        } else if (view.getId() == R.id.edit_contact_number_belongs) {
+            openChooseContactBelongsDialog();
         } else {
             Utils.hideKeyboard(this);
             validateForm();
@@ -350,6 +351,36 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         alertDialog.show();
     }
 
+    private void openChooseContactBelongsDialog() {
+        ArrayList<String> genderList = new ArrayList<String>();
+        genderList.add(Constants.CONTACT_BELONGS.PATIENT.name());
+        genderList.add(Constants.CONTACT_BELONGS.RELATIVE.name());
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(dialogView);
+
+        RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
+        dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dialogRecyclerView.setAdapter(new StringRecyclerAdapter(this, genderList, new StringRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(String item, int positon) {
+                edit_contact_number_belongs.setText(item);
+                alertDialog.dismiss();
+            }
+        }));
+
+        dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
+    }
+
     private void openChooseIdTypeDialog() {
         ArrayList<String> genderList = new ArrayList<String>();
         genderList.add(getString(R.string.aadhar_card));
@@ -507,6 +538,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 !ValidationUtils.blankValidation(edit_dob) ||
                 !ValidationUtils.blankValidation(edit_nationality) ||
                 !ValidationUtils.blankValidation(edit_mobile) ||
+                !ValidationUtils.blankValidation(edit_contact_number_belongs) ||
                 !ValidationUtils.blankValidation(edit_address) ||
                 !ValidationUtils.blankValidation(edit_pincode) ||
                 !ValidationUtils.blankValidation(edit_state) ||
@@ -670,7 +702,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
     private void handleOtpVerifyResponse(String mobileNo, CreatePatientResponseModel response) {
         if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
-            edit_address.requestFocus();
+            edit_contact_number_belongs.requestFocus();
             Utils.hideKeyboard(this);
             hasOTPVerified = true;
             verifiedMobileNumber = mobileNo;
@@ -709,6 +741,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         model.setFirstName(edit_first_name.getText().toString().trim());
         model.setLastName(edit_last_name.getText().toString().trim());
         model.setMobile(edit_mobile.getText().toString().trim());
+        model.setContactNumberBelongsTo(edit_contact_number_belongs.getText().toString().trim());
         model.setAddress(edit_address.getText().toString().trim());
         model.setOccupation(edit_occupation.getText().toString().trim());
         model.setPincode(edit_pincode.getText().toString().trim());

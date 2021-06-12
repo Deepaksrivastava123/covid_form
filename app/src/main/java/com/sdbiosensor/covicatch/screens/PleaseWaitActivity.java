@@ -42,8 +42,7 @@ public class PleaseWaitActivity extends BaseActivity {
         setContentView(R.layout.activity_please_wait);
 
         initViews();
-//        sendFormData();
-        moveToTempReport();
+        sendFormData();
     }
 
     private void moveToTempReport() {
@@ -156,13 +155,16 @@ public class PleaseWaitActivity extends BaseActivity {
 
     private void handleImageResponse(Response<CreatePatientResponseModel> response, String uniqueId) {
         if(response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
-            String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
-            SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAll();
-            Intent intent = new Intent(PleaseWaitActivity.this, ReportActivity.class);
-            intent.putExtra("response", new Gson().toJson(response.body()));
-            intent.putExtra("data", tempString);
-            startActivity(intent);
-            finish();
+            moveToTempReport();
+            //TODO delete image file
+            //TODO move to actual report screen
+//            String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
+//            SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAll();
+//            Intent intent = new Intent(PleaseWaitActivity.this, ReportActivity.class);
+//            intent.putExtra("response", new Gson().toJson(response.body()));
+//            intent.putExtra("data", tempString);
+//            startActivity(intent);
+//            finish();
         } else {
             showErrorDialogWithRetry(response.body().getMessage(), uniqueId);
         }
@@ -204,12 +206,15 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setRemarks("");
         model.setResult("");
         model.setIpAddress("");
-        model.setState(localDataModel.getStateId());
+        model.setState(localDataModel.getState());
+        model.setStateCode(localDataModel.getStateId());
         model.setKitSerialNumber(localDataModel.getQrCode());
-//        model.setDistrict(localDataModel.getDistrictId());
-//        model.setNationality(localDataModel.getNationality());
-//        model.setDate_of_birth(localDataModel.getDob());
-//        model.setOccupation(localDataModel.getOccupation());
+        model.setDistrict(localDataModel.getDistrict());
+        model.setDistrictCode(localDataModel.getDistrictId());
+        model.setNationality(localDataModel.getNationality());
+        model.setDob(localDataModel.getDob());
+        model.setOccupation(localDataModel.getOccupation());
+        model.setContactNumberBelongsTo(localDataModel.getContactNumberBelongsTo());
 
         ArrayList<String> symptomList = localDataModel.getSymptoms();
         if (symptomList.contains("Others")) {

@@ -29,10 +29,13 @@ public class CreatePatientRequestModel {
     private ArrayList<String> underlyingMedicalCondition;
     private String kitSerialNumber;
 
-//    private String date_of_birth;
-//    private String nationality;
-//    private String district;
-//    private String occupation;
+    private String dob;
+    private String nationality;
+    private String district;
+    private String occupation;
+    private String districtCode;
+    private String stateCode;
+    private String contactNumberBelongsTo;
 
     public CreatePatientRequestModel() {
     }
@@ -229,35 +232,59 @@ public class CreatePatientRequestModel {
         this.kitSerialNumber = kitSerialNumber;
     }
 
-//    public String getDate_of_birth() {
-//        return date_of_birth;
-//    }
-//
-//    public void setDate_of_birth(String date_of_birth) {
-//        this.date_of_birth = date_of_birth;
-//    }
-//
-//    public String getNationality() {
-//        return nationality;
-//    }
-//
-//    public void setNationality(String nationality) {
-//        this.nationality = nationality;
-//    }
-//
-//    public String getDistrict() {
-//        return district;
-//    }
-//
-//    public void setDistrict(String district) {
-//        this.district = district;
-//    }
-//
-//    public String getOccupation() {
-//        return occupation;
-//    }
-//
-//    public void setOccupation(String occupation) {
-//        this.occupation = occupation;
-//    }
+    public String getDob() {
+        return dob;
+    }
+
+    public void setDob(String dob) {
+        this.dob = dob;
+    }
+
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getOccupation() {
+        return occupation;
+    }
+
+    public void setOccupation(String occupation) {
+        this.occupation = occupation;
+    }
+
+    public String getDistrictCode() {
+        return districtCode;
+    }
+
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
+    }
+
+    public String getStateCode() {
+        return stateCode;
+    }
+
+    public void setStateCode(String stateCode) {
+        this.stateCode = stateCode;
+    }
+
+    public String getContactNumberBelongsTo() {
+        return contactNumberBelongsTo;
+    }
+
+    public void setContactNumberBelongsTo(String contactNumberBelongsTo) {
+        this.contactNumberBelongsTo = contactNumberBelongsTo;
+    }
 }

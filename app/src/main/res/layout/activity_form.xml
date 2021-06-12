@@ -193,6 +193,32 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:layout_marginTop="15dp"
+                    android:text="@string/contact_number_belongs"/>
+
+                <TextView
+                    android:id="@+id/edit_contact_number_belongs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:hint="@string/contact_number_belongs"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="17sp"
+                    android:background="@drawable/bg_edittext"
+                    android:drawableEnd="@drawable/ic_arrow_down"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_marginTop="15dp"
                     android:text="@string/current_address"/>
 
                 <EditText

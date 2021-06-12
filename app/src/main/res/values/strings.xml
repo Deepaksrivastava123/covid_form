@@ -78,5 +78,6 @@
     <string name="error_valid_mobile_number">Please enter a valid mobile number</string>
     <string name="occupation">Occupation</string>
     <string name="district">District</string>
+    <string name="contact_number_belongs">Contact number belongs to</string>
 
 </resources>
