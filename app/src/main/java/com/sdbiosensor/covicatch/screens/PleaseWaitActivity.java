@@ -41,7 +41,7 @@ public class PleaseWaitActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_please_wait);
 
-//        initViews();
+        initViews();
 //        sendFormData();
         moveToTempReport();
     }
@@ -50,7 +50,9 @@ public class PleaseWaitActivity extends BaseActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(PleaseWaitActivity.this, PdfCreatorActivity.class));
+                Intent intent = new Intent(PleaseWaitActivity.this, PdfCreatorActivity.class);
+                intent.putExtra("photo", imageToUpload);
+                startActivity(intent);
                 finish();
             }
         }, 1000);

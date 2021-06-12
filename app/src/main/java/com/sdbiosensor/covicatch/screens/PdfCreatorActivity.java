@@ -1,5 +1,7 @@
 package com.sdbiosensor.covicatch.screens;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -45,6 +47,7 @@ import java.util.Locale;
 public class PdfCreatorActivity extends PDFCreatorActivity {
 
     private LocalDataModel localDataModel;
+    private String imageToUpload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +59,7 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
 
         String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
         localDataModel = new Gson().fromJson(tempString, LocalDataModel.class);
+        imageToUpload = getIntent().getExtras().getString("photo");
 
         createPDF("Result", new PDFUtil.PDFUtilListener() {
             @Override
@@ -171,6 +175,17 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
         PDFTextView pdfResultView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H3);
         pdfResultView.setText("Result : " + result + "\n\n");
         pdfBody.addView(pdfResultView);
+
+        Bitmap cassetteImage = BitmapFactory.decodeFile(imageToUpload);
+        PDFImageView imageView = new PDFImageView(getApplicationContext());
+        LinearLayout.LayoutParams imageLayoutParam = new LinearLayout.LayoutParams(
+                200,
+                200, 0);
+        imageView.setImageScale(ImageView.ScaleType.CENTER_INSIDE);
+        imageView.setImageBitmap(cassetteImage);
+        imageLayoutParam.setMargins(0, 0, 10, 0);
+        imageView.setLayout(imageLayoutParam);
+        pdfBody.addView(imageView);
 
         PDFTextView pdfNoteView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
         pdfNoteView.setText("Note:\n" +
