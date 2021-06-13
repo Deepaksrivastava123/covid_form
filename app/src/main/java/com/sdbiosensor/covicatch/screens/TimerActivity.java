@@ -3,31 +3,22 @@ package com.sdbiosensor.covicatch.screens;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.FileProvider;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import com.sdbiosensor.covicatch.utils.Utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 
 public class TimerActivity extends BaseActivity implements View.OnClickListener {
 
@@ -38,12 +29,6 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     private Calendar currentCalendar;
     private boolean isTimerUp = false;
     private CountDownTimer mainCountdownTimer;
-    private final int PERMISSION_ALL = 1, CAMERA = 1001;
-    private final String[] PERMISSIONS = {
-            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            android.Manifest.permission.READ_EXTERNAL_STORAGE,
-            android.Manifest.permission.CAMERA
-    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,11 +105,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     public void onClick(View view) {
         if (view.getId() == R.id.button_take_picture) {
             if (isTimerUp) {
-                if (!hasPermissions(this, PERMISSIONS)) {
-                    ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-                } else {
-                    clickPhoto();
-                }
+                clickPhoto();
             } else {
                 showErrorDialog(getString(R.string.wait_for_timer));
             }
@@ -132,31 +113,10 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void clickPhoto() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        File photoFile = null;
-        try {
-            photoFile = createImageFile();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        if (photoFile != null) {
-            Uri photoURI = FileProvider.getUriForFile(this, getPackageName() + ".provider", photoFile);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-            startActivityForResult(takePictureIntent, CAMERA);
-        }
-    }
-
-    private String currentPhotoPath;
-    private File createImageFile() throws IOException {
-        String imageFileName = "CASSETTE";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  /* prefix */
-                ".jpg",         /* suffix */
-                storageDir      /* directory */
-        );
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
+        ImagePicker.with(this)
+                .compress(2048)
+                .cameraOnly()
+                .start();
     }
 
     @Override
@@ -166,7 +126,8 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
         if (resultCode == RESULT_CANCELED) {
             return;
         }
-        if (requestCode == CAMERA) {
+        if (resultCode == RESULT_OK) {
+            String currentPhotoPath = data.getData().getPath();
             Intent intent = new Intent(this, PleaseWaitActivity.class);
             intent.putExtra("photo", currentPhotoPath);
             startActivity(intent);
