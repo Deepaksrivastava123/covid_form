@@ -263,4 +263,5 @@ public class PleaseWaitActivity extends BaseActivity {
         });
         builder.create().show();
     }
+
 }

@@ -1,7 +1,6 @@
 package com.sdbiosensor.covicatch.screens;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -130,13 +129,13 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
                     || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
                 // check again permission
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        , Manifest.permission.CAMERA
-                        , Manifest.permission.MANAGE_EXTERNAL_STORAGE},
+                                , Manifest.permission.CAMERA
+                                , Manifest.permission.MANAGE_EXTERNAL_STORAGE},
                         CAMERA_PERMISSIONS_CODE);
             } else {
                 ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        , Manifest.permission.CAMERA
-                        , Manifest.permission.MANAGE_EXTERNAL_STORAGE},
+                                , Manifest.permission.CAMERA
+                                , Manifest.permission.MANAGE_EXTERNAL_STORAGE},
                         CAMERA_PERMISSIONS_CODE);
                 // Grant Permission
             }
@@ -144,6 +143,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
             ImagePicker.with(this)
                     .compress(2048)
                     .cameraOnly()
+                    .crop(1080, 1920)
                     .start();
         }
     }
@@ -162,17 +162,6 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
             startActivity(intent);
             finish();
         }
-    }
-
-    public static boolean hasPermissions(Context context, String... permissions) {
-        if (context != null && permissions != null) {
-            for (String permission : permissions) {
-                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
 }
