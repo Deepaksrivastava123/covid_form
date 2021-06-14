@@ -1,9 +1,11 @@
 package com.sdbiosensor.covicatch.screens;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -16,6 +18,8 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -62,6 +66,9 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private String selectedStateId, selectedDistrictId, verifiedMobileNumber = "";
     private Calendar dobCalendar = Calendar.getInstance();
     private boolean hasOTPVerified = false;
+
+
+    static final int CAMERA_PERMISSIONS_CODE  = 1001;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -714,7 +721,33 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void scanQr() {
-        new IntentIntegrator(this).initiateScan();
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale
+                    (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.MANAGE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                // check again permission
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                , Manifest.permission.CAMERA
+                                , Manifest.permission.MANAGE_EXTERNAL_STORAGE},
+                        CAMERA_PERMISSIONS_CODE);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                , Manifest.permission.CAMERA
+                                , Manifest.permission.MANAGE_EXTERNAL_STORAGE},
+                        CAMERA_PERMISSIONS_CODE);
+                // Grant Permission
+            }
+        } else {
+
+            new IntentIntegrator(this).initiateScan();
+        }
     }
 
     @Override
@@ -796,6 +829,34 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             model.setOtherConditions(otherConditions);
         }
         SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOCAL_MODEL, new Gson().toJson(model));
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode) {
+            case CAMERA_PERMISSIONS_CODE:
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 &&
+                        grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted. Continue the action or workflow
+                    // in your app.
+                    new IntentIntegrator(this).initiateScan();
+                }  else {
+                    // Explain to the user that the feature is unavailable because
+                    // the features requires a permission that the user has denied.
+                    // At the same time, respect the user's decision. Don't link to
+                    // system settings in an effort to convince the user to change
+                    // their decision.
+                }
+                return;
+        }
+        // Other 'case' lines to check for other
+        // permissions this app might request.
     }
 
 }
