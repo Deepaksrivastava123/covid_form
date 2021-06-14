@@ -20,7 +20,9 @@
         android:supportsRtl="true"
         android:hardwareAccelerated="true"
         android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.Covid_form">
+        android:theme="@style/Theme.Covid_form"
+        android:requestLegacyExternalStorage="true"
+        >
         <activity android:name=".screens.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

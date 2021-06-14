@@ -1,5 +1,6 @@
 package com.sdbiosensor.covicatch.screens;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.sdbiosensor.covicatch.R;
@@ -29,6 +31,8 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     private Calendar currentCalendar;
     private boolean isTimerUp = false;
     private CountDownTimer mainCountdownTimer;
+
+    int CAMERA_PERMISSIONS_CODE  = 1001;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,10 +117,28 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void clickPhoto() {
-        ImagePicker.with(this)
-                .compress(2048)
-                .cameraOnly()
-                .start();
+
+        if(ContextCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                + ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale
+                    (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                // check again permission
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission
+                        .WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, CAMERA_PERMISSIONS_CODE);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission
+                        .WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, CAMERA_PERMISSIONS_CODE);
+                // Grant Permission
+            }
+        } else {
+            ImagePicker.with(this)
+                    .compress(2048)
+                    .cameraOnly()
+                    .start();
+        }
     }
 
     @Override
