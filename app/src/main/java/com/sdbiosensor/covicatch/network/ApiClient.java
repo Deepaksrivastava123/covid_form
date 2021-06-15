@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sdbiosensor.covicatch.constants.Constants;
+import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -25,7 +26,7 @@ public class ApiClient {
     public static ApiService getBaseInstance(Context context) {
         if (baseInstance == null) {
             OkHttpClient okClient = new OkHttpClient.Builder()
-//                    .addInterceptor(new CustomInterceptor(context))
+                    .addInterceptor(new CustomInterceptor(context))
                     .connectTimeout(1, TimeUnit.MINUTES)
                     .readTimeout(1, TimeUnit.MINUTES)
                     .writeTimeout(5, TimeUnit.MINUTES)
@@ -55,10 +56,20 @@ public class ApiClient {
             try {
                 if (context != null && CheckConnection.isConnected(context)) {
                     final Request original = chain.request();
-                    response = chain.proceed(original);
+
+                    // Request customization: add request headers
+                    final Request.Builder requestBuilder = original.newBuilder()
+                            .method(original.method(), original.body());
+
+                    String token = SharedPrefUtils.getInstance(context).getString(Constants.PREF_LOGGED_IN_TOKEN, "");
+                    if (token.length() > 0) {
+                        requestBuilder.addHeader("Authorization", "Bearer " + SharedPrefUtils.getInstance(context).getString(Constants.PREF_LOGGED_IN_TOKEN, ""));
+                    }
+                    final Request modifiedRequest = requestBuilder.build();
+                    response = chain.proceed(modifiedRequest);
                     //TODO uncomment 2 lines to see response
-                    Object[] clones = cloneResponseBody(response);
-                    response = (Response) clones[1];
+//                    Object[] clones = cloneResponseBody(response);
+//                    response = (Response) clones[1];
                     return response;
                 } else {
                     return chain.proceed(chain.request());

@@ -38,6 +38,16 @@ public class Utils {
         return "";
     }
 
+    public static String getFormattedDateTime(Calendar c) {
+        try {
+            SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss", Locale.ENGLISH);
+            return df.format(c.getTime());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
+
     public static String getCsvFromArrayList(ArrayList<String> list) {
         String str = "";
         if (list != null &&list.size() > 0) {

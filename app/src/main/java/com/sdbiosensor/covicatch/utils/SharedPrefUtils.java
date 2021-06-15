@@ -6,6 +6,7 @@ import android.content.SharedPreferences.Editor;
 
 import com.sdbiosensor.covicatch.constants.Constants;
 
+import java.util.Iterator;
 import java.util.Set;
 
 public class SharedPrefUtils {
@@ -81,6 +82,19 @@ public class SharedPrefUtils {
 
     public void resetAll() {
         preferences.edit().clear().apply();
+    }
+
+    public void resetAllWithoutLogout() {
+        Iterator<String> itr = preferences.getAll().keySet().iterator();
+        while (itr.hasNext()) {
+            String key = itr.next();
+            if (key.equals(Constants.PREF_LOGGED_IN) ||
+                    key.equals(Constants.PREF_LOGGED_IN_TOKEN)){
+                //Do not do anything
+            } else {
+                preferences.edit().remove(key).apply();
+            }
+        }
     }
 
 }

@@ -45,7 +45,7 @@
     <string name="select_medical_condition">Select Medical Condition</string>
     <string name="tnc_agreement">I understand that the data form the Covi-Catch app of my mobile phone will be shared with Indian Council for Medical Research(ICMR)</string>
     <string name="instruction_1">Before proceeding with the Test,Please read the Quick Reference Guide provided in the kit box carefully to make yourself familiar with the test</string>
-    <string name="instruction_2">Once the sample is added in the test cassette,press Start Timer button below.Do not Start the timer before adding the sample in the test cassette</string>
+    <string name="instruction_2">Once the sample is added in the test cassette,press Start Timer button below. Do not Start the timer before adding the sample in the test cassette</string>
     <string name="start_the_timer">Start the Timer</string>
 
     <string name="error_server_error">We\'ve encountered a technical error. Please try again.</string>
@@ -79,5 +79,12 @@
     <string name="occupation">Occupation</string>
     <string name="district">District</string>
     <string name="contact_number_belongs">Contact number belongs to</string>
+    <string name="login_with_otp">Login with OTP</string>
+    <string name="new_user">New user? Create a new account</string>
+    <string name="otp">Enter OTP</string>
+    <string name="show_tests_history">Show tests history</string>
+    <string name="initiate_new_test">Initiate new Test</string>
+    <string name="logout">Logout</string>
+    <string name="logout_message">Are you sure you want to logout?</string>
 
 </resources>

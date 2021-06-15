@@ -66,7 +66,11 @@ public class SplashActivity extends BaseActivity {
             IS_ALIVE = false;
             Intent intent;
             if (SharedPrefUtils.getInstance(this).getLong(Constants.PREF_TIMER_ALARM_TIME, -1) == -1) {
-                intent = new Intent(SplashActivity.this, SelectLanguageActivity.class);
+                if (SharedPrefUtils.getInstance(this).getBoolean(Constants.PREF_LOGGED_IN, false)) {
+                    intent = new Intent(SplashActivity.this, SelectLanguageActivity.class);
+                } else {
+                    intent = new Intent(SplashActivity.this, LoginActivity.class);
+                }
             } else {
                 intent = new Intent(SplashActivity.this, TimerActivity.class);
             }

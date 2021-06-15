@@ -65,13 +65,13 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
             @Override
             public void pdfGenerationSuccess(File savedPDFFile) {
                 File downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                File resultFile = new File(downloadsPath, "Result.pdf");
+                File resultFile = new File(downloadsPath, "COVI-CATCH-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf");
                 try {
                     exportFile(savedPDFFile, resultFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                SharedPrefUtils.getInstance(PdfCreatorActivity.this).resetAll();
+                SharedPrefUtils.getInstance(PdfCreatorActivity.this).resetAllWithoutLogout();
                 showDialog("Result PDF saved to Downloads as Result.pdf");
             }
 
@@ -113,6 +113,14 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
     @Override
     protected PDFHeaderView getHeaderView(int pageIndex) {
         PDFHeaderView headerView = new PDFHeaderView(getApplicationContext());
+
+        PDFTextView kitNumberView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
+        kitNumberView.setText(localDataModel.getQrCode());
+        kitNumberView.setLayout(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        kitNumberView.getView().setGravity(Gravity.END);
+        headerView.addView(kitNumberView);
 
         PDFHorizontalView horizontalView = new PDFHorizontalView(getApplicationContext());
 

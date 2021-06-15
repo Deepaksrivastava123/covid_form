@@ -159,7 +159,7 @@ public class PleaseWaitActivity extends BaseActivity {
             //TODO delete image file
             //TODO move to actual report screen
 //            String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
-//            SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAll();
+//            SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAllWithoutLogout();
 //            Intent intent = new Intent(PleaseWaitActivity.this, ReportActivity.class);
 //            intent.putExtra("response", new Gson().toJson(response.body()));
 //            intent.putExtra("data", tempString);

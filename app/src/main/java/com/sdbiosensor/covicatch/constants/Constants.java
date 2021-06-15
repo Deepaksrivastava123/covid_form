@@ -12,8 +12,11 @@ public class Constants {
     public static final String SHARED_PREF_NAME = "shared_pref";
 
     public static final String PREF_LANG = "PREF_LANG";
+    public static final String PREF_LANG_SELECTED = "PREF_LANG_SELECTED";
     public static final String PREF_LOCAL_MODEL = "PREF_LOCAL_MODEL";
     public static final String PREF_TIMER_ALARM_TIME = "PREF_TIMER_START_TIME";
+    public static final String PREF_LOGGED_IN = "PREF_LOGGED_IN";
+    public static final String PREF_LOGGED_IN_TOKEN = "PREF_LOGGED_IN_TOKEN";
 
     public enum LANGUAGES {
         en, hi

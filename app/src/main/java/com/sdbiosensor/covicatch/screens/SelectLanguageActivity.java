@@ -31,7 +31,7 @@ public class SelectLanguageActivity extends BaseActivity implements View.OnClick
         } else {
             SharedPrefUtils.getInstance(this).putString(Constants.PREF_LANG, Constants.LANGUAGES.hi.name());
         }
-        startActivity(new Intent(SelectLanguageActivity.this, AgreementActivity.class));
+        startActivity(new Intent(SelectLanguageActivity.this, OptionsActivity.class));
         finish();
     }
 

@@ -72,13 +72,20 @@
     <string name="cannot_go_back">डेटा संसाधित होने के दौरान वापस नहीं जा सकता</string>
     <string name="retry">पुन: प्रयास करें</string>
     <string name="cancel_and_start_again">रद्द करें, और प्रक्रिया फिर से शुरू करें</string>
-    <string name="otp_sent">OTP Sent</string>
-    <string name="otp_sent_message">OTP sent to your number. Please enter.</string>
-    <string name="nationality">Nationality</string>
-    <string name="dob">Date of birth</string>
-    <string name="error_valid_mobile_number">Please enter a valid mobile number</string>
-    <string name="occupation">Occupation</string>
-    <string name="district">District</string>
-    <string name="contact_number_belongs">Contact number belongs to</string>
+    <string name="otp_sent">ओटीपी भेजा गया</string>
+    <string name="otp_sent_message">आपके नंबर पर ओटीपी भेजा गया है। कृपया दर्ज करें।</string>
+    <string name="nationality">राष्ट्रीयता</string>
+    <string name="dob">जन्म तिथि</string>
+    <string name="error_valid_mobile_number">कृपया एक मान्य मोबाइल नंबर दर्ज करें</string>
+    <string name="occupation">व्यवसाय</string>
+    <string name="district">जिला</string>
+    <string name="contact_number_belongs">संपर्क नंबर संबंधित है</string>
+    <string name="login_with_otp">OTP से लॉगिन करें</string>
+    <string name="new_user">नया उपयोगकर्ता? एक नया खाता बनाएं</string>
+    <string name="otp">OTP दर्ज करें</string>
+    <string name="show_tests_history">परीक्षण इतिहास दिखाएं</string>
+    <string name="initiate_new_test">नया परीक्षण प्रारंभ करें</string>
+    <string name="logout">लॉगआउट</string>
+    <string name="logout_message">क्या आप वाकई लॉगआउट करना चाहते हैं?</string>
 
 </resources>
