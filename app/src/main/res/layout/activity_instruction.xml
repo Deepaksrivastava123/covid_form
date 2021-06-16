@@ -6,12 +6,22 @@
     android:orientation="vertical"
     android:background="@color/app_blue">
 
+    <TextView
+        android:id="@+id/text_serial_number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="vertical"
-        android:layout_marginTop="50dp"
         android:gravity="center">
 
         <androidx.viewpager.widget.ViewPager

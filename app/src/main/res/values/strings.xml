@@ -86,5 +86,6 @@
     <string name="initiate_new_test">Initiate new Test</string>
     <string name="logout">Logout</string>
     <string name="logout_message">Are you sure you want to logout?</string>
+    <string name="serial_number">Kit Serial Number :</string>
 
 </resources>

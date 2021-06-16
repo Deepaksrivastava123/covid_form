@@ -87,5 +87,6 @@
     <string name="initiate_new_test">नया परीक्षण प्रारंभ करें</string>
     <string name="logout">लॉगआउट</string>
     <string name="logout_message">क्या आप वाकई लॉगआउट करना चाहते हैं?</string>
+    <string name="serial_number">Kit Serial Number :</string>
 
 </resources>

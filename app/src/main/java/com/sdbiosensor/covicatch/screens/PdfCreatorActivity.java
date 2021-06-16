@@ -115,7 +115,7 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
         PDFHeaderView headerView = new PDFHeaderView(getApplicationContext());
 
         PDFTextView kitNumberView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        kitNumberView.setText(localDataModel.getQrCode());
+        kitNumberView.setText(getString(R.string.serial_number) + " " + localDataModel.getQrCode());
         kitNumberView.setLayout(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT));

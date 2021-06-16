@@ -7,15 +7,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.google.gson.Gson;
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
+import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.receiver.AlarmReceiver;
 import com.sdbiosensor.covicatch.screens.instructionpager.PagerFragment;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
@@ -48,6 +51,14 @@ public class InstructionActivity extends BaseActivity {
         mIndicatorsView.setViewPager(mViewPager);
         mIndicatorsView.setSmoothTransition(true);
         mIndicatorsView.setIndicatorsClickChangePage(true);
+
+        try {
+            String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
+            LocalDataModel localDataModel = new Gson().fromJson(tempString, LocalDataModel.class);
+            ((TextView) findViewById(R.id.text_serial_number)).setText(getString(R.string.serial_number) + " " + localDataModel.getQrCode());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleClicks() {

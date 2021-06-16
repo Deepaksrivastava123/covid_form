@@ -13,9 +13,11 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.github.dhaval2404.imagepicker.ImagePicker;
+import com.google.gson.Gson;
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
+import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import com.sdbiosensor.covicatch.utils.Utils;
 
@@ -46,6 +48,14 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     private void initViews() {
         text_timer = findViewById(R.id.text_timer);
         button_take_picture = findViewById(R.id.button_take_picture);
+
+        try {
+            String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
+            LocalDataModel localDataModel = new Gson().fromJson(tempString, LocalDataModel.class);
+            ((TextView) findViewById(R.id.text_serial_number)).setText(getString(R.string.serial_number) + " " + localDataModel.getQrCode());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleClicks() {

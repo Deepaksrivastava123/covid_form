@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 
@@ -59,6 +60,14 @@ public class PleaseWaitActivity extends BaseActivity {
 
     private void initViews() {
         imageToUpload = getIntent().getExtras().getString("photo");
+
+        try {
+            String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
+            LocalDataModel localDataModel = new Gson().fromJson(tempString, LocalDataModel.class);
+            ((TextView) findViewById(R.id.text_serial_number)).setText(getString(R.string.serial_number) + " " + localDataModel.getQrCode());
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void sendFormData() {
