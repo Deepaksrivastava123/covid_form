@@ -67,7 +67,7 @@ public class StateRecyclerAdapter extends RecyclerView.Adapter<StateRecyclerAdap
     }
 
     public interface OnItemClickListener {
-        void onItemClick(JSONObject item, int positon);
+        void onItemClick(JSONObject item, int position);
     }
 
 }

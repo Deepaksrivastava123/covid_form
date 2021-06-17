@@ -37,8 +37,10 @@
         <activity android:name=".screens.AgreementActivity" />
         <activity android:name=".screens.PleaseWaitActivity" />
         <activity android:name=".screens.ReportActivity" />
+        <activity android:name=".screens.RegisterActivity" />
         <activity android:name=".screens.OptionsActivity" />
         <activity android:name=".screens.FormActivity" />
+        <activity android:name=".screens.FormProfileActivity" />
         <activity android:name=".screens.SelectLanguageActivity" />
         <activity android:name=".screens.LoginActivity" />
         <activity android:name=".screens.LoginOtpActivity" />

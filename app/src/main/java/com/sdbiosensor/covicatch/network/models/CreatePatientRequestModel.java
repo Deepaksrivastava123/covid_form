@@ -1,8 +1,9 @@
 package com.sdbiosensor.covicatch.network.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class CreatePatientRequestModel {
+public class CreatePatientRequestModel implements Serializable {
 
     private String idType;
     private String userIdNo;
@@ -36,6 +37,8 @@ public class CreatePatientRequestModel {
     private String districtCode;
     private String stateCode;
     private String contactNumberBelongsTo;
+    private boolean isVaccineReceived;
+    private String vaccineType;
 
     public CreatePatientRequestModel() {
     }
@@ -286,5 +289,21 @@ public class CreatePatientRequestModel {
 
     public void setContactNumberBelongsTo(String contactNumberBelongsTo) {
         this.contactNumberBelongsTo = contactNumberBelongsTo;
+    }
+
+    public boolean isVaccineReceived() {
+        return isVaccineReceived;
+    }
+
+    public void setVaccineReceived(boolean vaccineReceived) {
+        isVaccineReceived = vaccineReceived;
+    }
+
+    public String getVaccineType() {
+        return vaccineType;
+    }
+
+    public void setVaccineType(String vaccineType) {
+        this.vaccineType = vaccineType;
     }
 }

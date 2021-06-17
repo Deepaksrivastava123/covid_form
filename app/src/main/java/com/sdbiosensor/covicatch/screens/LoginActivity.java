@@ -117,8 +117,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void moveToRegisterScreen() {
-        //TODO
-        showDialog("To be implemented");
+        Intent intent = new Intent(this, RegisterActivity.class);
+        startActivity(intent);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

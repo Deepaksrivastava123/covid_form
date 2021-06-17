@@ -88,5 +88,10 @@
     <string name="logout">लॉगआउट</string>
     <string name="logout_message">क्या आप वाकई लॉगआउट करना चाहते हैं?</string>
     <string name="serial_number">Kit Serial Number :</string>
+    <string name="register_new_user">Register new user</string>
+    <string name="register">Register</string>
+    <string name="vaccinated">Is vaccinated?</string>
+    <string name="vaccine_received">Vaccine Recieved</string>
+    <string name="existing_users">Start test for existing users:</string>
 
 </resources>

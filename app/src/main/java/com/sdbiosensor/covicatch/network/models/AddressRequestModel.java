@@ -1,6 +1,8 @@
 package com.sdbiosensor.covicatch.network.models;
 
-public class AddressRequestModel {
+import java.io.Serializable;
+
+public class AddressRequestModel implements Serializable {
 
     private String address1;
     private String address2;

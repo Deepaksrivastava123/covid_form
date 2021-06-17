@@ -51,7 +51,7 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
-                    <EditText
+                    <TextView
                         android:id="@+id/edit_first_name"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -65,7 +65,7 @@
                         android:background="@drawable/bg_edittext"
                         android:inputType="textPersonName|textCapWords"/>
 
-                    <EditText
+                    <TextView
                         android:id="@+id/edit_last_name"
                         android:layout_width="0dp"
                         android:layout_weight="1"

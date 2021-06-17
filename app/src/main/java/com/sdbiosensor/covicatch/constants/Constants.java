@@ -26,6 +26,14 @@ public class Constants {
         MALE, FEMALE, OTHERS
     }
 
+    public enum VACCINATED {
+        YES, NO
+    }
+
+    public enum VACCINE {
+        COVISHIELD, COVAXIN, SPUTNIK
+    }
+
     public enum OCCUPATION {
         HCW, POLICE, SNTN, SECG, OTHER
     }

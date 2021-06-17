@@ -177,6 +177,15 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
                 "Medical Condition : " + Utils.getCsvFromArrayList(localDataModel.getConditions()) + "\n");
         pdfBody.addView(pdfUserDetailsView);
 
+        PDFTextView pdfUserVaccineView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
+        if (localDataModel.isVaccinated()) {
+            pdfUserVaccineView.setText("Vaccine Received : Yes" + "\n" +
+                    "Vaccine Type : " + localDataModel.getVaccineType());
+        } else {
+            pdfUserVaccineView.setText("Vaccine Received : No");
+        }
+        pdfBody.addView(pdfUserVaccineView);
+
         String result = new String[] {"Negative", "Positive", "Inconclusive",
                 "Negative", "Positive", "Inconclusive",
                 "Negative", "Positive", "Inconclusive"}[(int)(Math.random()*9)];

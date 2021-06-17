@@ -66,7 +66,7 @@ public class JsonArrayRecyclerAdapter extends RecyclerView.Adapter<JsonArrayRecy
     }
 
     public interface OnItemClickListener {
-        void onItemClick(String item, int positon);
+        void onItemClick(String item, int position);
     }
 
 }

@@ -27,6 +27,8 @@ public class LocalDataModel implements Serializable {
     private String occupation;
     private String qrCode;
     private String contactNumberBelongsTo;
+    private boolean isVaccinated;
+    private String vaccineType;
 
     public String getQrCode() {
         return qrCode;
@@ -202,5 +204,21 @@ public class LocalDataModel implements Serializable {
 
     public String getContactNumberBelongsTo() {
         return contactNumberBelongsTo;
+    }
+
+    public boolean isVaccinated() {
+        return isVaccinated;
+    }
+
+    public void setVaccinated(boolean vaccinated) {
+        isVaccinated = vaccinated;
+    }
+
+    public String getVaccineType() {
+        return vaccineType;
+    }
+
+    public void setVaccineType(String vaccineType) {
+        this.vaccineType = vaccineType;
     }
 }

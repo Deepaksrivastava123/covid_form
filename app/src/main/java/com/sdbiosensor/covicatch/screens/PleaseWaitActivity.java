@@ -224,6 +224,10 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setDob(localDataModel.getDob());
         model.setOccupation(localDataModel.getOccupation());
         model.setContactNumberBelongsTo(localDataModel.getContactNumberBelongsTo());
+        model.setVaccineReceived(localDataModel.isVaccinated());
+        if (localDataModel.isVaccinated()) {
+            model.setVaccineType(localDataModel.getVaccineType());
+        }
 
         ArrayList<String> symptomList = localDataModel.getSymptoms();
         if (symptomList.contains("Others")) {

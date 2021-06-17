@@ -4,37 +4,50 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.sdbiosensor.covicatch.R;
+import com.sdbiosensor.covicatch.adapters.ExistingUsersRecyclerAdapter;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.events.CloseAllScreens;
-import com.sdbiosensor.covicatch.events.CloseLoginScreens;
-import com.sdbiosensor.covicatch.network.ApiClient;
-import com.sdbiosensor.covicatch.network.models.CreatePatientResponseModel;
+import com.sdbiosensor.covicatch.network.models.CreatePatientRequestModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
-import com.sdbiosensor.covicatch.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.ArrayList;
 
 public class OptionsActivity extends BaseActivity implements View.OnClickListener{
+
+    private View layout_existing_users;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_options);
 
+        initView();
         handleClicks();
+
+        //TODO send actual list
+        ArrayList<CreatePatientRequestModel> list = new ArrayList<>();
+        CreatePatientRequestModel model = new CreatePatientRequestModel();
+        model.setFirstName("Sahib");
+        model.setLastName("Azad");
+        model.setDob("06/01/1990");
+        model.setGender("MALE");
+        list.add(model);
+        list.add(model);
+        handleExistingUsers(list);
+    }
+
+    private void initView() {
+        layout_existing_users = findViewById(R.id.layout_existing_users);
+        recyclerView = findViewById(R.id.recyclerView);
     }
 
     private void handleClicks() {
@@ -80,6 +93,27 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
                     }
                 })
                 .show();
+    }
+
+    private void handleExistingUsers(ArrayList<CreatePatientRequestModel> list) {
+        layout_existing_users.setVisibility(list.isEmpty() ? View.GONE : View.VISIBLE);
+        if (list.size() >= 5) {
+            findViewById(R.id.button_form).setVisibility(View.GONE);
+        }
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new ExistingUsersRecyclerAdapter(this, list, new ExistingUsersRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(CreatePatientRequestModel item, int positon) {
+                openFormProfileActivity(item);
+            }
+        }));
+    }
+
+    private void openFormProfileActivity(CreatePatientRequestModel item) {
+        Intent intent = new Intent(OptionsActivity.this, AgreementActivity.class);
+        intent.putExtra("user", item);
+        startActivity(intent);
+        finish();
     }
 
     private void logout() {

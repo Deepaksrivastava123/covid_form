@@ -35,6 +35,7 @@ import com.sdbiosensor.covicatch.adapters.StringRecyclerAdapter;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.network.ApiClient;
+import com.sdbiosensor.covicatch.network.models.CreatePatientRequestModel;
 import com.sdbiosensor.covicatch.network.models.CreatePatientResponseModel;
 import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
@@ -45,18 +46,20 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FormActivity extends BaseActivity implements View.OnClickListener{
+public class FormProfileActivity extends BaseActivity implements View.OnClickListener{
 
-    private EditText edit_first_name, edit_last_name, edit_mobile, edit_address, edit_pincode, edit_id_no,
+    private EditText edit_mobile, edit_address, edit_pincode, edit_id_no,
             edit_city;
-    private TextView edit_gender, edit_state, edit_district, edit_id_type, edit_symptoms,
+    private TextView edit_first_name, edit_last_name, edit_gender, edit_state, edit_district, edit_id_type, edit_symptoms,
             edit_conditions, edit_nationality, edit_dob, edit_occupation, edit_contact_number_belongs,
             edit_vaccinated, edit_vaccine;
     private View progress, layout_vaccine;
@@ -67,16 +70,17 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private String selectedStateId, selectedDistrictId, verifiedMobileNumber = "";
     private Calendar dobCalendar = Calendar.getInstance();
     private boolean hasOTPVerified = false;
-
+    private CreatePatientRequestModel existingUser;
 
     static final int CAMERA_PERMISSIONS_CODE  = 1001;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_form);
+        setContentView(R.layout.activity_form_profile);
 
         initView();
+        setDefaultValues();
         handleClicks();
         initJsonArray();
     }
@@ -108,6 +112,29 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         handleMobileEditText();
     }
 
+    private void setDefaultValues() {
+        try {
+            existingUser = (CreatePatientRequestModel) getIntent().getSerializableExtra("user");
+            edit_first_name.setText(existingUser.getFirstName());
+            edit_last_name.setText(existingUser.getLastName());
+            edit_dob.setText(existingUser.getDob());
+            edit_gender.setText(existingUser.getGender());
+            if (existingUser.getGender().equals(Constants.GENDER.MALE.name())) {
+                selectedGender = 0;
+            } else  if (existingUser.getGender().equals(Constants.GENDER.FEMALE.name())) {
+                selectedGender = 1;
+            } else {
+                selectedGender = 2;
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date date = sdf.parse(existingUser.getDob());
+            dobCalendar.setTime(date);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //TODO fill other fields if required
+    }
+
     private void handleMobileEditText() {
         edit_mobile.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -121,14 +148,12 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
     private void handleClicks() {
         findViewById(R.id.button_next).setOnClickListener(this);
-        edit_gender.setOnClickListener(this);
         edit_state.setOnClickListener(this);
         edit_district.setOnClickListener(this);
         edit_id_type.setOnClickListener(this);
         edit_symptoms.setOnClickListener(this);
         edit_conditions.setOnClickListener(this);
         edit_nationality.setOnClickListener(this);
-        edit_dob.setOnClickListener(this);
         edit_occupation.setOnClickListener(this);
         edit_contact_number_belongs.setOnClickListener(this);
         edit_vaccinated.setOnClickListener(this);
@@ -309,7 +334,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                     edit_id_type.setText(getString(R.string.passport));
                     edit_id_type.setOnClickListener(null);
                 } else {
-                    edit_id_type.setOnClickListener(FormActivity.this::onClick);
+                    edit_id_type.setOnClickListener(FormProfileActivity.this::onClick);
                 }
                 alertDialog.dismiss();
             }
@@ -841,7 +866,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 showErrorDialog("Cancelled");
             } else {
                 saveLocalModel(result.getContents());
-                startActivity(new Intent(FormActivity.this, InstructionActivity.class));
+                startActivity(new Intent(FormProfileActivity.this, InstructionActivity.class));
                 finish();
             }
         } else {

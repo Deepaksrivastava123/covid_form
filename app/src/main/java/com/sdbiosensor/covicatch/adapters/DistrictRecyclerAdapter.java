@@ -67,7 +67,7 @@ public class DistrictRecyclerAdapter extends RecyclerView.Adapter<DistrictRecycl
     }
 
     public interface OnItemClickListener {
-        void onItemClick(JSONObject item, int positon);
+        void onItemClick(JSONObject item, int position);
     }
 
 }

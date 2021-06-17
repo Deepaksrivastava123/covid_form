@@ -64,7 +64,7 @@ public class MultiRecyclerAdapter extends RecyclerView.Adapter<MultiRecyclerAdap
     }
 
     public interface OnItemClickListener {
-        void onItemCheckChange(String item, int positon, boolean isSelected);
+        void onItemCheckChange(String item, int position, boolean isSelected);
     }
 
 }

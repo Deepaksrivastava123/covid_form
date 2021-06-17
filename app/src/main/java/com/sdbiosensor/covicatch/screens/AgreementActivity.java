@@ -25,7 +25,14 @@ public class AgreementActivity extends BaseActivity {
                 buttonView.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        startActivity(new Intent(AgreementActivity.this, FormActivity.class));
+                        Intent intent;
+                        if (getIntent().getSerializableExtra("user") == null) {
+                            intent = new Intent(AgreementActivity.this, FormActivity.class);
+                        } else {
+                            intent = new Intent(AgreementActivity.this, FormProfileActivity.class);
+                            intent.putExtra("user", getIntent().getSerializableExtra("user"));
+                        }
+                        startActivity(intent);
                         finish();
                     }
                 }, 500);
