@@ -100,27 +100,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     if (response.errorBody() == null) {
                         showOtpDialog(response, mobileNo);
                     } else {
-                        try {
-                            JSONObject errorJSON = new JSONObject(response.errorBody().string());
-                            JSONArray errorArray = errorJSON.optJSONArray("errors");
-
-                            StringBuffer finalMessage = new StringBuffer();
-                            if (errorArray != null && errorArray.length() > 0) {
-                                for (int i = 0; i < errorArray.length(); i++) {
-                                    if (i == 0) {
-                                        finalMessage.append(errorArray.getString(i));
-                                    } else {
-                                        finalMessage.append("\n" + errorArray.getString(i));
-                                    }
-                                }
-                            }
-                            showErrorDialog(finalMessage.toString());
-                            edit_mobile.setText("");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            edit_mobile.setText("");
-                            showErrorDialog(response.errorBody().toString());
-                        }
+                        showErrorDialog(getString(R.string.error_server_error));
                     }
                 }
 
@@ -128,7 +108,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 public void onFailure(Call<GenericResponseModel> call, Throwable t) {
                     progress.setVisibility(View.GONE);
                     Log.v("Debug", t.getLocalizedMessage());
-                    edit_mobile.setText("");
                     showErrorDialog(t.getLocalizedMessage());
                 }
             });
@@ -152,7 +131,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                edit_mobile.setText("");
                 dialog.cancel();
             }
         });
@@ -192,25 +170,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     if (response.errorBody() == null) {
                         handleOtpVerifyResponse(mobileNo, otp, response.body());
                     } else {
-                        try {
-                            JSONObject errorJSON = new JSONObject(response.errorBody().string());
-                            JSONArray errorArray = errorJSON.optJSONArray("errors");
-
-                            StringBuffer finalMessage = new StringBuffer();
-                            if (errorArray != null && errorArray.length() > 0) {
-                                for (int i = 0; i < errorArray.length(); i++) {
-                                    if (i == 0) {
-                                        finalMessage.append(errorArray.getString(i));
-                                    } else {
-                                        finalMessage.append("\n" + errorArray.getString(i));
-                                    }
-                                }
-                            }
-                            showErrorDialog(finalMessage.toString());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            showErrorDialog(response.errorBody().toString());
-                        }
+                        showErrorDialog(getString(R.string.error_server_error));
                     }
                 }
 
@@ -253,27 +213,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     if (response.errorBody() == null) {
                         handleRegisterResponse(response.body(), mobileNo, otp);
                     } else {
-                        try {
-                            JSONObject errorJSON = new JSONObject(response.errorBody().string());
-                            JSONArray errorArray = errorJSON.optJSONArray("errors");
-
-                            StringBuffer finalMessage = new StringBuffer();
-                            if (errorArray != null && errorArray.length() > 0) {
-                                for (int i = 0; i < errorArray.length(); i++) {
-                                    if (i == 0) {
-                                        finalMessage.append(errorArray.getString(i));
-                                    } else {
-                                        finalMessage.append("\n" + errorArray.getString(i));
-                                    }
-                                }
-                            }
-                            showErrorDialog(finalMessage.toString());
-                            edit_mobile.setText("");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            edit_mobile.setText("");
-                            showErrorDialog(response.errorBody().toString());
-                        }
+                        showErrorDialog(getString(R.string.error_server_error));
                     }
                 }
 
@@ -281,7 +221,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 public void onFailure(Call<RegisterResponseModel> call, Throwable t) {
                     progress.setVisibility(View.GONE);
                     Log.v("Debug", t.getLocalizedMessage());
-                    edit_mobile.setText("");
                     showErrorDialog(t.getLocalizedMessage());
                 }
             });
@@ -313,25 +252,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     if (response.errorBody() == null) {
                         handleLoginResponse(mobileNo, response.body());
                     } else {
-                        try {
-                            JSONObject errorJSON = new JSONObject(response.errorBody().string());
-                            JSONArray errorArray = errorJSON.optJSONArray("errors");
-
-                            StringBuffer finalMessage = new StringBuffer();
-                            if (errorArray != null && errorArray.length() > 0) {
-                                for (int i = 0; i < errorArray.length(); i++) {
-                                    if (i == 0) {
-                                        finalMessage.append(errorArray.getString(i));
-                                    } else {
-                                        finalMessage.append("\n" + errorArray.getString(i));
-                                    }
-                                }
-                            }
-                            showErrorDialog(finalMessage.toString());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            showErrorDialog(response.errorBody().toString());
-                        }
+                        showErrorDialog(getString(R.string.error_server_error));
                     }
                 }
 

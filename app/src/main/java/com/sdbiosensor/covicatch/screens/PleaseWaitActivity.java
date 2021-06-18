@@ -78,25 +78,7 @@ public class PleaseWaitActivity extends BaseActivity {
                     if (response.errorBody() == null) {
                         handleFormResponse(response);
                     } else {
-                        try {
-                            JSONObject errorJSON = new JSONObject(response.errorBody().string());
-                            JSONArray errorArray = errorJSON.optJSONArray("errors");
-
-                            StringBuffer finalMessage = new StringBuffer();
-                            if (errorArray != null && errorArray.length() > 0) {
-                                for (int i = 0; i < errorArray.length(); i++) {
-                                    if (i == 0) {
-                                        finalMessage.append(errorArray.getString(i));
-                                    } else {
-                                        finalMessage.append("\n" + errorArray.getString(i));
-                                    }
-                                }
-                            }
-                            showErrorDialogWithRetry(finalMessage.toString(), "");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            showErrorDialogWithRetry(response.errorBody().toString(), "");
-                        }
+                        showErrorDialog(getString(R.string.error_server_error));
                     }
                 }
 
@@ -131,25 +113,7 @@ public class PleaseWaitActivity extends BaseActivity {
                         Log.v("Debug", "Response: " + new Gson().toJson(response.body()));
                         handleImageResponse(response, uniqueId);
                     } else {
-                        try {
-                            JSONObject errorJSON = new JSONObject(response.errorBody().string());
-                            JSONArray errorArray = errorJSON.optJSONArray("errors");
-
-                            StringBuffer finalMessage = new StringBuffer();
-                            if (errorArray != null && errorArray.length() > 0) {
-                                for (int i = 0; i < errorArray.length(); i++) {
-                                    if (i == 0) {
-                                        finalMessage.append(errorArray.getString(i));
-                                    } else {
-                                        finalMessage.append("\n" + errorArray.getString(i));
-                                    }
-                                }
-                            }
-                            showErrorDialogWithRetry(finalMessage.toString(), uniqueId);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            showErrorDialogWithRetry(response.errorBody().toString(), uniqueId);
-                        }
+                        showErrorDialog(getString(R.string.error_server_error));
                     }
                 }
 

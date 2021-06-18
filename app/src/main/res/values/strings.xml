@@ -15,7 +15,7 @@
     <string name="female">Female</string>
     <string name="others">Others</string>
     <string name="mobile_number">Mobile Number</string>
-    <string name="enter_mobile_number">Enter mobile number</string>
+    <string name="enter_mobile_number">Enter mobile number (without +91)</string>
     <string name="address">Address</string>
     <string name="enter_address">Enter Address</string>
     <string name="current_address">Current Address</string>
@@ -67,7 +67,7 @@
     <string name="scan_cassette_qr_code">Scan QR Code of the cassette</string>
     <string name="take_picture">Take  picture of the test cassette</string>
     <string name="wait_for_timer">Please wait for the 15 minute timer to complete</string>
-    <string name="wait_for_report">Please wait... Your Test Report is being prepared</string>
+    <string name="wait_for_report">Please wait… Your Test Report is being prepared</string>
     <string name="cannot_go_back">Cannot go back while data is processing</string>
     <string name="retry">Retry</string>
     <string name="cancel_and_start_again">Cancel, and start the process again</string>
@@ -90,7 +90,7 @@
     <string name="register_new_user">Register new user</string>
     <string name="register">Register</string>
     <string name="vaccinated">Is vaccinated?</string>
-    <string name="vaccine_received">Vaccine Recieved</string>
+    <string name="vaccine_received">Vaccine Received</string>
     <string name="existing_users">Start test for existing users:</string>
     <string name="email">Email</string>
 

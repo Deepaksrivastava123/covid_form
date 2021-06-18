@@ -74,27 +74,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     if (response.errorBody() == null) {
                         moveToOtpScreen(response, mobileNo);
                     } else {
-                        try {
-                            JSONObject errorJSON = new JSONObject(response.errorBody().string());
-                            JSONArray errorArray = errorJSON.optJSONArray("errors");
-
-                            StringBuffer finalMessage = new StringBuffer();
-                            if (errorArray != null && errorArray.length() > 0) {
-                                for (int i = 0; i < errorArray.length(); i++) {
-                                    if (i == 0) {
-                                        finalMessage.append(errorArray.getString(i));
-                                    } else {
-                                        finalMessage.append("\n" + errorArray.getString(i));
-                                    }
-                                }
-                            }
-                            showErrorDialog(finalMessage.toString());
-                            edit_mobile.setText("");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            edit_mobile.setText("");
-                            showErrorDialog(response.errorBody().toString());
-                        }
+                        edit_mobile.setText("");
+                        showErrorDialog(getString(R.string.error_server_error));
                     }
                 }
 
