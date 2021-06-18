@@ -11,7 +11,8 @@ import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.events.CloseLoginScreens;
 import com.sdbiosensor.covicatch.network.ApiClient;
-import com.sdbiosensor.covicatch.network.models.CreatePatientResponseModel;
+import com.sdbiosensor.covicatch.network.models.LoginRequestModel;
+import com.sdbiosensor.covicatch.network.models.LoginResponseModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import com.sdbiosensor.covicatch.utils.Utils;
 
@@ -61,9 +62,15 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
 
         progress.setVisibility(View.VISIBLE);
         if (ApiClient.getBaseInstance(this) != null) {
-            ApiClient.getBaseInstance(this).verifyOtp(mobileNo, otp).enqueue(new Callback<CreatePatientResponseModel>() {
+
+            LoginRequestModel requestModel = new LoginRequestModel();
+            requestModel.setUsername(mobileNo);
+            requestModel.setPasswordAsOtp(true);
+            requestModel.setPassword(otp);
+
+            ApiClient.getBaseInstance(this).loginUser(requestModel).enqueue(new Callback<LoginResponseModel>() {
                 @Override
-                public void onResponse(Call<CreatePatientResponseModel> call, Response<CreatePatientResponseModel> response) {
+                public void onResponse(Call<LoginResponseModel> call, Response<LoginResponseModel> response) {
                     progress.setVisibility(View.GONE);
                     if (response.errorBody() == null) {
                         handleOtpVerifyResponse(mobileNo, response.body());
@@ -91,7 +98,7 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
                 }
 
                 @Override
-                public void onFailure(Call<CreatePatientResponseModel> call, Throwable t) {
+                public void onFailure(Call<LoginResponseModel> call, Throwable t) {
                     progress.setVisibility(View.GONE);
                     Log.v("Debug", t.getLocalizedMessage());
                     showErrorDialog(t.getLocalizedMessage());
@@ -100,12 +107,12 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void handleOtpVerifyResponse(String mobileNo, CreatePatientResponseModel response) {
+    private void handleOtpVerifyResponse(String mobileNo, LoginResponseModel response) {
         if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
             Intent intent = new Intent(LoginOtpActivity.this, SelectLanguageActivity.class);
             startActivity(intent);
             SharedPrefUtils.getInstance(this).putBoolean(Constants.PREF_LOGGED_IN, true);
-            //TODO SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_TOKEN, "asdafsfd");
+            SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_TOKEN, response.getToken());
 
             EventBus.getDefault().post(new CloseLoginScreens());
             finish();

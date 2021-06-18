@@ -99,6 +99,28 @@
                 android:background="@drawable/bg_edittext_white"
                 android:inputType="phone"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:textAllCaps="false"
+                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
+                android:text="@string/email"/>
+
+            <EditText
+                android:id="@+id/edit_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:hint="@string/email"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="17sp"
+                android:background="@drawable/bg_edittext_white"
+                android:inputType="textEmailAddress"/>
+
             <Button
                 android:id="@+id/button_next"
                 android:layout_width="match_parent"

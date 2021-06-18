@@ -202,9 +202,6 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setAge(0);
         model.setCity(localDataModel.getCity());
         model.setCollectedBy("");
-        model.setAadharNo("");
-        model.setDeviceId("");
-        model.setDeviceOS("ANDROID");
         model.setFirstName(localDataModel.getFirstName());
         model.setGender(localDataModel.getGender());
         model.setIcmrReference("");
@@ -214,7 +211,7 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setPinCode(localDataModel.getPincode());
         model.setRemarks("");
         model.setResult("");
-        model.setIpAddress("");
+        model.setId(localDataModel.getExistingId());
         model.setState(localDataModel.getState());
         model.setStateCode(localDataModel.getStateId());
         model.setKitSerialNumber(localDataModel.getQrCode());

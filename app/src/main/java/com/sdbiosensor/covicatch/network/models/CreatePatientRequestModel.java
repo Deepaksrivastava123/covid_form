@@ -5,19 +5,16 @@ import java.util.ArrayList;
 
 public class CreatePatientRequestModel implements Serializable {
 
+    private String id;
     private String idType;
     private String userIdNo;
-    private String aadharNo;
     private AddressRequestModel address;
     private int age;
     private String city;
     private String collectedBy;
-    private String deviceId;
-    private String deviceOS;
     private String firstName;
     private String gender;
     private String icmrReference;
-    private String ipAddress;
     private String lastName;
     private String mailId;
     private String mobileNo;
@@ -29,7 +26,6 @@ public class CreatePatientRequestModel implements Serializable {
     private String symtomStatus;
     private ArrayList<String> underlyingMedicalCondition;
     private String kitSerialNumber;
-
     private String dob;
     private String nationality;
     private String district;
@@ -43,12 +39,12 @@ public class CreatePatientRequestModel implements Serializable {
     public CreatePatientRequestModel() {
     }
 
-    public String getAadharNo() {
-        return aadharNo;
+    public String getId() {
+        return id;
     }
 
-    public void setAadharNo(String aadharNo) {
-        this.aadharNo = aadharNo;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getIdType() {
@@ -99,22 +95,6 @@ public class CreatePatientRequestModel implements Serializable {
         this.collectedBy = collectedBy;
     }
 
-    public String getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
-    }
-
-    public String getDeviceOS() {
-        return deviceOS;
-    }
-
-    public void setDeviceOS(String deviceOS) {
-        this.deviceOS = deviceOS;
-    }
-
     public String getFirstName() {
         return firstName;
     }
@@ -137,14 +117,6 @@ public class CreatePatientRequestModel implements Serializable {
 
     public void setIcmrReference(String icmrReference) {
         this.icmrReference = icmrReference;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
     }
 
     public String getLastName() {

@@ -35,7 +35,7 @@ import com.sdbiosensor.covicatch.adapters.StringRecyclerAdapter;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.network.ApiClient;
-import com.sdbiosensor.covicatch.network.models.CreatePatientResponseModel;
+import com.sdbiosensor.covicatch.network.models.GenericResponseModel;
 import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import com.sdbiosensor.covicatch.utils.Utils;
@@ -655,9 +655,9 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         }
         progress.setVisibility(View.VISIBLE);
         if (ApiClient.getBaseInstance(this) != null) {
-            ApiClient.getBaseInstance(this).sendOtp(mobileNo).enqueue(new Callback<CreatePatientResponseModel>() {
+            ApiClient.getBaseInstance(this).sendOtp(mobileNo).enqueue(new Callback<GenericResponseModel>() {
                 @Override
-                public void onResponse(Call<CreatePatientResponseModel> call, Response<CreatePatientResponseModel> response) {
+                public void onResponse(Call<GenericResponseModel> call, Response<GenericResponseModel> response) {
                     progress.setVisibility(View.GONE);
                     if (response.errorBody() == null) {
                         showOtpDialog(response, mobileNo);
@@ -687,7 +687,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 }
 
                 @Override
-                public void onFailure(Call<CreatePatientResponseModel> call, Throwable t) {
+                public void onFailure(Call<GenericResponseModel> call, Throwable t) {
                     progress.setVisibility(View.GONE);
                     Log.v("Debug", t.getLocalizedMessage());
                     edit_mobile.setText("");
@@ -697,7 +697,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private void showOtpDialog(Response<CreatePatientResponseModel> response, String mobileNo) {
+    private void showOtpDialog(Response<GenericResponseModel> response, String mobileNo) {
         LinearLayout lin = new LinearLayout(this);
         lin.setPadding(50, 0, 50, 0);
         final EditText editText = new EditText(this);
@@ -748,9 +748,9 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private void verifyOtp(String otp, String mobileNo) {
         progress.setVisibility(View.VISIBLE);
         if (ApiClient.getBaseInstance(this) != null) {
-            ApiClient.getBaseInstance(this).verifyOtp(mobileNo, otp).enqueue(new Callback<CreatePatientResponseModel>() {
+            ApiClient.getBaseInstance(this).verifyOtp(mobileNo, otp).enqueue(new Callback<GenericResponseModel>() {
                 @Override
-                public void onResponse(Call<CreatePatientResponseModel> call, Response<CreatePatientResponseModel> response) {
+                public void onResponse(Call<GenericResponseModel> call, Response<GenericResponseModel> response) {
                     progress.setVisibility(View.GONE);
                     if (response.errorBody() == null) {
                         handleOtpVerifyResponse(mobileNo, response.body());
@@ -780,7 +780,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 }
 
                 @Override
-                public void onFailure(Call<CreatePatientResponseModel> call, Throwable t) {
+                public void onFailure(Call<GenericResponseModel> call, Throwable t) {
                     progress.setVisibility(View.GONE);
                     Log.v("Debug", t.getLocalizedMessage());
                     edit_mobile.setText("");
@@ -790,7 +790,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private void handleOtpVerifyResponse(String mobileNo, CreatePatientResponseModel response) {
+    private void handleOtpVerifyResponse(String mobileNo, GenericResponseModel response) {
         if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
             edit_contact_number_belongs.requestFocus();
             Utils.hideKeyboard(this);
@@ -903,6 +903,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         model.setId_no(edit_id_no.getText().toString().trim());
         model.setSymptoms(selectedSymptoms);
         model.setConditions(selectedConditions);
+        model.setExistingId("");
 
         boolean isVaccinated = false;
         if (edit_vaccinated.getText().toString().equals(Constants.VACCINATED.YES.name())) {

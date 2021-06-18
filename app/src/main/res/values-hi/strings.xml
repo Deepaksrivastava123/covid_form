@@ -93,5 +93,6 @@
     <string name="vaccinated">Is vaccinated?</string>
     <string name="vaccine_received">Vaccine Recieved</string>
     <string name="existing_users">Start test for existing users:</string>
+    <string name="email">Email</string>
 
 </resources>

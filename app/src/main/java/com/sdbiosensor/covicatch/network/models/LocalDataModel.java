@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class LocalDataModel implements Serializable {
 
+    private String existingId;
     private String firstName;
     private String lastName;
     private String gender;
@@ -29,6 +30,14 @@ public class LocalDataModel implements Serializable {
     private String contactNumberBelongsTo;
     private boolean isVaccinated;
     private String vaccineType;
+
+    public String getExistingId() {
+        return existingId;
+    }
+
+    public void setExistingId(String existingId) {
+        this.existingId = existingId;
+    }
 
     public String getQrCode() {
         return qrCode;

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;

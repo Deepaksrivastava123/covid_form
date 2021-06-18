@@ -8,10 +8,9 @@ import android.widget.EditText;
 
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
-import com.sdbiosensor.covicatch.events.CloseAllScreens;
 import com.sdbiosensor.covicatch.events.CloseLoginScreens;
 import com.sdbiosensor.covicatch.network.ApiClient;
-import com.sdbiosensor.covicatch.network.models.CreatePatientResponseModel;
+import com.sdbiosensor.covicatch.network.models.GenericResponseModel;
 import com.sdbiosensor.covicatch.utils.Utils;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -68,9 +67,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
         progress.setVisibility(View.VISIBLE);
         if (ApiClient.getBaseInstance(this) != null) {
-            ApiClient.getBaseInstance(this).sendOtp(mobileNo).enqueue(new Callback<CreatePatientResponseModel>() {
+            ApiClient.getBaseInstance(this).sendOtp(mobileNo).enqueue(new Callback<GenericResponseModel>() {
                 @Override
-                public void onResponse(Call<CreatePatientResponseModel> call, Response<CreatePatientResponseModel> response) {
+                public void onResponse(Call<GenericResponseModel> call, Response<GenericResponseModel> response) {
                     progress.setVisibility(View.GONE);
                     if (response.errorBody() == null) {
                         moveToOtpScreen(response, mobileNo);
@@ -100,7 +99,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 }
 
                 @Override
-                public void onFailure(Call<CreatePatientResponseModel> call, Throwable t) {
+                public void onFailure(Call<GenericResponseModel> call, Throwable t) {
                     progress.setVisibility(View.GONE);
                     Log.v("Debug", t.getLocalizedMessage());
                     edit_mobile.setText("");
@@ -110,7 +109,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private void moveToOtpScreen(Response<CreatePatientResponseModel> response, String mobileNo) {
+    private void moveToOtpScreen(Response<GenericResponseModel> response, String mobileNo) {
         Intent intent = new Intent(this, LoginOtpActivity.class);
         intent.putExtra("mobile", mobileNo);
         startActivity(intent);

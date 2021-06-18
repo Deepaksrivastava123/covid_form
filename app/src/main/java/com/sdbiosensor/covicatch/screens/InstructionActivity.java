@@ -1,9 +1,5 @@
 package com.sdbiosensor.covicatch.screens;
 
-import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +15,6 @@ import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.network.models.LocalDataModel;
-import com.sdbiosensor.covicatch.receiver.AlarmReceiver;
 import com.sdbiosensor.covicatch.screens.instructionpager.PagerFragment;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 
