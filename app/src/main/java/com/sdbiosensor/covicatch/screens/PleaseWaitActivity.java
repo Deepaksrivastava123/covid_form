@@ -178,7 +178,6 @@ public class PleaseWaitActivity extends BaseActivity {
 
     private void handlePatientResponse(Response<GetPatientResponseModel> response, String uniqueId) {
         if(response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
-            //TODO get result
             moveToTempReport(response.body().getData().getResultStatus());
             //TODO delete image file
             //TODO move to actual report screen

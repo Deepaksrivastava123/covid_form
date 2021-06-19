@@ -916,7 +916,7 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
         model.setId_no(edit_id_no.getText().toString().trim());
         model.setSymptoms(selectedSymptoms);
         model.setConditions(selectedConditions);
-        model.setExistingId(existingUser.getId());
+        model.setExistingId(existingUser.getProfileId());
 
         ArrayList<String> editableFields = new ArrayList<>();
         editableFields.add("isVaccineReceived");
