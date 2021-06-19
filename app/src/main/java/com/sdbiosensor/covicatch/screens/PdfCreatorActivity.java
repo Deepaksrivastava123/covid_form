@@ -3,15 +3,10 @@ package com.sdbiosensor.covicatch.screens;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Environment;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -42,7 +37,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 import java.util.Calendar;
-import java.util.Locale;
 
 public class PdfCreatorActivity extends PDFCreatorActivity {
 
@@ -114,43 +108,17 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
     protected PDFHeaderView getHeaderView(int pageIndex) {
         PDFHeaderView headerView = new PDFHeaderView(getApplicationContext());
 
-        PDFTextView kitNumberView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H2);
-        kitNumberView.setText(getString(R.string.serial_number) + " " + localDataModel.getQrCode());
-        kitNumberView.setLayout(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT));
-        kitNumberView.getView().setGravity(Gravity.END);
-        headerView.addView(kitNumberView);
-
-        PDFHorizontalView horizontalView = new PDFHorizontalView(getApplicationContext());
-
-        PDFTextView pdfTextView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.HEADER);
-        SpannableString word = new SpannableString("Ultra Covi-Catch Test Report");
-        word.setSpan(new ForegroundColorSpan(Color.DKGRAY), 0, word.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        pdfTextView.setText(word);
-        pdfTextView.setLayout(new LinearLayout.LayoutParams(
-                0,
-                LinearLayout.LayoutParams.MATCH_PARENT, 1));
-        pdfTextView.getView().setGravity(Gravity.CENTER_VERTICAL);
-        pdfTextView.getView().setTypeface(pdfTextView.getView().getTypeface(), Typeface.BOLD);
-
-        horizontalView.addView(pdfTextView);
-
         PDFImageView imageView = new PDFImageView(getApplicationContext());
         LinearLayout.LayoutParams imageLayoutParam = new LinearLayout.LayoutParams(
-                60,
-                60, 0);
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                50, 0);
+        imageLayoutParam.gravity = Gravity.CENTER;
         imageView.setImageScale(ImageView.ScaleType.CENTER_INSIDE);
-        imageView.setImageResource(R.mipmap.ic_launcher);
+        imageView.setImageResource(R.drawable.img_pdf_logo);
         imageLayoutParam.setMargins(0, 0, 10, 0);
         imageView.setLayout(imageLayoutParam);
 
-        horizontalView.addView(imageView);
-
-        headerView.addView(horizontalView);
-
-        PDFLineSeparatorView lineSeparatorView1 = new PDFLineSeparatorView(getApplicationContext()).setBackgroundColor(Color.WHITE);
-        headerView.addView(lineSeparatorView1);
+        headerView.addView(imageView);
 
         return headerView;
     }
@@ -159,94 +127,156 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
     protected PDFBody getBodyViews() {
         PDFBody pdfBody = new PDFBody();
 
-        PDFTextView pdfDateView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H3);
-        pdfDateView.setText("Date : " + Utils.getFormattedDate(Calendar.getInstance()));
-        pdfBody.addView(pdfDateView);
-        PDFLineSeparatorView lineSeparatorView1 = new PDFLineSeparatorView(getApplicationContext()).setBackgroundColor(Color.WHITE);
-        pdfBody.addView(lineSeparatorView1);
-        PDFTextView pdfUserDetailsView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-        pdfUserDetailsView.setText("Name: " + localDataModel.getFirstName() + " " + localDataModel.getLastName() + "\n" +
-                "Date of birth : " + localDataModel.getDob() + "\n" +
-                "Gender : " + localDataModel.getGender() + "\n" +
-                "ID Type : " + localDataModel.getId_type() + "\n" +
-                "ID Number : " + localDataModel.getId_no() + "\n" +
-                "Address : " + localDataModel.getAddress() + "\n" +
-                "City : " + localDataModel.getCity() + "\n" +
-                "Pincode : " + localDataModel.getPincode() + "\n" +
-                "Symptoms : " + Utils.getCsvFromArrayList(localDataModel.getSymptoms()) + "\n" +
-                "Medical Condition : " + Utils.getCsvFromArrayList(localDataModel.getConditions()) + "\n");
-        pdfBody.addView(pdfUserDetailsView);
+        PDFLineSeparatorView lineSeparator = new PDFLineSeparatorView(getApplicationContext()).setBackgroundColor(Color.BLACK);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1, 0);
+        lp.setMargins(60, 10, 60, 0);
+        lineSeparator.setLayout(lp);
 
-        PDFTextView pdfUserVaccineView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.P);
-        if (localDataModel.isVaccinated()) {
-            pdfUserVaccineView.setText("Vaccine Received : Yes" + "\n" +
-                    "Vaccine Type : " + localDataModel.getVaccineType());
-        } else {
-            pdfUserVaccineView.setText("Vaccine Received : No");
-        }
-        pdfBody.addView(pdfUserVaccineView);
+        pdfBody.addView(lineSeparator);
 
-        String result = new String[] {"Negative", "Positive", "Inconclusive",
-                "Negative", "Positive", "Inconclusive",
-                "Negative", "Positive", "Inconclusive"}[(int)(Math.random()*9)];
-        PDFTextView pdfResultView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.H3);
-        pdfResultView.setText("Result : " + result + "\n\n");
-        pdfBody.addView(pdfResultView);
+        addRow("Test Report Number", localDataModel.getQrCode(), pdfBody);
+        addRow("Name", localDataModel.getFirstName() + " " + localDataModel.getLastName(), pdfBody);
+        addRow("Address", localDataModel.getAddress(), pdfBody);
+        addRow("Gender", localDataModel.getGender(), pdfBody);
+        addRow("Mobile Number", localDataModel.getMobile(), pdfBody);
+        addRow("ID Type", localDataModel.getId_type(), pdfBody);
+        addRow("ID Number", localDataModel.getId_no(), pdfBody);
+        addBlueSeparator(pdfBody);
+        addRow("Test Name", "Ultra Covi-Catch (Home Test for Covid-19 Ag)", pdfBody);
+        addBlueSeparator(pdfBody);
+        addRow("Symptoms", Utils.getCsvFromArrayList(localDataModel.getSymptoms()), pdfBody);
+        addRow("Medical Condition", Utils.getCsvFromArrayList(localDataModel.getConditions()), pdfBody);
+        addRow("Test Date", Utils.getFormattedDate(Calendar.getInstance()), pdfBody);
+        addRow("Test Method", "Rapid Antigen Test", pdfBody);
+        //        String result = new String[] {"Negative", "Positive", "Inconclusive",
+        //              "Negative", "Positive", "Inconclusive",
+        //              "Negative", "Positive", "Inconclusive"}[(int)(Math.random()*9)];
+        addRow("Test Result", getIntent().getExtras().getString("result"), pdfBody);
 
         Bitmap cassetteImage = BitmapFactory.decodeFile(imageToUpload);
         PDFImageView imageView = new PDFImageView(getApplicationContext());
         LinearLayout.LayoutParams imageLayoutParam = new LinearLayout.LayoutParams(
-                200,
-                200, 0);
+                100,
+                100, 0);
+        imageLayoutParam.setMargins(0, 10, 0, 10);
         imageView.setImageScale(ImageView.ScaleType.CENTER_INSIDE);
         imageView.setImageBitmap(cassetteImage);
-        imageLayoutParam.setMargins(0, 0, 10, 0);
+        imageLayoutParam.setMargins(0, 10, 0, 10);
         imageView.setLayout(imageLayoutParam);
         pdfBody.addView(imageView);
 
         PDFTextView pdfNoteView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        pdfNoteView.setText("Note:\n" +
-                "1. All individuals who test positive by Rapid Antigen Test may be considered as True Positive. All such i\n" +
-                "ndividuals are advised to follow home isolation & care as per government guidelines.\n" +
-                "2. If any individual with symptoms test negative by Rapid Antigen test, they should immediately get teste\n" +
-                "d by RT-PCR. Such individuals should also considered themselves as suspect cases of Covid-19 and follow h\n" +
-                "ome isolation protocol while awaiting the RT-PCR results.\n" +
-                "3. Rapid Antigen tests are highly specific but their sensitivity depends on the viral load present in different individuals, proper sample collection & extraction. Ultra Covi-Catch has undergone strict quality control procedures to provide high accuracy of the test. However, the product is used outside the control of the manufacturing company & its channel partners. Moreever, the result may be affected due to envirnmental factors or human error, in such case, the company or its channel partners will not be liable for any losses or costs whether direct or indirect arising out of incorrect diagnosis.");
+        pdfNoteView.setText("Remarks:\n" +
+                "1. All individuals who test positive by Rapid Antigen Test may be considered as True Positive. All such individuals are advised to follow home isolation & care as per government guidelines.\n\n" +
+                "2. If any individual with symptoms test negative by Rapid Antigen test, they should immediately get tested by RT-PCR. Such individuals should also considered themselves as suspect cases of Covid-19 and follow home isolation protocol while awaiting the RT-PCR results.\n\n" +
+                "3. Rapid Antigen tests are highly specific but their sensitivity depends on the viral load present in different individuals, proper sample collection & extraction. Ultra Covi-Catch has undergone strict quality control procedures to provide high accuracy of the test. However, the product is used outside the control of the manufacturing company & its channel partners. Moreever, the result may be affected due to environmental factors or human error, in such case, the company or its channel partners will not be liable for any losses or costs whether direct or indirect arising out of incorrect diagnosis.");
         pdfBody.addView(pdfNoteView);
 
         return pdfBody;
     }
 
+    private void addBlueSeparator(PDFBody pdfBody) {
+        PDFLineSeparatorView lineSeparator = new PDFLineSeparatorView(getApplicationContext()).setBackgroundColor(getResources().getColor(R.color.app_blue));
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                20, 0);
+        lp.setMargins(60, 0, 60, 0);
+        lineSeparator.setLayout(lp);
+
+        pdfBody.addView(lineSeparator);
+    }
+
+    private void addRow(String key, String value, PDFBody pdfBody) {
+        PDFHorizontalView horizontalView = new PDFHorizontalView(getApplicationContext());
+
+        PDFLineSeparatorView lineSeparator = new PDFLineSeparatorView(getApplicationContext()).setBackgroundColor(Color.BLACK);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                1,
+                20, 0);
+        lp.setMargins(60, 0, 0, 0);
+        lineSeparator.setLayout(lp);
+        horizontalView.addView(lineSeparator);
+
+        PDFTextView keyTextView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
+        keyTextView.setText("" + key);
+        LinearLayout.LayoutParams lpKey= new LinearLayout.LayoutParams(
+                100,
+                20, 0);
+        lpKey.setMargins(10, 0, 0, 0);
+        keyTextView.setLayout(lpKey);
+        horizontalView.addView(keyTextView);
+
+        PDFLineSeparatorView lineSeparator2 = new PDFLineSeparatorView(getApplicationContext()).setBackgroundColor(Color.BLACK);
+        LinearLayout.LayoutParams lp2= new LinearLayout.LayoutParams(
+                1,
+                20, 0);
+        lp2.setMargins(0, 0, 0, 0);
+        lineSeparator2.setLayout(lp2);
+        horizontalView.addView(lineSeparator2);
+
+        PDFTextView valueTextView = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
+        valueTextView.setText("" + value);
+        LinearLayout.LayoutParams lpValue= new LinearLayout.LayoutParams(
+                0,
+                20, 3);
+        lpValue.setMargins(10, 0, 0, 0);
+        valueTextView.setLayout(lpValue);
+        horizontalView.addView(valueTextView);
+
+        PDFLineSeparatorView lineSeparator3 = new PDFLineSeparatorView(getApplicationContext()).setBackgroundColor(Color.BLACK);
+        LinearLayout.LayoutParams lp3= new LinearLayout.LayoutParams(
+                1,
+                20, 0);
+        lp3.setMargins(0, 0, 60, 0);
+        lineSeparator3.setLayout(lp3);
+        horizontalView.addView(lineSeparator3);
+
+        pdfBody.addView(horizontalView);
+
+        PDFLineSeparatorView lineSeparator4 = new PDFLineSeparatorView(getApplicationContext()).setBackgroundColor(Color.BLACK);
+        LinearLayout.LayoutParams lp4 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                1, 0);
+        lp4.setMargins(60, 0, 60, 0);
+        lineSeparator4.setLayout(lp4);
+
+        pdfBody.addView(lineSeparator4);
+
+    }
+
     @Override
     protected PDFFooterView getFooterView(int pageIndex) {
         PDFFooterView footerView = new PDFFooterView(getApplicationContext());
-
-        PDFTextView pdfTextViewPage = new PDFTextView(getApplicationContext(), PDFTextView.PDF_TEXT_SIZE.SMALL);
-        pdfTextViewPage.setText(String.format(Locale.getDefault(), "Page: %d", pageIndex + 1));
-        pdfTextViewPage.setLayout(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT, 0));
-        pdfTextViewPage.getView().setGravity(Gravity.CENTER_HORIZONTAL);
-
-        footerView.addView(pdfTextViewPage);
-
+        PDFImageView imageView = new PDFImageView(getApplicationContext());
+        LinearLayout.LayoutParams imageLayoutParam = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                40, 0);
+        imageLayoutParam.gravity = Gravity.CENTER;
+        imageView.setImageScale(ImageView.ScaleType.CENTER_INSIDE);
+        imageView.setImageResource(R.drawable.img_pdf_footer);
+        imageLayoutParam.setMargins(0, 0, 10, 0);
+        imageView.setLayout(imageLayoutParam);
+        footerView.addView(imageView);
         return footerView;
     }
 
     @Nullable
     @Override
     protected PDFImageView getWatermarkView(int forPage) {
-        PDFImageView pdfImageView = new PDFImageView(getApplicationContext());
-        FrameLayout.LayoutParams childLayoutParams = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                200, Gravity.CENTER);
-        pdfImageView.setLayout(childLayoutParams);
-
-        pdfImageView.setImageResource(R.drawable.img_app_logo);
-        pdfImageView.setImageScale(ImageView.ScaleType.FIT_CENTER);
-        pdfImageView.getView().setAlpha(0.3F);
-
-        return pdfImageView;
+//        PDFImageView pdfImageView = new PDFImageView(getApplicationContext());
+//        FrameLayout.LayoutParams childLayoutParams = new FrameLayout.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                200, Gravity.CENTER);
+//        pdfImageView.setLayout(childLayoutParams);
+//
+//        pdfImageView.setImageResource(R.drawable.img_app_logo);
+//        pdfImageView.setImageScale(ImageView.ScaleType.FIT_CENTER);
+//        pdfImageView.getView().setAlpha(0.3F);
+//
+//        return pdfImageView;
+        return null;
     }
 
     @Override

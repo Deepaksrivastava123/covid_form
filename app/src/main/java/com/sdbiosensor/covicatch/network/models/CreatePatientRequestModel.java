@@ -6,10 +6,10 @@ import java.util.ArrayList;
 public class CreatePatientRequestModel implements Serializable {
 
     private String id;
+    private String profileId;
     private String idType;
     private String userIdNo;
     private AddressRequestModel address;
-    private int age;
     private String city;
     private String collectedBy;
     private String firstName;
@@ -21,6 +21,7 @@ public class CreatePatientRequestModel implements Serializable {
     private String pinCode;
     private String remarks;
     private String result;
+    private String resultStatus;
     private String state;
     private ArrayList<String> symptoms;
     private String symtomStatus;
@@ -35,8 +36,25 @@ public class CreatePatientRequestModel implements Serializable {
     private String contactNumberBelongsTo;
     private boolean isVaccineReceived;
     private String vaccineType;
+    private ArrayList<String> editableProfileFields;
 
     public CreatePatientRequestModel() {
+    }
+
+    public String getProfileId() {
+        return profileId;
+    }
+
+    public void setProfileId(String profileId) {
+        this.profileId = profileId;
+    }
+
+    public ArrayList<String> getEditableProfileFields() {
+        return editableProfileFields;
+    }
+
+    public void setEditableProfileFields(ArrayList<String> editableProfileFields) {
+        this.editableProfileFields = editableProfileFields;
     }
 
     public String getId() {
@@ -69,14 +87,6 @@ public class CreatePatientRequestModel implements Serializable {
 
     public void setAddress(AddressRequestModel address) {
         this.address = address;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getCity() {
@@ -277,5 +287,13 @@ public class CreatePatientRequestModel implements Serializable {
 
     public void setVaccineType(String vaccineType) {
         this.vaccineType = vaccineType;
+    }
+
+    public String getResultStatus() {
+        return resultStatus;
+    }
+
+    public void setResultStatus(String resultStatus) {
+        this.resultStatus = resultStatus;
     }
 }

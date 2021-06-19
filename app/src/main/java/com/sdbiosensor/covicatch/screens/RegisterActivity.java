@@ -16,7 +16,6 @@ import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.events.CloseLoginScreens;
 import com.sdbiosensor.covicatch.network.ApiClient;
-import com.sdbiosensor.covicatch.network.models.GenericResponseModel;
 import com.sdbiosensor.covicatch.network.models.LoginRequestModel;
 import com.sdbiosensor.covicatch.network.models.LoginResponseModel;
 import com.sdbiosensor.covicatch.network.models.RegisterRequestModel;
@@ -28,8 +27,6 @@ import com.sdbiosensor.covicatch.utils.ValidationUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.UUID;
 
@@ -79,11 +76,10 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                 !ValidationUtils.emailValidation(edit_email)) {
             return;
         }
-
-        sendOtp();
+        registerUser();
     }
 
-    private void sendOtp() {
+    private void registerUser() {
         String mobileNo = edit_mobile.getText().toString();
 
         if (mobileNo.isEmpty() || mobileNo.length() < 10) {
@@ -91,21 +87,32 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
             showErrorDialog(getString(R.string.error_valid_mobile_number));
             return;
         }
+
         progress.setVisibility(View.VISIBLE);
         if (ApiClient.getBaseInstance(this) != null) {
-            ApiClient.getBaseInstance(this).sendOtp(mobileNo).enqueue(new Callback<GenericResponseModel>() {
+            String uniqueID = UUID.randomUUID().toString();
+
+            RegisterRequestModel requestModel = new RegisterRequestModel();
+            requestModel.setCountryCode("91");
+            requestModel.setEmailId(edit_email.getText().toString().trim());
+            requestModel.setMobileNumber(edit_mobile.getText().toString().trim());
+            requestModel.setName(edit_first_name.getText().toString().trim() + " " + edit_last_name.getText().toString().trim());
+            requestModel.setDeviceId(uniqueID);
+            requestModel.setDeviceOS("ANDROID");
+
+            ApiClient.getBaseInstance(this).registerUser(requestModel).enqueue(new Callback<RegisterResponseModel>() {
                 @Override
-                public void onResponse(Call<GenericResponseModel> call, Response<GenericResponseModel> response) {
-                    progress.setVisibility(View.GONE);
+                public void onResponse(Call<RegisterResponseModel> call, Response<RegisterResponseModel> response) {
                     if (response.errorBody() == null) {
-                        showOtpDialog(response, mobileNo);
+                        handleRegisterResponse(response.body(), mobileNo);
                     } else {
+                        progress.setVisibility(View.GONE);
                         showErrorDialog(getString(R.string.error_server_error));
                     }
                 }
 
                 @Override
-                public void onFailure(Call<GenericResponseModel> call, Throwable t) {
+                public void onFailure(Call<RegisterResponseModel> call, Throwable t) {
                     progress.setVisibility(View.GONE);
                     Log.v("Debug", t.getLocalizedMessage());
                     showErrorDialog(t.getLocalizedMessage());
@@ -114,7 +121,16 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void showOtpDialog(Response<GenericResponseModel> response, String mobileNo) {
+    private void handleRegisterResponse(RegisterResponseModel response, String mobileNo) {
+        if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
+            showOtpDialog(mobileNo);
+        } else {
+            progress.setVisibility(View.GONE);
+            showErrorDialog(response.getMessage());
+        }
+    }
+
+    private void showOtpDialog(String mobileNo) {
         LinearLayout lin = new LinearLayout(this);
         lin.setPadding(50, 0, 50, 0);
         final EditText editText = new EditText(this);
@@ -131,6 +147,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                progress.setVisibility(View.GONE);
                 dialog.cancel();
             }
         });
@@ -148,7 +165,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     public void onClick(View view) {
                         String otp = editText.getText().toString();
                         if (!otp.trim().isEmpty()) {
-                            verifyOtp(otp, mobileNo);
+                            loginUser(mobileNo, otp);
                             dialog.cancel();
                         } else {
                             editText.setError(getString(R.string.error_text_blank));
@@ -159,81 +176,6 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
         });
 
         dialog.show();
-    }
-
-    private void verifyOtp(String otp, String mobileNo) {
-        progress.setVisibility(View.VISIBLE);
-        if (ApiClient.getBaseInstance(this) != null) {
-            ApiClient.getBaseInstance(this).verifyOtp(mobileNo, otp).enqueue(new Callback<GenericResponseModel>() {
-                @Override
-                public void onResponse(Call<GenericResponseModel> call, Response<GenericResponseModel> response) {
-                    if (response.errorBody() == null) {
-                        handleOtpVerifyResponse(mobileNo, otp, response.body());
-                    } else {
-                        showErrorDialog(getString(R.string.error_server_error));
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<GenericResponseModel> call, Throwable t) {
-                    progress.setVisibility(View.GONE);
-                    Log.v("Debug", t.getLocalizedMessage());
-                    showErrorDialog(t.getLocalizedMessage());
-                }
-            });
-        }
-    }
-
-    private void handleOtpVerifyResponse(String mobileNo, String otp, GenericResponseModel response) {
-        if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
-            registerUser(mobileNo, otp);
-        } else {
-            progress.setVisibility(View.GONE);
-            showErrorDialog(response.getMessage());
-        }
-    }
-
-    private void registerUser(String mobileNo, String otp) {
-        progress.setVisibility(View.VISIBLE);
-        if (ApiClient.getBaseInstance(this) != null) {
-            String uniqueID = UUID.randomUUID().toString();
-
-            RegisterRequestModel requestModel = new RegisterRequestModel();
-            requestModel.setCountryCode("91");
-            requestModel.setUserId(edit_email.getText().toString().trim());
-            requestModel.setEmailId(edit_email.getText().toString().trim());
-            requestModel.setMobileNumber(edit_mobile.getText().toString().trim());
-            requestModel.setName(edit_first_name.getText().toString().trim() + " " + edit_last_name.getText().toString().trim());
-            requestModel.setDeviceId(uniqueID);
-            requestModel.setDeviceOS("ANDROID");
-
-            ApiClient.getBaseInstance(this).registerUser(requestModel).enqueue(new Callback<RegisterResponseModel>() {
-                @Override
-                public void onResponse(Call<RegisterResponseModel> call, Response<RegisterResponseModel> response) {
-                    if (response.errorBody() == null) {
-                        handleRegisterResponse(response.body(), mobileNo, otp);
-                    } else {
-                        showErrorDialog(getString(R.string.error_server_error));
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<RegisterResponseModel> call, Throwable t) {
-                    progress.setVisibility(View.GONE);
-                    Log.v("Debug", t.getLocalizedMessage());
-                    showErrorDialog(t.getLocalizedMessage());
-                }
-            });
-        }
-    }
-
-    private void handleRegisterResponse(RegisterResponseModel response, String mobileNo, String otp) {
-        if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
-           loginUser(mobileNo, otp);
-        } else {
-            progress.setVisibility(View.GONE);
-            showErrorDialog(response.getMessage());
-        }
     }
 
     private void loginUser(String mobileNo, String otp) {
@@ -252,6 +194,7 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
                     if (response.errorBody() == null) {
                         handleLoginResponse(mobileNo, response.body());
                     } else {
+                        progress.setVisibility(View.GONE);
                         showErrorDialog(getString(R.string.error_server_error));
                     }
                 }
@@ -267,16 +210,18 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void handleLoginResponse(String mobileNo, LoginResponseModel response) {
-        if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
+        try {
             Intent intent = new Intent(RegisterActivity.this, SelectLanguageActivity.class);
             startActivity(intent);
+            SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_ID, mobileNo);
             SharedPrefUtils.getInstance(this).putBoolean(Constants.PREF_LOGGED_IN, true);
             SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_TOKEN, response.getToken());
+            SharedPrefUtils.getInstance(this).putString(Constants.PREF_PROFILE_THRESHOLD, response.getPerUserProfile());
 
             EventBus.getDefault().post(new CloseLoginScreens());
             finish();
-        } else {
-            showErrorDialog(response.getMessage());
+        } catch (Exception e){
+            showErrorDialog(getString(R.string.error_server_error));
         }
     }
 

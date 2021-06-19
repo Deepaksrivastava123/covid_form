@@ -17,11 +17,9 @@ import com.sdbiosensor.covicatch.network.ApiClient;
 import com.sdbiosensor.covicatch.network.models.AddressRequestModel;
 import com.sdbiosensor.covicatch.network.models.CreatePatientRequestModel;
 import com.sdbiosensor.covicatch.network.models.CreatePatientResponseModel;
+import com.sdbiosensor.covicatch.network.models.GetPatientResponseModel;
 import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,6 +34,8 @@ import retrofit2.Response;
 public class PleaseWaitActivity extends BaseActivity {
 
     private String imageToUpload;
+    private int getPatientRetryCount = 0;
+    private final int RESULT_RETRY_COUNT = 5, RESULT_RETRY_DURATION = 1000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,12 +46,13 @@ public class PleaseWaitActivity extends BaseActivity {
         sendFormData();
     }
 
-    private void moveToTempReport() {
+    private void moveToTempReport(String resultStatus) {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = new Intent(PleaseWaitActivity.this, PdfCreatorActivity.class);
                 intent.putExtra("photo", imageToUpload);
+                intent.putExtra("result", resultStatus);
                 startActivity(intent);
                 finish();
             }
@@ -128,7 +129,57 @@ public class PleaseWaitActivity extends BaseActivity {
 
     private void handleImageResponse(Response<CreatePatientResponseModel> response, String uniqueId) {
         if(response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
-            moveToTempReport();
+            getPatientResult(uniqueId);
+        } else {
+            showErrorDialogWithRetry(response.body().getMessage(), uniqueId);
+        }
+    }
+
+    private void getPatientResult(String uniqueId) {
+        if (ApiClient.getBaseInstance(this) != null) {
+            ApiClient.getBaseInstance(this).getPatientById(uniqueId).enqueue(new Callback<GetPatientResponseModel>() {
+                @Override
+                public void onResponse(Call<GetPatientResponseModel> call, Response<GetPatientResponseModel> response) {
+                    if (response.errorBody() == null) {
+                        handlePatientResponse(response, uniqueId);
+                    } else {
+                        if (getPatientRetryCount < RESULT_RETRY_COUNT) {
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    getPatientRetryCount ++;
+                                    getPatientResult(uniqueId);
+                                }
+                            }, RESULT_RETRY_DURATION);
+                        } else {
+                            showErrorDialog(getString(R.string.error_server_error));
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetPatientResponseModel> call, Throwable t) {
+                    if (getPatientRetryCount < RESULT_RETRY_COUNT) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                getPatientRetryCount ++;
+                                getPatientResult(uniqueId);
+                            }
+                        }, RESULT_RETRY_DURATION);
+                    } else {
+                        Log.v("Debug", t.getLocalizedMessage());
+                        showErrorDialogWithRetry(t.getLocalizedMessage(), uniqueId);
+                    }
+                }
+            });
+        }
+    }
+
+    private void handlePatientResponse(Response<GetPatientResponseModel> response, String uniqueId) {
+        if(response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
+            //TODO get result
+            moveToTempReport(response.body().getData().getResultStatus());
             //TODO delete image file
             //TODO move to actual report screen
 //            String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
@@ -139,7 +190,17 @@ public class PleaseWaitActivity extends BaseActivity {
 //            startActivity(intent);
 //            finish();
         } else {
-            showErrorDialogWithRetry(response.body().getMessage(), uniqueId);
+            if (getPatientRetryCount < RESULT_RETRY_COUNT) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getPatientRetryCount ++;
+                        getPatientResult(uniqueId);
+                    }
+                }, RESULT_RETRY_DURATION);
+            } else {
+                showErrorDialogWithRetry(response.body().getMessage(), uniqueId);
+            }
         }
     }
 
@@ -163,7 +224,6 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setAddress(addressModel);
         model.setUserIdNo(localDataModel.getId_no());
         model.setIdType(localDataModel.getId_type());
-        model.setAge(0);
         model.setCity(localDataModel.getCity());
         model.setCollectedBy("");
         model.setFirstName(localDataModel.getFirstName());
@@ -175,7 +235,7 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setPinCode(localDataModel.getPincode());
         model.setRemarks("");
         model.setResult("");
-        model.setId(localDataModel.getExistingId());
+        model.setProfileId(localDataModel.getExistingId());
         model.setState(localDataModel.getState());
         model.setStateCode(localDataModel.getStateId());
         model.setKitSerialNumber(localDataModel.getQrCode());
@@ -188,6 +248,10 @@ public class PleaseWaitActivity extends BaseActivity {
         model.setVaccineReceived(localDataModel.isVaccinated());
         if (localDataModel.isVaccinated()) {
             model.setVaccineType(localDataModel.getVaccineType());
+        }
+
+        if (localDataModel.getEditableProfileFields() != null && !localDataModel.getEditableProfileFields().isEmpty()) {
+            model.setEditableProfileFields(localDataModel.getEditableProfileFields());
         }
 
         ArrayList<String> symptomList = localDataModel.getSymptoms();

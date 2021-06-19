@@ -30,6 +30,16 @@ public class LocalDataModel implements Serializable {
     private String contactNumberBelongsTo;
     private boolean isVaccinated;
     private String vaccineType;
+    private ArrayList<String> editableProfileFields;
+
+
+    public ArrayList<String> getEditableProfileFields() {
+        return editableProfileFields;
+    }
+
+    public void setEditableProfileFields(ArrayList<String> editableProfileFields) {
+        this.editableProfileFields = editableProfileFields;
+    }
 
     public String getExistingId() {
         return existingId;

@@ -6,7 +6,6 @@ public class RegisterRequestModel {
     private String emailId;
     private String mobileNumber;
     private String name;
-    private String userId;
     private String deviceId;
     private String deviceOS;
 
@@ -40,14 +39,6 @@ public class RegisterRequestModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getDeviceId() {

@@ -57,9 +57,8 @@ import retrofit2.Response;
 
 public class FormProfileActivity extends BaseActivity implements View.OnClickListener{
 
-    private EditText edit_mobile, edit_address, edit_pincode, edit_id_no,
-            edit_city;
-    private TextView edit_first_name, edit_last_name, edit_gender, edit_state, edit_district, edit_id_type, edit_symptoms,
+    private TextView edit_mobile, edit_address, edit_pincode, edit_id_no,
+            edit_city, edit_first_name, edit_last_name, edit_gender, edit_state, edit_district, edit_id_type, edit_symptoms,
             edit_conditions, edit_nationality, edit_dob, edit_occupation, edit_contact_number_belongs,
             edit_vaccinated, edit_vaccine;
     private View progress, layout_vaccine;
@@ -109,7 +108,7 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
         progress = findViewById(R.id.progress);
         layout_vaccine = findViewById(R.id.layout_vaccine);
 
-        handleMobileEditText();
+        //handleMobileEditText();
     }
 
     private void setDefaultValues() {
@@ -129,6 +128,33 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Date date = sdf.parse(existingUser.getDob());
             dobCalendar.setTime(date);
+
+            edit_nationality.setText(existingUser.getNationality());
+            edit_contact_number_belongs.setText(existingUser.getContactNumberBelongsTo());
+            edit_state.setText(existingUser.getState());
+            selectedStateId = existingUser.getStateCode();
+            edit_district.setText(existingUser.getDistrict());
+            selectedDistrictId = existingUser.getDistrictCode();
+
+            ArrayList<String> idTypeList = new ArrayList<String>();
+            idTypeList.add(getString(R.string.aadhar_card));
+            idTypeList.add(getString(R.string.driving_license));
+            idTypeList.add(getString(R.string.pan_card));
+            idTypeList.add(getString(R.string.voter_id_card));
+            idTypeList.add(getString(R.string.passport));
+            for (int i = 0; i < idTypeList.size(); i++) {
+                if (existingUser.getIdType().equalsIgnoreCase(idTypeList.get(i))) {
+                    selectedIdType = i;
+                    break;
+                }
+            }
+            edit_id_type.setText(existingUser.getIdType());
+            edit_occupation.setText(existingUser.getOccupation());
+            edit_mobile.setText(existingUser.getMobileNo());
+            edit_address.setText(existingUser.getAddress().getAddress1());
+            edit_pincode.setText(existingUser.getPinCode());
+            edit_city.setText(existingUser.getCity());
+            edit_id_no.setText(existingUser.getUserIdNo());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -148,14 +174,8 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void handleClicks() {
         findViewById(R.id.button_next).setOnClickListener(this);
-        edit_state.setOnClickListener(this);
-        edit_district.setOnClickListener(this);
-        edit_id_type.setOnClickListener(this);
         edit_symptoms.setOnClickListener(this);
         edit_conditions.setOnClickListener(this);
-        edit_nationality.setOnClickListener(this);
-        edit_occupation.setOnClickListener(this);
-        edit_contact_number_belongs.setOnClickListener(this);
         edit_vaccinated.setOnClickListener(this);
         edit_vaccine.setOnClickListener(this);
     }
@@ -897,6 +917,14 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
         model.setSymptoms(selectedSymptoms);
         model.setConditions(selectedConditions);
         model.setExistingId(existingUser.getId());
+
+        ArrayList<String> editableFields = new ArrayList<>();
+        editableFields.add("isVaccineReceived");
+        editableFields.add("symptoms");
+        editableFields.add("underlyingMedicalCondition");
+        editableFields.add("vaccineType");
+
+        model.setEditableProfileFields(editableFields);
 
         boolean isVaccinated = false;
         if (edit_vaccinated.getText().toString().equals(Constants.VACCINATED.YES.name())) {

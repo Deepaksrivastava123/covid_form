@@ -90,16 +90,18 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void handleOtpVerifyResponse(String mobileNo, LoginResponseModel response) {
-        if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
+        try {
             Intent intent = new Intent(LoginOtpActivity.this, SelectLanguageActivity.class);
             startActivity(intent);
+            SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_ID, mobileNo);
             SharedPrefUtils.getInstance(this).putBoolean(Constants.PREF_LOGGED_IN, true);
             SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_TOKEN, response.getToken());
+            SharedPrefUtils.getInstance(this).putString(Constants.PREF_PROFILE_THRESHOLD, response.getPerUserProfile());
 
             EventBus.getDefault().post(new CloseLoginScreens());
             finish();
-        } else {
-            showErrorDialog(response.getMessage());
+        } catch (Exception e){
+            showErrorDialog(getString(R.string.error_server_error));
         }
     }
 

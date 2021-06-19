@@ -169,7 +169,7 @@
                     android:layout_marginTop="15dp"
                     android:text="@string/mobile_number"/>
 
-                <EditText
+                <TextView
                     android:id="@+id/edit_mobile_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -221,7 +221,7 @@
                     android:layout_marginTop="15dp"
                     android:text="@string/current_address"/>
 
-                <EditText
+                <TextView
                     android:id="@+id/edit_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -249,7 +249,7 @@
                     android:layout_marginTop="15dp"
                     android:text="@string/pin_code"/>
 
-                <EditText
+                <TextView
                     android:id="@+id/edit_pin_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -327,7 +327,7 @@
                     android:layout_marginTop="15dp"
                     android:text="@string/city"/>
 
-                <EditText
+                <TextView
                     android:id="@+id/edit_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -379,7 +379,7 @@
                     android:layout_marginTop="15dp"
                     android:text="@string/id_card_no"/>
 
-                <EditText
+                <TextView
                     android:id="@+id/edit_id_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

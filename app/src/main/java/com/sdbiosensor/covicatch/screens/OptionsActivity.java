@@ -11,19 +11,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.adapters.ExistingUsersRecyclerAdapter;
+import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.events.CloseAllScreens;
+import com.sdbiosensor.covicatch.network.ApiClient;
 import com.sdbiosensor.covicatch.network.models.CreatePatientRequestModel;
+import com.sdbiosensor.covicatch.network.models.GetProfileResponseModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class OptionsActivity extends BaseActivity implements View.OnClickListener{
 
+    private int USER_THRESHOLD = 5;        //Default
     private View layout_existing_users;
     private RecyclerView recyclerView;
+    private View progress;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -32,28 +41,74 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
 
         initView();
         handleClicks();
+    }
 
-        //TODO send actual list
-        ArrayList<CreatePatientRequestModel> list = new ArrayList<>();
-        CreatePatientRequestModel model = new CreatePatientRequestModel();
-        model.setFirstName("Sahib");
-        model.setLastName("Azad");
-        model.setDob("06/01/1990");
-        model.setGender("MALE");
-        list.add(model);
-        list.add(model);
-        handleExistingUsers(list);
+    @Override
+    public void onResume() {
+        super.onResume();
+        fetchUserProfiles();
     }
 
     private void initView() {
         layout_existing_users = findViewById(R.id.layout_existing_users);
         recyclerView = findViewById(R.id.recyclerView);
+        progress = findViewById(R.id.progress);
+
+        try {
+            USER_THRESHOLD = Integer.parseInt(SharedPrefUtils.getInstance(this).getString(Constants.PREF_PROFILE_THRESHOLD, "" + USER_THRESHOLD));
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void handleClicks() {
         findViewById(R.id.button_form).setOnClickListener(this);
         findViewById(R.id.button_history).setOnClickListener(this);
         findViewById(R.id.button_logout).setOnClickListener(this);
+    }
+
+    private void fetchUserProfiles() {
+        progress.setVisibility(View.VISIBLE);
+        if (ApiClient.getBaseInstance(this) != null) {
+            ApiClient.getBaseInstance(this).getProfiles().enqueue(new Callback<GetProfileResponseModel>() {
+                @Override
+                public void onResponse(Call<GetProfileResponseModel> call, Response<GetProfileResponseModel> response) {
+                    progress.setVisibility(View.GONE);
+                    if (response.errorBody() == null) {
+                        handleProfileResponse(response);
+                    } else {
+                        //Do nothing
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<GetProfileResponseModel> call, Throwable t) {
+                    progress.setVisibility(View.GONE);
+                    //Do nothing
+                }
+            });
+        }
+    }
+
+    private void handleProfileResponse(Response<GetProfileResponseModel> response) {
+        if (response.body() != null && response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
+
+            if (response.body().getData() != null) {
+                ArrayList<CreatePatientRequestModel> list = response.body().getData();
+                if (!list.isEmpty()) {
+                    handleExistingUsers(list);
+                }
+            }
+//            ArrayList<CreatePatientRequestModel> list = new ArrayList<>();
+//            CreatePatientRequestModel model = new CreatePatientRequestModel();
+//            model.setFirstName("Sahib");
+//            model.setLastName("Azad");
+//            model.setDob("06/01/1990");
+//            model.setGender("MALE");
+//            list.add(model);
+//            list.add(model);
+//            handleExistingUsers(list);
+        }
     }
 
     @Override
@@ -97,7 +152,7 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
 
     private void handleExistingUsers(ArrayList<CreatePatientRequestModel> list) {
         layout_existing_users.setVisibility(list.isEmpty() ? View.GONE : View.VISIBLE);
-        if (list.size() >= 5) {
+        if (list.size() >= USER_THRESHOLD) {
             findViewById(R.id.button_form).setVisibility(View.GONE);
         }
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

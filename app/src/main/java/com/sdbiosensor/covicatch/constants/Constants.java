@@ -8,7 +8,7 @@ public class Constants {
     // old Optima Server URL
     // public static final String BASE_URL = "http://164.52.210.8:9090/covicatch/service/api/";
     // http://159.89.224.69:9090/covicatch/service/swagger-ui/#/API%20services%20for%20Patiensts%20API
-    public static final String BASE_URL = "http://159.89.224.69:9090/covicatch/service/api/";
+    public static final String BASE_URL = "http://159.89.224.69:9090/covicatch/service/";
     public static final String SHARED_PREF_NAME = "shared_pref";
 
     public static final String PREF_LANG = "PREF_LANG";
@@ -16,7 +16,9 @@ public class Constants {
     public static final String PREF_LOCAL_MODEL = "PREF_LOCAL_MODEL";
     public static final String PREF_TIMER_ALARM_TIME = "PREF_TIMER_START_TIME";
     public static final String PREF_LOGGED_IN = "PREF_LOGGED_IN";
+    public static final String PREF_LOGGED_IN_ID = "PREF_LOGGED_IN_ID";
     public static final String PREF_LOGGED_IN_TOKEN = "PREF_LOGGED_IN_TOKEN";
+    public static final String PREF_PROFILE_THRESHOLD = "PREF_PROFILE_THRESHOLD";
 
     public enum LANGUAGES {
         en, hi
