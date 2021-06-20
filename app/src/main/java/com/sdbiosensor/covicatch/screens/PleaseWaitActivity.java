@@ -178,6 +178,22 @@ public class PleaseWaitActivity extends BaseActivity {
 
     private void handlePatientResponse(Response<GetPatientResponseModel> response, String uniqueId) {
         if(response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
+            if (response.body().getData() == null ||
+                    response.body().getData().getResultStatus() == null ||
+                    response.body().getData().getResultStatus().equals("null")) {
+                if (getPatientRetryCount < RESULT_RETRY_COUNT) {
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            getPatientRetryCount ++;
+                            getPatientResult(uniqueId);
+                        }
+                    }, RESULT_RETRY_DURATION);
+                } else {
+                    showErrorDialogWithRetry(response.body().getMessage(), uniqueId);
+                }
+                return;
+            }
             moveToTempReport(response.body().getData().getResultStatus());
             //TODO delete image file
             //TODO move to actual report screen

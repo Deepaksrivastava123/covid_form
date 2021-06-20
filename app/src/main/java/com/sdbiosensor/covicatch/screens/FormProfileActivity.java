@@ -923,6 +923,7 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
         editableFields.add("symptoms");
         editableFields.add("underlyingMedicalCondition");
         editableFields.add("vaccineType");
+        editableFields.add("kitSerialNumber");
 
         model.setEditableProfileFields(editableFields);
 

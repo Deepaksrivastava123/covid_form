@@ -68,8 +68,8 @@ public class ApiClient {
                     final Request modifiedRequest = requestBuilder.build();
                     response = chain.proceed(modifiedRequest);
                     //TODO uncomment 2 lines to see response
-//                    Object[] clones = cloneResponseBody(response);
-//                    response = (Response) clones[1];
+                    Object[] clones = cloneResponseBody(response);
+                    response = (Response) clones[1];
                     return response;
                 } else {
                     return chain.proceed(chain.request());
