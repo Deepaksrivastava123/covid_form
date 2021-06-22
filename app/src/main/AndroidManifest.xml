@@ -45,6 +45,7 @@
         <activity android:name=".screens.LoginActivity" />
         <activity android:name=".screens.LoginOtpActivity" />
         <activity android:name=".screens.PdfCreatorActivity" />
+        <activity android:name=".screens.HistoryActivity" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"

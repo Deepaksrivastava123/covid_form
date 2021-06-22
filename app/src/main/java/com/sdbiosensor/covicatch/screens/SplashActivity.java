@@ -3,7 +3,6 @@ package com.sdbiosensor.covicatch.screens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.ImageView;
 
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
@@ -11,8 +10,6 @@ import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 
 public class SplashActivity extends BaseActivity {
-    private ImageView img_logo, img_bottom_logo;
-
     private boolean IS_ALIVE = false;
 
     @Override
@@ -55,9 +52,6 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void initView() {
-        img_logo = (ImageView) findViewById(R.id.img_logo);
-        img_bottom_logo = (ImageView) findViewById(R.id.img_bottom_logo);
-
         SharedPrefUtils.getInstance(this).putString(Constants.PREF_LANG, Constants.LANGUAGES.en.name());
     }
 

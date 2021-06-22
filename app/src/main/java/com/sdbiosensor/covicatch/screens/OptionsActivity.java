@@ -128,7 +128,7 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
     }
 
     private void openHistoryActivity() {
-        showDialog("To be implemented");
+        startActivity(new Intent(OptionsActivity.this, HistoryActivity.class));
     }
 
     private void confirmLogout() {

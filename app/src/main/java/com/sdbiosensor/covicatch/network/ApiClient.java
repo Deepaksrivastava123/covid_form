@@ -67,9 +67,9 @@ public class ApiClient {
                     }
                     final Request modifiedRequest = requestBuilder.build();
                     response = chain.proceed(modifiedRequest);
-                    //TODO uncomment 2 lines to see response
-                    Object[] clones = cloneResponseBody(response);
-                    response = (Response) clones[1];
+                    //TODO uncomment 2 lines to see response, download PDF does not work when this is uncommented
+//                    Object[] clones = cloneResponseBody(response);
+//                    response = (Response) clones[1];
                     return response;
                 } else {
                     return chain.proceed(chain.request());

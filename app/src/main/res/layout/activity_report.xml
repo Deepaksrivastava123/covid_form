@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:padding="10dp"
-            android:text="Form submitted\n\nReport generation pending"
+            android:text="Result PDF saved to Downloads"
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="22sp"

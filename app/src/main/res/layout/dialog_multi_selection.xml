@@ -47,6 +47,20 @@
         android:gravity="center">
 
         <Button
+            android:id="@+id/button_none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cancel"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/app_blue"
+            android:textSize="17sp"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"/>
+
+        <Button
             android:id="@+id/button_cancel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

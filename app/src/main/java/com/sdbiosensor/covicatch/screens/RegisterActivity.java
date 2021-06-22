@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
@@ -123,107 +125,122 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void handleRegisterResponse(RegisterResponseModel response, String mobileNo) {
         if(response.getStatus().equalsIgnoreCase("SUCCESS")) {
-            showOtpDialog(mobileNo);
+            //showOtpDialog(mobileNo);
+            showSuccessAndMoveLogin();
         } else {
             progress.setVisibility(View.GONE);
             showErrorDialog(response.getMessage());
         }
     }
 
-    private void showOtpDialog(String mobileNo) {
-        LinearLayout lin = new LinearLayout(this);
-        lin.setPadding(50, 0, 50, 0);
-        final EditText editText = new EditText(this);
-        editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
-        lin.addView(editText);
-
-        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
-        builder.setTitle(R.string.otp_sent);
-        builder.setMessage(R.string.otp_sent_message);
+    private void showSuccessAndMoveLogin() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.success);
+        builder.setMessage(R.string.signup_success_message);
         builder.setCancelable(false);
-        builder.setView(lin);
-        builder.setPositiveButton(R.string.ok, null);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                progress.setVisibility(View.GONE);
-                dialog.cancel();
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
             }
         });
-
-        final androidx.appcompat.app.AlertDialog dialog = builder.create();
-
-        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
-
-            public void onShow(DialogInterface dialogInterface) {
-
-                Button button = ((androidx.appcompat.app.AlertDialog) dialog).getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View view) {
-                        String otp = editText.getText().toString();
-                        if (!otp.trim().isEmpty()) {
-                            loginUser(mobileNo, otp);
-                            dialog.cancel();
-                        } else {
-                            editText.setError(getString(R.string.error_text_blank));
-                        }
-                    }
-                });
-            }
-        });
-
-        dialog.show();
+        builder.create().show();
     }
 
-    private void loginUser(String mobileNo, String otp) {
-        progress.setVisibility(View.VISIBLE);
-        if (ApiClient.getBaseInstance(this) != null) {
+//    private void showOtpDialog(String mobileNo) {
+//        LinearLayout lin = new LinearLayout(this);
+//        lin.setPadding(50, 0, 50, 0);
+//        final EditText editText = new EditText(this);
+//        editText.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        editText.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        lin.addView(editText);
+//
+//        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(this);
+//        builder.setTitle(R.string.otp_sent);
+//        builder.setMessage(R.string.otp_sent_message);
+//        builder.setCancelable(false);
+//        builder.setView(lin);
+//        builder.setPositiveButton(R.string.ok, null);
+//        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                progress.setVisibility(View.GONE);
+//                dialog.cancel();
+//            }
+//        });
+//
+//        final androidx.appcompat.app.AlertDialog dialog = builder.create();
+//
+//        dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+//
+//            public void onShow(DialogInterface dialogInterface) {
+//
+//                Button button = ((androidx.appcompat.app.AlertDialog) dialog).getButton(androidx.appcompat.app.AlertDialog.BUTTON_POSITIVE);
+//                button.setOnClickListener(new View.OnClickListener() {
+//
+//                    @Override
+//                    public void onClick(View view) {
+//                        String otp = editText.getText().toString();
+//                        if (!otp.trim().isEmpty()) {
+//                            loginUser(mobileNo, otp);
+//                            dialog.cancel();
+//                        } else {
+//                            editText.setError(getString(R.string.error_text_blank));
+//                        }
+//                    }
+//                });
+//            }
+//        });
+//
+//        dialog.show();
+//    }
 
-            LoginRequestModel requestModel = new LoginRequestModel();
-            requestModel.setUsername(mobileNo);
-            requestModel.setPasswordAsOtp(true);
-            requestModel.setPassword(otp);
-
-            ApiClient.getBaseInstance(this).loginUser(requestModel).enqueue(new Callback<LoginResponseModel>() {
-                @Override
-                public void onResponse(Call<LoginResponseModel> call, Response<LoginResponseModel> response) {
-                    progress.setVisibility(View.GONE);
-                    if (response.errorBody() == null) {
-                        handleLoginResponse(mobileNo, response.body());
-                    } else {
-                        progress.setVisibility(View.GONE);
-                        showErrorDialog(getString(R.string.error_server_error));
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<LoginResponseModel> call, Throwable t) {
-                    progress.setVisibility(View.GONE);
-                    Log.v("Debug", t.getLocalizedMessage());
-                    showErrorDialog(t.getLocalizedMessage());
-                }
-            });
-        }
-    }
-
-    private void handleLoginResponse(String mobileNo, LoginResponseModel response) {
-        try {
-            Intent intent = new Intent(RegisterActivity.this, SelectLanguageActivity.class);
-            startActivity(intent);
-            SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_ID, mobileNo);
-            SharedPrefUtils.getInstance(this).putBoolean(Constants.PREF_LOGGED_IN, true);
-            SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_TOKEN, response.getToken());
-            SharedPrefUtils.getInstance(this).putString(Constants.PREF_PROFILE_THRESHOLD, response.getPerUserProfile());
-
-            EventBus.getDefault().post(new CloseLoginScreens());
-            finish();
-        } catch (Exception e){
-            showErrorDialog(getString(R.string.error_server_error));
-        }
-    }
+//    private void loginUser(String mobileNo, String otp) {
+//        progress.setVisibility(View.VISIBLE);
+//        if (ApiClient.getBaseInstance(this) != null) {
+//
+//            LoginRequestModel requestModel = new LoginRequestModel();
+//            requestModel.setUsername(mobileNo);
+//            requestModel.setPasswordAsOtp(true);
+//            requestModel.setPassword(otp);
+//
+//            ApiClient.getBaseInstance(this).loginUser(requestModel).enqueue(new Callback<LoginResponseModel>() {
+//                @Override
+//                public void onResponse(Call<LoginResponseModel> call, Response<LoginResponseModel> response) {
+//                    progress.setVisibility(View.GONE);
+//                    if (response.errorBody() == null) {
+//                        handleLoginResponse(mobileNo, response.body());
+//                    } else {
+//                        progress.setVisibility(View.GONE);
+//                        showErrorDialog(getString(R.string.error_server_error));
+//                    }
+//                }
+//
+//                @Override
+//                public void onFailure(Call<LoginResponseModel> call, Throwable t) {
+//                    progress.setVisibility(View.GONE);
+//                    Log.v("Debug", t.getLocalizedMessage());
+//                    showErrorDialog(t.getLocalizedMessage());
+//                }
+//            });
+//        }
+//    }
+//
+//    private void handleLoginResponse(String mobileNo, LoginResponseModel response) {
+//        try {
+//            Intent intent = new Intent(RegisterActivity.this, SelectLanguageActivity.class);
+//            startActivity(intent);
+//            SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_ID, mobileNo);
+//            SharedPrefUtils.getInstance(this).putBoolean(Constants.PREF_LOGGED_IN, true);
+//            SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_TOKEN, response.getToken());
+//            SharedPrefUtils.getInstance(this).putString(Constants.PREF_PROFILE_THRESHOLD, response.getPerUserProfile());
+//
+//            EventBus.getDefault().post(new CloseLoginScreens());
+//            finish();
+//        } catch (Exception e){
+//            showErrorDialog(getString(R.string.error_server_error));
+//        }
+//    }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(CloseLoginScreens event) {

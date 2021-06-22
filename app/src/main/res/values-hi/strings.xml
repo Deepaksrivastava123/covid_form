@@ -94,5 +94,9 @@
     <string name="vaccine_received">कौन सा टीका प्राप्त हुआ</string>
     <string name="existing_users">मौजूदा उपयोगकर्ताओं के लिए परीक्षण प्रारंभ करें:</string>
     <string name="email">ईमेल</string>
+    <string name="success">सफलता</string>
+    <string name="signup_success_message">आपने सफलतापूर्वक पंजीकरण कर लिया है, कृपया जारी रखने के लिए लॉगिन करें</string>
+    <string name="history">Tests History</string>
+    <string name="download_report">Download Report</string>
 
 </resources>

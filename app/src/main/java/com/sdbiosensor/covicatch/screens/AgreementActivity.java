@@ -10,6 +10,7 @@ import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 
 public class AgreementActivity extends BaseActivity {
 
+    private boolean hasBeenChecked = false;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,20 +23,24 @@ public class AgreementActivity extends BaseActivity {
         ((CheckBox) findViewById(R.id.check_tnc)).setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                buttonView.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent;
-                        if (getIntent().getSerializableExtra("user") == null) {
-                            intent = new Intent(AgreementActivity.this, FormActivity.class);
-                        } else {
-                            intent = new Intent(AgreementActivity.this, FormProfileActivity.class);
-                            intent.putExtra("user", getIntent().getSerializableExtra("user"));
+
+                if (isChecked && !hasBeenChecked) {
+                    hasBeenChecked = true;
+                    buttonView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent;
+                            if (getIntent().getSerializableExtra("user") == null) {
+                                intent = new Intent(AgreementActivity.this, FormActivity.class);
+                            } else {
+                                intent = new Intent(AgreementActivity.this, FormProfileActivity.class);
+                                intent.putExtra("user", getIntent().getSerializableExtra("user"));
+                            }
+                            startActivity(intent);
+                            finish();
                         }
-                        startActivity(intent);
-                        finish();
-                    }
-                }, 500);
+                    }, 500);
+                }
             }
         });
     }

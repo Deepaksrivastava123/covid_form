@@ -69,7 +69,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private boolean hasOTPVerified = false;
 
 
-    static final int CAMERA_PERMISSIONS_CODE  = 1001;
+    public static final int CAMERA_PERMISSIONS_CODE  = 1001;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,11 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         progress = findViewById(R.id.progress);
         layout_vaccine = findViewById(R.id.layout_vaccine);
 
-        handleMobileEditText();
+        if (Constants.SHOULD_VERIFY_OTP_FORM) {
+            handleMobileEditText();
+        } else {
+            hasOTPVerified = true;
+        }
     }
 
     private void handleMobileEditText() {
@@ -535,6 +539,19 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             }
         }));
 
+        Button noneButton = dialogView.findViewById(R.id.button_none);
+        noneButton.setText("None");
+        noneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tempSelectedList.clear();
+                tempSelectedList.add("None");
+                selectedSymptoms = tempSelectedList;
+                edit_symptoms.setText(Utils.getCsvFromArrayList(selectedSymptoms));
+                alertDialog.dismiss();
+            }
+        });
+
         dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -549,6 +566,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 if (tempSelectedList.contains("Others")) {
                     otherSymptoms = editOthers.getText().toString();
                 }
+                selectedSymptoms.remove("None");
                 edit_symptoms.setText(Utils.getCsvFromArrayList(selectedSymptoms));
                 alertDialog.dismiss();
             }
@@ -593,6 +611,19 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             }
         }));
 
+        Button noneButton = dialogView.findViewById(R.id.button_none);
+        noneButton.setText("None");
+        noneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tempSelectedList.clear();
+                tempSelectedList.add("None");
+                selectedConditions = tempSelectedList;
+                edit_conditions.setText(Utils.getCsvFromArrayList(selectedConditions));
+                alertDialog.dismiss();
+            }
+        });
+
         dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -607,6 +638,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 if (tempSelectedList.contains("Others")) {
                     otherConditions = editOthers.getText().toString();
                 }
+                selectedConditions.remove("None");
                 edit_conditions.setText(Utils.getCsvFromArrayList(selectedConditions));
                 alertDialog.dismiss();
             }

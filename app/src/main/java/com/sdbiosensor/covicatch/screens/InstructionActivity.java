@@ -2,6 +2,7 @@ package com.sdbiosensor.covicatch.screens;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.TextView;
 
@@ -54,6 +55,21 @@ public class InstructionActivity extends BaseActivity {
         }catch (Exception e) {
             e.printStackTrace();
         }
+
+        autoMove();
+    }
+
+    private void autoMove() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (InstructionActivity.this != null &&
+                        mViewPager != null &&
+                        mViewPager.getAdapter() != null) {
+                    mViewPager.setCurrentItem(1, true);
+                }
+            }
+        }, 1500);
     }
 
     private void handleClicks() {

@@ -580,6 +580,19 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             }
         }));
 
+        Button noneButton = dialogView.findViewById(R.id.button_none);
+        noneButton.setText("None");
+        noneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tempSelectedList.clear();
+                tempSelectedList.add("None");
+                selectedSymptoms = tempSelectedList;
+                edit_symptoms.setText(Utils.getCsvFromArrayList(selectedSymptoms));
+                alertDialog.dismiss();
+            }
+        });
+
         dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -594,6 +607,7 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
                 if (tempSelectedList.contains("Others")) {
                     otherSymptoms = editOthers.getText().toString();
                 }
+                selectedSymptoms.remove("None");
                 edit_symptoms.setText(Utils.getCsvFromArrayList(selectedSymptoms));
                 alertDialog.dismiss();
             }
@@ -638,6 +652,19 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             }
         }));
 
+        Button noneButton = dialogView.findViewById(R.id.button_none);
+        noneButton.setText("None");
+        noneButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                tempSelectedList.clear();
+                tempSelectedList.add("None");
+                selectedConditions = tempSelectedList;
+                edit_conditions.setText(Utils.getCsvFromArrayList(selectedConditions));
+                alertDialog.dismiss();
+            }
+        });
+
         dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -652,6 +679,7 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
                 if (tempSelectedList.contains("Others")) {
                     otherConditions = editOthers.getText().toString();
                 }
+                selectedConditions.remove("None");
                 edit_conditions.setText(Utils.getCsvFromArrayList(selectedConditions));
                 alertDialog.dismiss();
             }

@@ -66,7 +66,7 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
                     e.printStackTrace();
                 }
                 SharedPrefUtils.getInstance(PdfCreatorActivity.this).resetAllWithoutLogout();
-                showDialog("Result PDF saved to Downloads as Result.pdf");
+                showDialog("Result PDF saved to Downloads");
             }
 
             @Override

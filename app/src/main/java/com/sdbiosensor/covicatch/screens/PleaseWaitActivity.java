@@ -2,9 +2,13 @@ package com.sdbiosensor.covicatch.screens;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
+import android.provider.Browser;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -20,13 +24,19 @@ import com.sdbiosensor.covicatch.network.models.CreatePatientResponseModel;
 import com.sdbiosensor.covicatch.network.models.GetPatientResponseModel;
 import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
+import com.sdbiosensor.covicatch.utils.Utils;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -194,16 +204,8 @@ public class PleaseWaitActivity extends BaseActivity {
                 }
                 return;
             }
-            moveToTempReport(response.body().getData().getResultStatus());
-            //TODO delete image file
-            //TODO move to actual report screen
-//            String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
-//            SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAllWithoutLogout();
-//            Intent intent = new Intent(PleaseWaitActivity.this, ReportActivity.class);
-//            intent.putExtra("response", new Gson().toJson(response.body()));
-//            intent.putExtra("data", tempString);
-//            startActivity(intent);
-//            finish();
+            openDownloadUrl(response, uniqueId);
+            //moveToTempReport(response.body().getData().getResultStatus());
         } else {
             if (getPatientRetryCount < RESULT_RETRY_COUNT) {
                 new Handler().postDelayed(new Runnable() {
@@ -217,6 +219,72 @@ public class PleaseWaitActivity extends BaseActivity {
                 showErrorDialogWithRetry(response.body().getMessage(), uniqueId);
             }
         }
+    }
+
+    private void openDownloadUrl(Response<GetPatientResponseModel> response, String uniqueId) {
+        if (ApiClient.getBaseInstance(this) != null) {
+            ApiClient.getBaseInstance(this).downloadFile(Constants.CATEGORIES.TESTING_RESULT_PDF.name(), uniqueId).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.errorBody() == null) {
+                        handleDownloadResponse(response);
+                    } else {
+                        showErrorDialogWithRetry(getString(R.string.error_server_error), uniqueId);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    showErrorDialogWithRetry(response.body().getMessage(), uniqueId);
+                }
+            });
+        }
+    }
+
+    private void handleDownloadResponse(Response<ResponseBody> response) {
+        ResponseBody body = response.body();
+        File downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        File file = new File(downloadsPath, "COVI-CATCH-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf");
+
+        InputStream in = null;
+        FileOutputStream out = null;
+        try {
+            try {
+                in = body.byteStream();
+                out = new FileOutputStream(file);
+                int c;
+                while ((c = in.read()) != -1) {
+                    out.write(c);
+                }
+                openResultActivity(file.getAbsolutePath());
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+                showDialog(getString(R.string.error_server_error));
+            }
+            finally {
+                if (in != null) {
+                    in.close();
+
+                }
+                if (out != null) {
+                    out.flush();
+                    out.getFD().sync();
+                    out.close();
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            showDialog(getString(R.string.error_server_error));
+        }
+    }
+
+    private void openResultActivity(String absolutePath) {
+            SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAllWithoutLogout();
+            Intent intent = new Intent(PleaseWaitActivity.this, ReportActivity.class);
+            intent.putExtra("path", absolutePath);
+            startActivity(intent);
+            finish();
     }
 
     private CreatePatientRequestModel getFormRequestModel() {

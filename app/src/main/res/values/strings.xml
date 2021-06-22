@@ -93,5 +93,9 @@
     <string name="vaccine_received">Vaccine Received</string>
     <string name="existing_users">Start test for existing users:</string>
     <string name="email">Email</string>
+    <string name="success">Success</string>
+    <string name="signup_success_message">You have successfully registered, please login to continue</string>
+    <string name="history">Tests History</string>
+    <string name="download_report">Download Report</string>
 
 </resources>
