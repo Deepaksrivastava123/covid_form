@@ -97,5 +97,8 @@
     <string name="signup_success_message">You have successfully registered, please login to continue</string>
     <string name="history">Tests History</string>
     <string name="download_report">Download Report</string>
+    <string name="new_user_create_account">New User - Create Account</string>
+    <string name="existing_user_login_with_otp">Existing User - Login with OTP</string>
+    <string name="select_existing_profile">Select existing profile</string>
 
 </resources>

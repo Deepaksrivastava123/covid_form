@@ -32,6 +32,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".screens.StartActivity"/>
         <activity android:name=".screens.TimerActivity"/>
         <activity android:name=".screens.InstructionActivity" />
         <activity android:name=".screens.AgreementActivity" />

@@ -25,7 +25,7 @@
                 android:paddingBottom="10dp"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:background="@drawable/bg_existing_users">
 
                 <TextView
@@ -40,10 +40,20 @@
                     android:textStyle="bold"
                     android:text="@string/existing_users"/>
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recyclerView"
+                <TextView
+                    android:id="@+id/edit_existing_users"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    android:hint="@string/select_existing_profile"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="17sp"
+                    android:background="@drawable/bg_edittext"
+                    android:drawableEnd="@drawable/ic_arrow_down"/>
 
             </LinearLayout>
 

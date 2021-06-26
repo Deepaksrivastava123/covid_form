@@ -4,13 +4,15 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sdbiosensor.covicatch.R;
-import com.sdbiosensor.covicatch.adapters.ExistingUsersRecyclerAdapter;
+import com.sdbiosensor.covicatch.adapters.ExistingUsersDialogAdapter;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.events.CloseAllScreens;
@@ -31,8 +33,9 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
 
     private int USER_THRESHOLD = 5;        //Default
     private View layout_existing_users;
-    private RecyclerView recyclerView;
+    private TextView edit_existing_users;
     private View progress;
+    private ArrayList<CreatePatientRequestModel> existingUsersList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,7 +54,7 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
 
     private void initView() {
         layout_existing_users = findViewById(R.id.layout_existing_users);
-        recyclerView = findViewById(R.id.recyclerView);
+        edit_existing_users = findViewById(R.id.edit_existing_users);
         progress = findViewById(R.id.progress);
 
         try {
@@ -119,7 +122,39 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
             openHistoryActivity();
         } else if (view.getId() == R.id.button_logout) {
             confirmLogout();
+        } else if (view.getId() == R.id.edit_existing_users) {
+            openExistingUsersDialog();
         }
+    }
+
+    private void openExistingUsersDialog() {
+        if (existingUsersList == null || existingUsersList.isEmpty()) {
+            return;
+        }
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        alertDialog.setView(dialogView);
+
+        RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
+        dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        dialogRecyclerView.setAdapter(new ExistingUsersDialogAdapter(this, existingUsersList, new ExistingUsersDialogAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(CreatePatientRequestModel item, int position) {
+                alertDialog.dismiss();
+                openFormProfileActivity(item);
+            }
+        }));
+
+        dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        alertDialog.show();
     }
 
     private void openFormActivity() {
@@ -155,13 +190,16 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
         if (list.size() >= USER_THRESHOLD) {
             findViewById(R.id.button_form).setVisibility(View.GONE);
         }
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ExistingUsersRecyclerAdapter(this, list, new ExistingUsersRecyclerAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(CreatePatientRequestModel item, int positon) {
-                openFormProfileActivity(item);
-            }
-        }));
+
+        edit_existing_users.setOnClickListener(this);
+        this.existingUsersList = list;
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setAdapter(new ExistingUsersRecyclerAdapter(this, list, new ExistingUsersRecyclerAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(CreatePatientRequestModel item, int positon) {
+//                openFormProfileActivity(item);
+//            }
+//        }));
     }
 
     private void openFormProfileActivity(CreatePatientRequestModel item) {

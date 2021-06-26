@@ -96,7 +96,10 @@
     <string name="email">ईमेल</string>
     <string name="success">सफलता</string>
     <string name="signup_success_message">आपने सफलतापूर्वक पंजीकरण कर लिया है, कृपया जारी रखने के लिए लॉगिन करें</string>
-    <string name="history">Tests History</string>
-    <string name="download_report">Download Report</string>
+    <string name="history">परीक्षा इतिहास</string>
+    <string name="download_report">रिपोर्ट डाउनलोड करें</string>
+    <string name="new_user_create_account">नया उपयोगकर्ता - खाता बनाएं</string>
+    <string name="existing_user_login_with_otp">मौजूदा उपयोगकर्ता - OTP से लॉगिन करें</string>
+    <string name="select_existing_profile">मौजूदा प्रोफ़ाइल का चयन करें</string>
 
 </resources>

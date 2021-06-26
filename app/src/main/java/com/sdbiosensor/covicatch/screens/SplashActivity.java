@@ -63,7 +63,7 @@ public class SplashActivity extends BaseActivity {
                 if (SharedPrefUtils.getInstance(this).getBoolean(Constants.PREF_LOGGED_IN, false)) {
                     intent = new Intent(SplashActivity.this, SelectLanguageActivity.class);
                 } else {
-                    intent = new Intent(SplashActivity.this, LoginActivity.class);
+                    intent = new Intent(SplashActivity.this, StartActivity.class);
                 }
             } else {
                 intent = new Intent(SplashActivity.this, TimerActivity.class);
