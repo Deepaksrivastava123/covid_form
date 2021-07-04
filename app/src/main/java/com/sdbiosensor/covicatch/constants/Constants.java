@@ -8,7 +8,8 @@ public class Constants {
     // old Optima Server URL
     // public static final String BASE_URL = "http://164.52.210.8:9090/covicatch/service/api/";
     // http://159.89.224.69:9090/covicatch/service/swagger-ui/#/API%20services%20for%20Patiensts%20API
-    public static final String BASE_URL = "http://159.89.224.69:9090/covicatch/service/";
+    // public static final String BASE_URL = "http://159.89.224.69:9090/covicatch/service/";
+    public static final String BASE_URL = "https://covi-catch.sdbiosensor.co.in/covicatch/service/";
     public static final String SHARED_PREF_NAME = "shared_pref";
 
     public static final boolean SHOULD_VERIFY_OTP_FORM = false;
