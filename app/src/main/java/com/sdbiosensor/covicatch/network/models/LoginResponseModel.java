@@ -1,23 +1,55 @@
 package com.sdbiosensor.covicatch.network.models;
 
+import java.io.Serializable;
+
 public class LoginResponseModel {
 
-    private String token;
-    private String perUserProfile;
+    private String message;
+    private String status;
+    private Data data;
 
-    public String getToken() {
-        return token;
+    public String getMessage() {
+        return message;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
-    public String getPerUserProfile() {
-        return perUserProfile;
+    public String getStatus() {
+        return status;
     }
 
-    public void setPerUserProfile(String perUserProfile) {
-        this.perUserProfile = perUserProfile;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Data getData() {
+        return data;
+    }
+
+    public void setData(Data data) {
+        this.data = data;
+    }
+
+    public class Data implements Serializable {
+        private String token;
+        private String perUserProfile;
+
+        public String getToken() {
+            return token;
+        }
+
+        public void setToken(String token) {
+            this.token = token;
+        }
+
+        public String getPerUserProfile() {
+            return perUserProfile;
+        }
+
+        public void setPerUserProfile(String perUserProfile) {
+            this.perUserProfile = perUserProfile;
+        }
     }
 }

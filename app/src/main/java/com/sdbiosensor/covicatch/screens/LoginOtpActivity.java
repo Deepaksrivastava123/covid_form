@@ -1,10 +1,13 @@
 package com.sdbiosensor.covicatch.screens;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
@@ -89,8 +92,14 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    private void handleOtpVerifyResponse(String mobileNo, LoginResponseModel response) {
+    private void handleOtpVerifyResponse(String mobileNo, LoginResponseModel responseBody) {
         try {
+            if (!responseBody.getStatus().equals("SUCCESS")) {
+                showFinishDialog(responseBody.getMessage());
+                return;
+            }
+
+            LoginResponseModel.Data response = responseBody.getData();
             Intent intent = new Intent(LoginOtpActivity.this, SelectLanguageActivity.class);
             startActivity(intent);
             SharedPrefUtils.getInstance(this).putString(Constants.PREF_LOGGED_IN_ID, mobileNo);
@@ -103,6 +112,19 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
         } catch (Exception e){
             showErrorDialog(getString(R.string.error_server_error));
         }
+    }
+
+    private void showFinishDialog(String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.error));
+        builder.setMessage(message);
+        builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        builder.create().show();
     }
 
 }
