@@ -20,8 +20,6 @@ import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import com.sdbiosensor.covicatch.utils.Utils;
 
 import org.greenrobot.eventbus.EventBus;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -58,7 +56,7 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
             verifyOtp();
         }
     }
-    
+
     private void verifyOtp() {
         String mobileNo = getIntent().getStringExtra("mobile");
         String otp = edit_otp.getText().toString();
@@ -94,7 +92,9 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
 
     private void handleOtpVerifyResponse(String mobileNo, LoginResponseModel responseBody) {
         try {
-            if (!responseBody.getStatus().equals("SUCCESS")) {
+            if (responseBody == null ||
+                    responseBody.getStatus() == null ||
+                    !responseBody.getStatus().equals("SUCCESS")) {
                 showFinishDialog(responseBody.getMessage());
                 return;
             }
@@ -115,6 +115,9 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void showFinishDialog(String message) {
+        if (message == null || message.isEmpty()) {
+            message = getString(R.string.error_server_error);
+        }
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(getString(R.string.error));
         builder.setMessage(message);
