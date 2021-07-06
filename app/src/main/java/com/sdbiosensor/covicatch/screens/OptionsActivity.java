@@ -95,22 +95,14 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
 
     private void handleProfileResponse(Response<GetProfileResponseModel> response) {
         if (response.body() != null && response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
-
             if (response.body().getData() != null) {
                 ArrayList<CreatePatientRequestModel> list = response.body().getData();
-                if (!list.isEmpty()) {
-                    handleExistingUsers(list);
-                }
+                handleExistingUsers(list);
+            } else {
+                layout_existing_users.setVisibility(View.GONE);
             }
-//            ArrayList<CreatePatientRequestModel> list = new ArrayList<>();
-//            CreatePatientRequestModel model = new CreatePatientRequestModel();
-//            model.setFirstName("Sahib");
-//            model.setLastName("Azad");
-//            model.setDob("06/01/1990");
-//            model.setGender("MALE");
-//            list.add(model);
-//            list.add(model);
-//            handleExistingUsers(list);
+        } else {
+            layout_existing_users.setVisibility(View.GONE);
         }
     }
 
