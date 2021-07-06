@@ -244,7 +244,8 @@ public class PleaseWaitActivity extends BaseActivity {
     private void handleDownloadResponse(Response<ResponseBody> response) {
         ResponseBody body = response.body();
         File downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File file = new File(downloadsPath, "COVI-CATCH-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf");
+        String name = "COVI-CATCH-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf";
+        File file = new File(downloadsPath, name);
 
         InputStream in = null;
         FileOutputStream out = null;
@@ -256,7 +257,7 @@ public class PleaseWaitActivity extends BaseActivity {
                 while ((c = in.read()) != -1) {
                     out.write(c);
                 }
-                openResultActivity(file.getAbsolutePath());
+                openResultActivity(file.getAbsolutePath(), name);
             }
             catch (IOException e) {
                 e.printStackTrace();
@@ -279,12 +280,13 @@ public class PleaseWaitActivity extends BaseActivity {
         }
     }
 
-    private void openResultActivity(String absolutePath) {
-            SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAllWithoutLogout();
-            Intent intent = new Intent(PleaseWaitActivity.this, ReportActivity.class);
-            intent.putExtra("path", absolutePath);
-            startActivity(intent);
-            finish();
+    private void openResultActivity(String absolutePath, String name) {
+        SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAllWithoutLogout();
+        Intent intent = new Intent(PleaseWaitActivity.this, ReportActivity.class);
+        intent.putExtra("path", absolutePath);
+        intent.putExtra("name", name);
+        startActivity(intent);
+        finish();
     }
 
     private CreatePatientRequestModel getFormRequestModel() {
