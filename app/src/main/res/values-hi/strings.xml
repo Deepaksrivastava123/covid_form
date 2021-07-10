@@ -99,5 +99,6 @@
     <string name="new_user_create_account">नया उपयोगकर्ता - खाता बनाएं</string>
     <string name="existing_user_login_with_otp">मौजूदा उपयोगकर्ता - ओटीपी से लॉगिन करें</string>
     <string name="select_existing_profile">मौजूदा प्रोफ़ाइल का चयन करें</string>
+    <string name="contact_support">सहयोग टीम से संपर्क करें</string>
 
 </resources>

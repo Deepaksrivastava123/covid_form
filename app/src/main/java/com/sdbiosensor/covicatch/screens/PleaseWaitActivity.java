@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 
 import com.google.gson.Gson;
+import com.sdbiosensor.covicatch.BuildConfig;
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
@@ -376,15 +377,71 @@ public class PleaseWaitActivity extends BaseActivity {
                 }
             }
         });
-        builder.setNegativeButton(R.string.cancel_and_start_again, new DialogInterface.OnClickListener() {
+//        builder.setNegativeButton(R.string.cancel_and_start_again, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialogInterface, int i) {
+//                SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAll();
+//                startActivity(new Intent(PleaseWaitActivity.this, SplashActivity.class));
+//                finish();
+//            }
+//        });
+        builder.setNegativeButton(R.string.contact_support, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+                String body = getEmailBody();
                 SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAll();
-                startActivity(new Intent(PleaseWaitActivity.this, SplashActivity.class));
+                composeEmail(Constants.CONTACT_SUPPORT_EMAIL,
+                        getString(R.string.app_name) + " : " + BuildConfig.VERSION_NAME,
+                        body);
                 finish();
             }
         });
         builder.create().show();
+    }
+
+    private String getEmailBody() {
+        String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
+        LocalDataModel localDataModel = new Gson().fromJson(tempString, LocalDataModel.class);
+
+        StringBuffer sb = new StringBuffer();
+        sb.append("Name:" + localDataModel.getFirstName() + " " + localDataModel.getLastName() + "\n");
+        sb.append("Address:" + localDataModel.getAddress() + "\n");
+        sb.append("ID Type:" + localDataModel.getId_type() + "\n");
+        sb.append("ID Number:" + localDataModel.getId_no() + "\n");
+        sb.append("Gender:" + localDataModel.getGender() + "\n");
+        sb.append("Mobile:" + localDataModel.getMobile() + "\n");
+        sb.append("Kit Serial Number:" + localDataModel.getQrCode() + "\n");
+        sb.append("Nationality:" + localDataModel.getNationality() + "\n");
+        sb.append("DOB:" + localDataModel.getDob() + "\n");
+        sb.append("Occupation:" + localDataModel.getOccupation() + "\n");
+        sb.append("Contact Number belongs to:" + localDataModel.getContactNumberBelongsTo() + "\n");
+        sb.append("Vaccinated:" + localDataModel.isVaccinated() + "\n");
+        if (localDataModel.isVaccinated()) {
+            sb.append("Vaccine Received:" + localDataModel.getVaccineType());
+        }
+        ArrayList<String> symptomList = localDataModel.getSymptoms();
+        if (symptomList.contains("Others")) {
+            symptomList.add(localDataModel.getOtherSymptoms());
+        }
+        sb.append("Symptoms:" + symptomList);
+
+        ArrayList<String> conditionsList = localDataModel.getConditions();
+        if (conditionsList.contains("Others")) {
+            conditionsList.add(localDataModel.getOtherConditions());
+        }
+        sb.append("Underlying Medical Conditions:" + conditionsList);
+        return sb.toString();
+    }
+
+    public void composeEmail(String address, String subject, String body) {
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{address});
+        intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        //TODO intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(imageToUpload));
+        intent.setData(Uri.parse("mailto:"));
+        startActivity(Intent.createChooser(intent, "Choose an Email client :"));
+        finish();
     }
 
 }

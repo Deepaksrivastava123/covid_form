@@ -11,6 +11,7 @@ public class Constants {
     // public static final String BASE_URL = "http://159.89.224.69:9090/covicatch/service/";
     public static final String BASE_URL = "https://covi-catch.sdbiosensor.co.in/covicatch/service/";
     public static final String SHARED_PREF_NAME = "shared_pref";
+    public static final String CONTACT_SUPPORT_EMAIL = "abc@xyz.com";
 
     public static final boolean SHOULD_VERIFY_OTP_FORM = false;
 
