@@ -4,13 +4,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-
-import com.sdbiosensor.covicatch.R;
 
 
 public class PagerFragment extends Fragment {
@@ -23,30 +19,25 @@ public class PagerFragment extends Fragment {
         return new PagerFragment();
     }
 
-    public static Fragment newInstance(int stringId, int imageId) {
+    public static Fragment newInstance(int viewId) {
         PagerFragment fragment = new PagerFragment();
         Bundle args = new Bundle();
-        args.putInt("stringId", stringId);
-        args.putInt("imageId", imageId);
+        args.putInt("viewId", viewId);
         fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_instruction, container, false);
-        initView();
+        initView(inflater, container);
         return view;
     }
 
-    private void initView() {
+    private void initView(LayoutInflater inflater, ViewGroup container) {
         Bundle args = getArguments();
         if (args != null) {
-            int stringId = args.getInt("stringId");
-            int imageId = args.getInt("imageId");
-
-            ((ImageView) view.findViewById(R.id.image)).setImageResource(imageId);
-            ((TextView) view.findViewById(R.id.text)).setText(stringId);
+            int viewId = args.getInt("viewId");
+            view = inflater.inflate(viewId, container, false);
         }
     }
 

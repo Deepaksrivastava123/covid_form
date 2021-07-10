@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/app_blue">
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="30sp"
+        android:text="6"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="17sp"
+        android:text="The mobile phone will give an alarm at the end of 15 minutes. Click the picture of the test card at 15 minutes."
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/img_instructions_6"
+        android:scaleType="centerInside"/>
+
+    <TextView
+        android:id="@+id/caution"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:background="@color/light_grey"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:drawableStart="@drawable/img_caution"
+        android:text="• Do not read the test result after 30 minutes. It may give false results."
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/arrow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:text="⬇"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/image_2"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/img_instructions_7"
+        android:scaleType="centerInside"/>
+
+    <TextView
+        android:id="@+id/caution_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:background="@color/red"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textSize="17sp"
+        android:text="Wait for the App to analyse and display your Covid-19 test result"
+        android:textStyle="bold" />
+
+</LinearLayout>

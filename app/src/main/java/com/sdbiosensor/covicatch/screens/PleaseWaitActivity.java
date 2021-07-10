@@ -89,7 +89,7 @@ public class PleaseWaitActivity extends BaseActivity {
                     if (response.errorBody() == null) {
                         handleFormResponse(response);
                     } else {
-                        showErrorDialog(getString(R.string.error_server_error));
+                        showErrorDialogWithRetry(getString(R.string.error_server_error), "");
                     }
                 }
 
@@ -124,7 +124,7 @@ public class PleaseWaitActivity extends BaseActivity {
                         Log.v("Debug", "Response: " + new Gson().toJson(response.body()));
                         handleImageResponse(response, uniqueId);
                     } else {
-                        showErrorDialog(getString(R.string.error_server_error));
+                        showErrorDialogWithRetry(getString(R.string.error_server_error), uniqueId);
                     }
                 }
 
@@ -162,7 +162,7 @@ public class PleaseWaitActivity extends BaseActivity {
                                 }
                             }, RESULT_RETRY_DURATION);
                         } else {
-                            showErrorDialog(getString(R.string.error_server_error));
+                            showErrorDialogWithRetry(getString(R.string.error_server_error), uniqueId);
                         }
                     }
                 }

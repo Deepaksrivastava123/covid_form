@@ -45,8 +45,6 @@
     <string name="select_symptom">लक्षण चुनें</string>
     <string name="select_medical_condition">चिकित्सा स्थिति का चयन करें</string>
     <string name="tnc_agreement">मैं समझता/समझती हूं कि मेरे मोबाइल फ़ोन के Covi-Catch ऐप का डेटा भारतीय चिकित्सा अनुसंधान परिषद के साथ साझा किया जाएगा(ICMR)</string>
-    <string name="instruction_1">परीक्षण के साथ आगे बढ़ने से पहले, कृपया अपने आप को परीक्षण से परिचित कराने के लिए किट बॉक्स में दिए गए त्वरित संदर्भ गाइड को ध्यान से पढ़ें</string>
-    <string name="instruction_2">एक बार परीक्षण कैसेट में नमूना जोड़ने के बाद, नीचे स्टार्ट टाइमर बटन दबाएं। परीक्षण कैसेट में नमूना जोड़ने से पहले टाइमर शुरू न करें</string>
     <string name="start_the_timer">टाइमर शुरू करें</string>
 
     <string name="error_server_error">हमें एक तकनीकी त्रुटि का सामना करना पड़ा है। कृपया पुन: प्रयास करें।</string>
@@ -63,7 +61,7 @@
     <string name="voter_id_card">मतदाता पहचान पत्र</string>
     <string name="passport">पासपोर्ट</string>
     <string name="id_card_no">पहचान पत्र क्रमांक</string>
-    <string name="ok">OK</string>
+    <string name="ok">ठीक है</string>
     <string name="countdown_timer">काउंटडाउन टाइमर</string>
     <string name="scan_cassette_qr_code">परीक्षण कैसेट का QR कोड स्कैन करें</string>
     <string name="take_picture">परीक्षण कैसेट की तस्वीर लें</string>
@@ -80,9 +78,9 @@
     <string name="occupation">व्यवसाय</string>
     <string name="district">जिला</string>
     <string name="contact_number_belongs">संपर्क नंबर संबंधित है</string>
-    <string name="login_with_otp">OTP से लॉगिन करें</string>
+    <string name="login_with_otp">ओटीपी से लॉगिन करें</string>
     <string name="new_user">नया उपयोगकर्ता? एक नया खाता बनाएं</string>
-    <string name="otp">OTP दर्ज करें</string>
+    <string name="otp">ओटीपी दर्ज करें</string>
     <string name="show_tests_history">परीक्षण इतिहास दिखाएं</string>
     <string name="initiate_new_test">नया परीक्षण प्रारंभ करें</string>
     <string name="logout">लॉगआउट</string>
@@ -99,7 +97,7 @@
     <string name="history">परीक्षा इतिहास</string>
     <string name="download_report">रिपोर्ट डाउनलोड करें</string>
     <string name="new_user_create_account">नया उपयोगकर्ता - खाता बनाएं</string>
-    <string name="existing_user_login_with_otp">मौजूदा उपयोगकर्ता - OTP से लॉगिन करें</string>
+    <string name="existing_user_login_with_otp">मौजूदा उपयोगकर्ता - ओटीपी से लॉगिन करें</string>
     <string name="select_existing_profile">मौजूदा प्रोफ़ाइल का चयन करें</string>
 
 </resources>

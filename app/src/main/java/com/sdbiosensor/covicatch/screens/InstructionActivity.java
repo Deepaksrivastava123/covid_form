@@ -27,8 +27,9 @@ public class InstructionActivity extends BaseActivity {
 
     //    private AlarmManager alarmManager;
 //    private PendingIntent alarmIntent;
-    private static int NUM_ITEMS = 2;
+    private static int NUM_ITEMS = 6;
     private ViewPager mViewPager;
+    private int currentItem = 1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,11 @@ public class InstructionActivity extends BaseActivity {
                 if (InstructionActivity.this != null &&
                         mViewPager != null &&
                         mViewPager.getAdapter() != null) {
-                    mViewPager.setCurrentItem(1, true);
+                    mViewPager.setCurrentItem(currentItem, true);
+                    currentItem ++;
+                    if (currentItem != NUM_ITEMS) {
+                        autoMove();
+                    }
                 }
             }
         }, 1500);
@@ -112,9 +117,17 @@ public class InstructionActivity extends BaseActivity {
                 default:
                     return PagerFragment.newInstance();
                 case 0:
-                    return PagerFragment.newInstance(R.string.instruction_1, R.drawable.img_instructions_1);
+                    return PagerFragment.newInstance(R.layout.fragment_instruction_1);
                 case 1:
-                    return PagerFragment.newInstance(R.string.instruction_2, R.drawable.img_instructions_2);
+                    return PagerFragment.newInstance(R.layout.fragment_instruction_2);
+                case 2:
+                    return PagerFragment.newInstance(R.layout.fragment_instruction_3);
+                case 3:
+                    return PagerFragment.newInstance(R.layout.fragment_instruction_4);
+                case 4:
+                    return PagerFragment.newInstance(R.layout.fragment_instruction_5);
+                case 5:
+                    return PagerFragment.newInstance(R.layout.fragment_instruction_6);
             }
         }
 
