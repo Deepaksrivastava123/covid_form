@@ -44,7 +44,7 @@ public class Constants {
     }
 
     public enum CONTACT_BELONGS {
-        PATIENT, RELATIVE
+        SELF, RELATIVE
     }
 
     public enum ID_TYPE {

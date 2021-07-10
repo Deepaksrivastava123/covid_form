@@ -415,7 +415,7 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
 
     private void openChooseContactBelongsDialog() {
         ArrayList<String> genderList = new ArrayList<String>();
-        genderList.add(Constants.CONTACT_BELONGS.PATIENT.name());
+        genderList.add(Constants.CONTACT_BELONGS.SELF.name());
         genderList.add(Constants.CONTACT_BELONGS.RELATIVE.name());
 
         LayoutInflater inflater = LayoutInflater.from(this);

@@ -72,10 +72,12 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
     }
 
     private void validateInputs() {
+
+        //
         if (!ValidationUtils.blankValidation(edit_first_name) ||
                 !ValidationUtils.blankValidation(edit_last_name) ||
-                !ValidationUtils.blankValidation(edit_mobile) ||
-                !ValidationUtils.emailValidation(edit_email)) {
+                !ValidationUtils.blankValidation(edit_mobile)) {
+
             return;
         }
         registerUser();
