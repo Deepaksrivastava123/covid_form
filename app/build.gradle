@@ -10,7 +10,7 @@ android {
         applicationId "com.sdbiosensor.covicatch"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
+        versionCode 101
         versionName "1.0"
     }
 
