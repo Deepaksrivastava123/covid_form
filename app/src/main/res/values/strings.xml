@@ -99,5 +99,7 @@
     <string name="existing_user_login_with_otp">Existing User - Login with OTP</string>
     <string name="select_existing_profile">Select existing profile</string>
     <string name="contact_support">Contact Support</string>
+    <string name="scan">Scan</string>
+    <string name="error_otp_incorrect">OTP you entered is not correct</string>
 
 </resources>

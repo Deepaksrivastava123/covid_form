@@ -46,6 +46,7 @@
         <activity android:name=".screens.LoginOtpActivity" />
         <activity android:name=".screens.PdfCreatorActivity" />
         <activity android:name=".screens.HistoryActivity" />
+        <activity android:name=".screens.ScannerActivity" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
@@ -63,6 +64,9 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode" />
     </application>
 
 </manifest>

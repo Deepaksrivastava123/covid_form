@@ -76,7 +76,11 @@ public class LoginOtpActivity extends BaseActivity implements View.OnClickListen
                     if (response.errorBody() == null) {
                         handleOtpVerifyResponse(mobileNo, response.body());
                     } else {
-                        showErrorDialog(getString(R.string.error_server_error));
+                        if (response.code() == 401) {
+                            showErrorDialog(getString(R.string.error_otp_incorrect));
+                        }else {
+                            showErrorDialog(getString(R.string.error_server_error));
+                        }
                     }
                 }
 

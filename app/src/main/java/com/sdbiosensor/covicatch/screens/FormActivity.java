@@ -1,6 +1,7 @@
 package com.sdbiosensor.covicatch.screens;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -18,6 +19,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +30,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.adapters.DistrictRecyclerAdapter;
 import com.sdbiosensor.covicatch.adapters.JsonArrayRecyclerAdapter;
@@ -817,26 +821,46 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 // Grant Permission
             }
         } else {
-
-            new IntentIntegrator(this).initiateScan();
+            Intent intent = new Intent(this, ScannerActivity.class);
+            qrScannerResultLauncher.launch(intent);
+            //new IntentIntegrator(this).initiateScan();
         }
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if(result != null) {
-            if(result.getContents() == null) {
-                showErrorDialog("Cancelled");
-            } else {
-                saveLocalModel(result.getContents());
-                startActivity(new Intent(FormActivity.this, InstructionActivity.class));
-                finish();
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-    }
+    ActivityResultLauncher<Intent> qrScannerResultLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            new ActivityResultCallback<ActivityResult>() {
+                @Override
+                public void onActivityResult(ActivityResult result) {
+                    if (result.getResultCode() == RESULT_CANCELED) {
+                        showErrorDialog("QR Code scanning cancelled");
+                        return;
+                    }
+                    if (result.getResultCode() == Activity.RESULT_OK) {
+                        Intent data = result.getData();
+                        String qrString = data.getStringExtra("qr");
+                        saveLocalModel(qrString);
+                        startActivity(new Intent(FormActivity.this, InstructionActivity.class));
+                        finish();
+                    }
+                }
+            });
+
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+//        if(result != null) {
+//            if(result.getContents() == null) {
+//                showErrorDialog("Cancelled");
+//            } else {
+//                saveLocalModel(result.getContents());
+//                startActivity(new Intent(FormActivity.this, InstructionActivity.class));
+//                finish();
+//            }
+//        } else {
+//            super.onActivityResult(requestCode, resultCode, data);
+//        }
+//    }
 
     private void saveLocalModel(String qrCode) {
         LocalDataModel model = new LocalDataModel();
