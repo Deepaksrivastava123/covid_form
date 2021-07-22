@@ -91,9 +91,20 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void moveToOtpScreen(Response<GenericResponseModel> response, String mobileNo) {
-        Intent intent = new Intent(this, LoginOtpActivity.class);
-        intent.putExtra("mobile", mobileNo);
-        startActivity(intent);
+        GenericResponseModel responseBody = response.body();
+        try {
+            if (responseBody == null ||
+                    responseBody.getStatus() == null ||
+                    !responseBody.getStatus().equals("SUCCESS")) {
+                showErrorDialog(responseBody.getMessage());
+                return;
+            }
+            Intent intent = new Intent(this, LoginOtpActivity.class);
+            intent.putExtra("mobile", mobileNo);
+            startActivity(intent);
+        } catch (Exception e){
+            showErrorDialog(getString(R.string.error_server_error));
+        }
     }
 
     private void moveToRegisterScreen() {

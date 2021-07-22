@@ -953,7 +953,9 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
-                    new IntentIntegrator(this).initiateScan();
+                    //new IntentIntegrator(this).initiateScan();
+                    Intent intent = new Intent(this, ScannerActivity.class);
+                    qrScannerResultLauncher.launch(intent);
                 }  else {
                     // Explain to the user that the feature is unavailable because
                     // the features requires a permission that the user has denied.

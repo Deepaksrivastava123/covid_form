@@ -76,12 +76,17 @@ public class ScannerActivity extends BaseActivity {
                     public void onSuccess(List<Barcode> barcodes) {
                         if (barcodes.isEmpty()) {
                             showErrorDialog("No QR codes scanned");
+                            return;
                         }
 
                         String scannedBarcode = barcodes.get(0).getRawValue();
+                        if (scannedBarcode.isEmpty()) {
+                            showErrorDialog("No QR codes scanned");
+                            return;
+                        }
+
                         Intent data = new Intent();
-                        Bundle bundle = new Bundle();
-                        bundle.putString("qr", scannedBarcode);
+                        data.putExtra("qr", scannedBarcode);
                         setResult(RESULT_OK, data);
                         finish();
                     }
