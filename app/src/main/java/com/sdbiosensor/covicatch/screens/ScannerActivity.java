@@ -28,6 +28,10 @@ public class ScannerActivity extends BaseActivity {
 
     private Fotoapparat fotoapparat;
     private CameraView cameraView;
+    private BarcodeScanner scanner;
+    private View progress;
+    private static final int RESCAN_THRESHOLD = 20;
+    private int rescanCount = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,13 @@ public class ScannerActivity extends BaseActivity {
     }
 
     private void initView() {
+        BarcodeScannerOptions options = new BarcodeScannerOptions.Builder().setBarcodeFormats(
+                Barcode.FORMAT_QR_CODE).build();
+
+        scanner = BarcodeScanning.getClient(options);
+
+        progress = findViewById(R.id.progress);
+
         cameraView = findViewById(R.id.cameraView);
 
         fotoapparat = Fotoapparat.with(this)
@@ -51,12 +62,16 @@ public class ScannerActivity extends BaseActivity {
         findViewById(R.id.button_scan).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fotoapparat.takePicture().toBitmap().whenDone(new WhenDoneListener<BitmapPhoto>() {
-                    @Override
-                    public void whenDone(BitmapPhoto bitmapPhoto) {
-                        scanImage(bitmapPhoto);
-                    }
-                });
+                takePicture();
+            }
+        });
+    }
+
+    private void takePicture() {
+        fotoapparat.takePicture().toBitmap().whenDone(new WhenDoneListener<BitmapPhoto>() {
+            @Override
+            public void whenDone(BitmapPhoto bitmapPhoto) {
+                scanImage(bitmapPhoto);
             }
         });
     }
@@ -67,21 +82,28 @@ public class ScannerActivity extends BaseActivity {
     }
 
     private void scanBarcodes(InputImage image) {
-        BarcodeScannerOptions options = new BarcodeScannerOptions.Builder().setBarcodeFormats(
-                Barcode.FORMAT_ALL_FORMATS).build();
-        BarcodeScanner scanner = BarcodeScanning.getClient(options);
         scanner.process(image)
                 .addOnSuccessListener(new OnSuccessListener<List<Barcode>>() {
                     @Override
                     public void onSuccess(List<Barcode> barcodes) {
                         if (barcodes.isEmpty()) {
-                            showErrorDialog("No QR codes scanned");
+                            if (rescanCount < RESCAN_THRESHOLD) {
+                                rescanCount++;
+                                takePicture();
+                            } else {
+                                showErrorDialog("No QR codes scanned");
+                            }
                             return;
                         }
 
                         String scannedBarcode = barcodes.get(0).getRawValue();
                         if (scannedBarcode.isEmpty()) {
-                            showErrorDialog("No QR codes scanned");
+                            if (rescanCount < RESCAN_THRESHOLD) {
+                                rescanCount++;
+                                takePicture();
+                            } else {
+                                showErrorDialog("No QR codes scanned");
+                            }
                             return;
                         }
 
