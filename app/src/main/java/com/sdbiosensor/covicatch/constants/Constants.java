@@ -15,6 +15,8 @@ public class Constants {
 
     public static final boolean SHOULD_VERIFY_OTP_FORM = false;
 
+    public static final boolean USE_ZXING = true;
+
     public static final String PREF_LANG = "PREF_LANG";
     public static final String PREF_LANG_SELECTED = "PREF_LANG_SELECTED";
     public static final String PREF_LOCAL_MODEL = "PREF_LOCAL_MODEL";

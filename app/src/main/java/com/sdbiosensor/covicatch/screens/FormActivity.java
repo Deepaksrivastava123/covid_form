@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.gson.Gson;
 import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.adapters.DistrictRecyclerAdapter;
 import com.sdbiosensor.covicatch.adapters.JsonArrayRecyclerAdapter;
@@ -821,9 +822,12 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 // Grant Permission
             }
         } else {
-            Intent intent = new Intent(this, ScannerActivity.class);
-            qrScannerResultLauncher.launch(intent);
-            //new IntentIntegrator(this).initiateScan();
+            if (Constants.USE_ZXING) {
+                new IntentIntegrator(this).initiateScan();
+            } else {
+                Intent intent = new Intent(this, ScannerActivity.class);
+                qrScannerResultLauncher.launch(intent);
+            }
         }
     }
 
@@ -846,21 +850,21 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 }
             });
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-//        if(result != null) {
-//            if(result.getContents() == null) {
-//                showErrorDialog("Cancelled");
-//            } else {
-//                saveLocalModel(result.getContents());
-//                startActivity(new Intent(FormActivity.this, InstructionActivity.class));
-//                finish();
-//            }
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                showErrorDialog("Cancelled");
+            } else {
+                saveLocalModel(result.getContents());
+                startActivity(new Intent(FormActivity.this, InstructionActivity.class));
+                finish();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     private void saveLocalModel(String qrCode) {
         LocalDataModel model = new LocalDataModel();

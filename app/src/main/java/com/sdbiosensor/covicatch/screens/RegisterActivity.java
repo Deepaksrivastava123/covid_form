@@ -1,32 +1,22 @@
 package com.sdbiosensor.covicatch.screens;
 
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AlertDialog;
 
 import com.sdbiosensor.covicatch.R;
-import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.events.CloseLoginScreens;
 import com.sdbiosensor.covicatch.network.ApiClient;
-import com.sdbiosensor.covicatch.network.models.LoginRequestModel;
-import com.sdbiosensor.covicatch.network.models.LoginResponseModel;
 import com.sdbiosensor.covicatch.network.models.RegisterRequestModel;
 import com.sdbiosensor.covicatch.network.models.RegisterResponseModel;
-import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import com.sdbiosensor.covicatch.utils.Utils;
 import com.sdbiosensor.covicatch.utils.ValidationUtils;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sdbiosensor.covicatch.R;
-import com.sdbiosensor.covicatch.network.models.CreatePatientRequestModel;
 import com.sdbiosensor.covicatch.network.models.GetHistoryResponseModel;
 
 import java.util.ArrayList;

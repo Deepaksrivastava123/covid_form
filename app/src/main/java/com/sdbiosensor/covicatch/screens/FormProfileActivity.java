@@ -869,9 +869,12 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
                 // Grant Permission
             }
         } else {
-            Intent intent = new Intent(this, ScannerActivity.class);
-            qrScannerResultLauncher.launch(intent);
-//            new IntentIntegrator(this).initiateScan();
+            if (Constants.USE_ZXING) {
+                new IntentIntegrator(this).initiateScan();
+            } else {
+                Intent intent = new Intent(this, ScannerActivity.class);
+                qrScannerResultLauncher.launch(intent);
+            }
         }
     }
 
@@ -894,21 +897,21 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
                 }
             });
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-//        if(result != null) {
-//            if(result.getContents() == null) {
-//                showErrorDialog("Cancelled");
-//            } else {
-//                saveLocalModel(result.getContents());
-//                startActivity(new Intent(FormProfileActivity.this, InstructionActivity.class));
-//                finish();
-//            }
-//        } else {
-//            super.onActivityResult(requestCode, resultCode, data);
-//        }
-//    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if(result != null) {
+            if(result.getContents() == null) {
+                showErrorDialog("Cancelled");
+            } else {
+                saveLocalModel(result.getContents());
+                startActivity(new Intent(FormProfileActivity.this, InstructionActivity.class));
+                finish();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     private void saveLocalModel(String qrCode) {
         LocalDataModel model = new LocalDataModel();
