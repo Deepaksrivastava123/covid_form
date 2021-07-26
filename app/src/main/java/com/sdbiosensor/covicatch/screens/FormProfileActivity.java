@@ -147,13 +147,22 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             idTypeList.add(getString(R.string.pan_card));
             idTypeList.add(getString(R.string.voter_id_card));
             idTypeList.add(getString(R.string.passport));
-            for (int i = 0; i < idTypeList.size(); i++) {
-                if (existingUser.getIdType().equalsIgnoreCase(idTypeList.get(i))) {
+
+            ArrayList<String> idTypeKeyList = new ArrayList<String>();
+            idTypeKeyList.add(Constants.ID_TYPE.AADHAR_CARD.name());
+            idTypeKeyList.add(Constants.ID_TYPE.DRIVING_LICENSE.name());
+            idTypeKeyList.add(Constants.ID_TYPE.PAN_CARD.name());
+            idTypeKeyList.add(Constants.ID_TYPE.VOTER_ID_CARD.name());
+            idTypeKeyList.add(Constants.ID_TYPE.PASSPORT.name());
+            for (int i = 0; i < idTypeKeyList.size(); i++) {
+                if (existingUser.getIdType().equalsIgnoreCase(idTypeKeyList.get(i))) {
                     selectedIdType = i;
                     break;
                 }
             }
-            edit_id_type.setText(existingUser.getIdType());
+            if (selectedIdType != -1) {
+                edit_id_type.setText(idTypeList.get(selectedIdType));
+            }
             edit_occupation.setText(existingUser.getOccupation());
             edit_mobile.setText(existingUser.getMobileNo());
             edit_address.setText(existingUser.getAddress().getAddress1());
