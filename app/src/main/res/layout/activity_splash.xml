@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/img_logo"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="300dp"
         android:layout_centerInParent="true"
         android:layout_margin="10dp"
         android:src="@drawable/img_app_logo"
@@ -21,10 +21,12 @@
         android:id="@+id/img_bottom_logo"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:padding="20dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="10dp"
-        android:src="@drawable/img_company_logo"
-        android:scaleType="centerInside"/>
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:scaleType="centerInside"
+        android:src="@drawable/img_company_logo" />
 
 </RelativeLayout>

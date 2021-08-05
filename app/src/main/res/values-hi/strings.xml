@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Covi-Catch</string>
+    <string name="app_name">Rapid Antigen Test</string>
     <string name="covid_form">Covid Form</string>
     <string name="patient_name">रोगी का नाम</string>
     <string name="first_name">पहला नाम</string>
