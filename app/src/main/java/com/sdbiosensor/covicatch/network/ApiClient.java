@@ -70,6 +70,11 @@ public class ApiClient {
                     //TODO uncomment 2 lines to see response, download PDF does not work when this is uncommented
 //                    Object[] clones = cloneResponseBody(response);
 //                    response = (Response) clones[1];
+
+                    if (response.code() == 401 || response.code() == 403) {
+                        Log.d("Covi-Catch", "Authorization error, relogin needed");
+                    }
+
                     return response;
                 } else {
                     return chain.proceed(chain.request());

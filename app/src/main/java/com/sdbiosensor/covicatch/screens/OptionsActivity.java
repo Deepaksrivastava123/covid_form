@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -81,6 +82,7 @@ public class OptionsActivity extends BaseActivity implements View.OnClickListene
                         handleProfileResponse(response);
                     } else {
                         //Do nothing
+                        Toast.makeText(OptionsActivity.this, "Unkown error, logout and relogin again.", Toast.LENGTH_LONG).show();
                     }
                 }
 

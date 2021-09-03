@@ -136,14 +136,19 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             idTypeKeyList.add(Constants.ID_TYPE.VOTER_ID_CARD.name());
             idTypeKeyList.add(Constants.ID_TYPE.PASSPORT.name());
             for (int i = 0; i < idTypeKeyList.size(); i++) {
-                if (existingUser.getIdType().equalsIgnoreCase(idTypeKeyList.get(i))) {
+                if(existingUser.getIdType()!=null && existingUser.getIdType().equalsIgnoreCase(idTypeKeyList.get(i)))
+                {
                     selectedIdType = i;
                     break;
                 }
             }
             if (selectedIdType != -1) {
                 edit_id_type.setText(idTypeList.get(selectedIdType));
+            } else {
+                selectedIdType = 0;
+                edit_id_type.setText(idTypeList.get(selectedIdType));
             }
+
             edit_occupation.setText(existingUser.getOccupation());
             edit_mobile.setText(existingUser.getMobileNo());
             edit_address.setText(existingUser.getAddress().getAddress1());
@@ -595,9 +600,12 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
                         grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission is granted. Continue the action or workflow
                     // in your app.
-                    //new IntentIntegrator(this).initiateScan();
-                    Intent intent = new Intent(this, ScannerActivity.class);
-                    qrScannerResultLauncher.launch(intent);
+                    if (Constants.USE_ZXING) {
+                        new IntentIntegrator(this).initiateScan();
+                    } else {
+                        Intent intent = new Intent(this, ScannerActivity.class);
+                        qrScannerResultLauncher.launch(intent);
+                    }
                 }  else {
                     // Explain to the user that the feature is unavailable because
                     // the features requires a permission that the user has denied.
