@@ -387,7 +387,7 @@ public class PleaseWaitActivity extends BaseActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 String body = getEmailBody();
-                SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAll();
+                SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAllWithoutLogout();
                 composeEmail(Constants.CONTACT_SUPPORT_EMAIL,
                         getString(R.string.app_name) + " : " + BuildConfig.VERSION_NAME,
                         body);
