@@ -144,14 +144,18 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             idTypeKeyList.add(Constants.ID_TYPE.VOTER_ID_CARD.name());
             idTypeKeyList.add(Constants.ID_TYPE.PASSPORT.name());
             for (int i = 0; i < idTypeKeyList.size(); i++) {
-                if (existingUser.getIdType().equalsIgnoreCase(idTypeKeyList.get(i))) {
+                if (existingUser.getIdType()!=null && existingUser.getIdType().equalsIgnoreCase(idTypeKeyList.get(i))) {
                     selectedIdType = i;
                     break;
                 }
             }
             if (selectedIdType != -1) {
                 edit_id_type.setText(idTypeList.get(selectedIdType));
+            } else {
+                selectedIdType = 0;
+                edit_id_type.setText(idTypeList.get(selectedIdType));
             }
+
             edit_occupation.setText(existingUser.getOccupation());
             edit_mobile.setText(existingUser.getMobileNo());
             edit_address.setText(existingUser.getAddress().getAddress1());
