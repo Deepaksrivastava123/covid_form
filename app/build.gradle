@@ -2,12 +2,14 @@ plugins {
     id 'com.android.application'
 }
 
+apply plugin: 'com.google.gms.google-services'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.sdbiosensor.covicatch"
+        applicationId "com.dotvik.covify"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 101
@@ -45,4 +47,8 @@ dependencies {
     implementation 'net.alexandroid.utils:indicators:1.6'
     implementation 'com.google.android.gms:play-services-mlkit-barcode-scanning:16.2.0'
     implementation 'io.fotoapparat:fotoapparat:2.7.0'
+
+    implementation platform('com.google.firebase:firebase-bom:28.4.0')
+    implementation 'com.google.firebase:firebase-messaging'
+    implementation 'com.google.firebase:firebase-analytics'
 }

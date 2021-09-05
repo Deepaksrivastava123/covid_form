@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Rapid Antigen Test</string>
+    <string name="app_name">Covify</string>
     <string name="covid_form">Covid Form</string>
     <string name="patient_name">Patient Name</string>
     <string name="first_name">First Name</string>
@@ -101,5 +101,11 @@
     <string name="contact_support">Contact Support</string>
     <string name="scan">Scan</string>
     <string name="error_otp_incorrect">OTP you entered is not correct</string>
+    <string name="instructions">Instructions</string>
+
+    <string name="call_us"><u>Call us at 1234567890</u></string>
+    <string name="mail_us"><u>Email us at abc@xyz.com</u></string>
+    <string name="sms_us"><u>SMS us at 1234567890</u></string>
+    <string name="see_video"><u>See Video</u></string>
 
 </resources>

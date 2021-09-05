@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:gravity="center_horizontal"
+    android:background="@color/white">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="@string/instructions"
+        android:textAllCaps="false"
+        android:textColor="@color/app_blue"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="13dp">
+
+            <net.alexandroid.utils.indicators.IndicatorsView
+                android:id="@+id/indicatorsView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                app:indicatorSelectedSize="15dp"
+                app:indicatorSize="12dp"
+                app:paddingBetweenIndicators="10dp"
+                app:selectedDrawable="@drawable/ic_indicator_selected_blue"
+                app:unSelectedDrawable="@drawable/ic_indicator_unselected_blue"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_see_video"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_marginBottom="20dp"
+        android:text="@string/see_video"
+        android:textAllCaps="false"
+        android:textColor="@color/app_blue"
+        android:textSize="17sp"
+        android:textStyle="italic"
+        android:background="@drawable/animation_ripple"/>
+
+</LinearLayout>

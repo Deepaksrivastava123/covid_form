@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/number"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textColor="@color/app_blue"
+        android:textSize="30sp"
+        android:text="5"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textAllCaps="false"
+        android:textColor="@color/app_blue"
+        android:textSize="17sp"
+        android:text="Apply 3 drops of extracted specimen to the specimen well of the cassette."
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/image"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:src="@drawable/img_instructions_5"
+        android:scaleType="centerInside"/>
+
+    <TextView
+        android:id="@+id/caution"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textColor="@color/black"
+        android:background="@color/light_grey"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:drawableStart="@drawable/img_caution"
+        android:text="• Adding incorrect volume of specimen may give false or invalid results."
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/caution_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:background="@color/red"
+        android:layout_marginTop="10dp"
+        android:padding="10dp"
+        android:textSize="17sp"
+        android:text="After adding the specimen, start the timer in the app."
+        android:textStyle="bold" />
+
+</LinearLayout>

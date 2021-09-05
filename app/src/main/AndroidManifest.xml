@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.sdbiosensor.covicatch">
+    package="com.dotvik.covify">
 
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -24,35 +24,37 @@
         android:theme="@style/Theme.Covid_form"
         android:requestLegacyExternalStorage="true"
         >
-        <activity android:name=".screens.SplashActivity">
+        <activity android:name="com.dotvik.covify.screens.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".screens.StartActivity"/>
-        <activity android:name=".screens.TimerActivity"/>
-        <activity android:name=".screens.InstructionActivity" />
-        <activity android:name=".screens.AgreementActivity" />
-        <activity android:name=".screens.PleaseWaitActivity" />
-        <activity android:name=".screens.ReportActivity" />
-        <activity android:name=".screens.RegisterActivity" />
-        <activity android:name=".screens.OptionsActivity" />
-        <activity android:name=".screens.FormActivity" />
-        <activity android:name=".screens.FormProfileActivity" />
-        <activity android:name=".screens.SelectLanguageActivity" />
-        <activity android:name=".screens.LoginActivity" />
-        <activity android:name=".screens.LoginOtpActivity" />
-        <activity android:name=".screens.PdfCreatorActivity" />
-        <activity android:name=".screens.HistoryActivity" />
-        <activity android:name=".screens.ScannerActivity" />
+        <activity android:name="com.dotvik.covify.screens.StartActivity"/>
+        <activity android:name="com.dotvik.covify.screens.TimerActivity"/>
+        <activity android:name="com.dotvik.covify.screens.InstructionActivity" />
+        <activity android:name="com.dotvik.covify.screens.AgreementActivity" />
+        <activity android:name="com.dotvik.covify.screens.PleaseWaitActivity" />
+        <activity android:name="com.dotvik.covify.screens.ReportActivity" />
+        <activity android:name="com.dotvik.covify.screens.RegisterActivity" />
+        <activity android:name="com.dotvik.covify.screens.OptionsActivity" />
+        <activity android:name="com.dotvik.covify.screens.FormActivity" />
+        <activity android:name="com.dotvik.covify.screens.FormProfileActivity" />
+        <activity android:name="com.dotvik.covify.screens.SelectLanguageActivity" />
+        <activity android:name="com.dotvik.covify.screens.LoginActivity" />
+        <activity android:name="com.dotvik.covify.screens.LoginOtpActivity" />
+        <activity android:name="com.dotvik.covify.screens.PdfCreatorActivity" />
+        <activity android:name="com.dotvik.covify.screens.HistoryActivity" />
+        <activity android:name="com.dotvik.covify.screens.ScannerActivity" />
+        <activity android:name="com.dotvik.covify.screens.ContactSupportActivity" />
+        <activity android:name="com.dotvik.covify.screens.InstructionReadmeActivity" />
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
             tools:replace="screenOrientation" />
         <receiver
-            android:name=".receiver.AlarmReceiver"
+            android:name="com.dotvik.covify.receiver.AlarmReceiver"
             android:enabled="true"
             android:process=":remote"/>
         <provider
@@ -67,6 +69,13 @@
         <meta-data
             android:name="com.google.mlkit.vision.DEPENDENCIES"
             android:value="barcode" />
+        <service
+            android:name=".fcm.FCMService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>
