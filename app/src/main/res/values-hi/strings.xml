@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Rapid Antigen Test</string>
+    <string name="app_name">Covify</string>
     <string name="covid_form">Covid Form</string>
     <string name="patient_name">रोगी का नाम</string>
     <string name="first_name">पहला नाम</string>
@@ -102,5 +102,11 @@
     <string name="contact_support">सहयोग टीम से संपर्क करें</string>
     <string name="scan">स्कैन</string>
     <string name="error_otp_incorrect">आपके द्वारा दर्ज किया गया ओटीपी सही नहीं है</string>
+    <string name="instructions">निर्देश</string>
+
+    <string name="call_us"><u>हमें 1234567890 पर कॉल करें</u></string>
+    <string name="mail_us"><u>हमें abc@xyz.com पर ईमेल करें</u></string>
+    <string name="sms_us"><u>हमें 1234567890 पर SMS करें</u></string>
+    <string name="see_video"><u>वीडियो देखें</u></string>
 
 </resources>

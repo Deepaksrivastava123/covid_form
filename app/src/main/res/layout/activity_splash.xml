@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/app_blue"
     android:orientation="vertical"
-    tools:context="com.sdbiosensor.covicatch.screens.SplashActivity">
+    tools:context="com.dotvik.covify.screens.SplashActivity">
 
     <ImageView
         android:id="@+id/img_logo"

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1081008195325",
+    "project_id": "covify-c96cb",
+    "storage_bucket": "covify-c96cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1081008195325:android:ba3ebe4d99f4264d132094",
+        "android_client_info": {
+          "package_name": "com.dotvik.covify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1081008195325-vm474s57uc7ng8cejrvddsd9eime7ig1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJrAl4N3gDn89LC9owz9ccXW1XoMqiiy0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1081008195325-vm474s57uc7ng8cejrvddsd9eime7ig1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
