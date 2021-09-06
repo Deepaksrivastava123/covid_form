@@ -146,7 +146,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
             }
         } else {
             ImagePicker.with(this)
-                    .compress(2048)
+                    .compress(1024)
                     .cameraOnly()
                     .crop(1080, 1920)
                     .start();

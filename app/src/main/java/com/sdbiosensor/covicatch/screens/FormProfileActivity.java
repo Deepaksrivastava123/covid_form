@@ -457,7 +457,8 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             }
         } else {
             if (Constants.USE_ZXING) {
-                new IntentIntegrator(this).initiateScan();
+                // new IntentIntegrator(this).initiateScan();
+                Utils.launchZxingQRScanner(this);
             } else {
                 Intent intent = new Intent(this, ScannerActivity.class);
                 qrScannerResultLauncher.launch(intent);
@@ -601,7 +602,9 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                     if (Constants.USE_ZXING) {
-                        new IntentIntegrator(this).initiateScan();
+                        // new IntentIntegrator(this).initiateScan();
+                        Utils.launchZxingQRScanner(this);
+
                     } else {
                         Intent intent = new Intent(this, ScannerActivity.class);
                         qrScannerResultLauncher.launch(intent);

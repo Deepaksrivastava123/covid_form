@@ -102,5 +102,7 @@
     <string name="contact_support">सहयोग टीम से संपर्क करें</string>
     <string name="scan">स्कैन</string>
     <string name="error_otp_incorrect">आपके द्वारा दर्ज किया गया ओटीपी सही नहीं है</string>
+    <string name="turn_on_flashlight">टॉर्च जलाए</string>
+    <string name="turn_off_flashlight">टॉर्च बुझाये</string>
 
 </resources>

@@ -24,13 +24,23 @@
         android:theme="@style/Theme.Covid_form"
         android:requestLegacyExternalStorage="true"
         >
+
         <activity android:name=".screens.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--
+        <activity android:name=".screens.TestZxing" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        -->
+
         <activity android:name=".screens.StartActivity"/>
         <activity android:name=".screens.TimerActivity"/>
         <activity android:name=".screens.InstructionActivity" />
@@ -47,6 +57,7 @@
         <activity android:name=".screens.PdfCreatorActivity" />
         <activity android:name=".screens.HistoryActivity" />
         <activity android:name=".screens.ScannerActivity" />
+        <activity android:name=".screens.CustomScannerActivity"/>
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"

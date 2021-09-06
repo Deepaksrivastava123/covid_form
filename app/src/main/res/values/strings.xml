@@ -102,4 +102,7 @@
     <string name="scan">Scan</string>
     <string name="error_otp_incorrect">OTP you entered is not correct</string>
 
+    <string name="turn_on_flashlight">Flash Light On</string>
+    <string name="turn_off_flashlight">Flash Light Off</string>
+
 </resources>
