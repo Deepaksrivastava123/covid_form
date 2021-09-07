@@ -1,7 +1,9 @@
 package com.dotvik.covify.screens;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,7 +12,10 @@ import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.github.dhaval2404.imagepicker.ImagePicker;
 import com.google.gson.Gson;
 import com.dotvik.covify.BuildConfig;
 import com.dotvik.covify.R;
@@ -174,7 +179,12 @@ public class PleaseWaitActivity extends BaseActivity {
                 }
                 return;
             }
-            openDownloadUrl(response, uniqueId);
+            if (response.body().getData().getResultStatus().equalsIgnoreCase("INVALID") ||
+                    response.body().getData().getResultStatus().equalsIgnoreCase("Inconclusive")) {
+                showDialogToReuploadImage();
+            } else {
+                openDownloadUrl(response, uniqueId);
+            }
             //moveToTempReport(response.body().getData().getResultStatus());
         } else {
             if (getPatientRetryCount < RESULT_RETRY_COUNT) {
@@ -342,6 +352,72 @@ public class PleaseWaitActivity extends BaseActivity {
         intent.setData(Uri.parse("mailto:"));
         startActivity(Intent.createChooser(intent, "Choose an Email client :"));
         finish();
+    }
+
+    private void showDialogToReuploadImage() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(getString(R.string.error));
+        builder.setMessage(R.string.error_reupload_image);
+        builder.setCancelable(false);
+        builder.setPositiveButton(R.string.retry, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                clickPhoto();
+            }
+        });
+        builder.setNegativeButton(R.string.contact_support, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                String body = getEmailBody();
+                SharedPrefUtils.getInstance(PleaseWaitActivity.this).resetAllWithoutLogout();
+                composeEmail(Constants.CONTACT_SUPPORT_EMAIL,
+                        getString(R.string.app_name) + " : " + BuildConfig.VERSION_NAME,
+                        body);
+                finish();
+            }
+        });
+        builder.create().show();
+    }
+
+    private void clickPhoto() {
+
+        if(ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                &&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
+        {
+            if (ActivityCompat.shouldShowRequestPermissionRationale
+                    (this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)) {
+                // check again permission
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                , Manifest.permission.CAMERA},
+                        TimerActivity.CAMERA_PERMISSIONS_CODE);
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE
+                                , Manifest.permission.CAMERA},
+                        TimerActivity.CAMERA_PERMISSIONS_CODE);
+                // Grant Permission
+            }
+        } else {
+            ImagePicker.with(this)
+                    .compress(1024)
+                    .cameraOnly()
+                    .crop(1080, 1920)
+                    .start();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
+        if (resultCode == RESULT_OK) {
+            imageToUpload = data.getData().getPath();
+            sendImageData(SharedPrefUtils.getInstance(this).getString(Constants.PREF_UNIQUE_ID, ""));
+        }
     }
 
 }

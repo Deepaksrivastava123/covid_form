@@ -49,6 +49,7 @@
         <activity android:name="com.dotvik.covify.screens.ScannerActivity" />
         <activity android:name="com.dotvik.covify.screens.ContactSupportActivity" />
         <activity android:name="com.dotvik.covify.screens.InstructionReadmeActivity" />
+        <activity android:name=".screens.CustomScannerActivity"/>
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"
             android:screenOrientation="portrait"
