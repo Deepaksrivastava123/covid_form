@@ -4,12 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.dotvik.covify.constants.Constants;
 import com.dotvik.covify.events.CloseAllScreens;
 import com.dotvik.covify.screens.SplashActivity;
+import com.dotvik.covify.utils.SharedPrefUtils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.dotvik.covify.constants.Constants;
-import com.dotvik.covify.utils.SharedPrefUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -75,19 +75,12 @@ public class ApiClient {
                     //TODO uncomment 2 lines to see response, download PDF does not work when this is uncommented
 //                    Object[] clones = cloneResponseBody(response);
 //                    response = (Response) clones[1];
-<<<<<<< HEAD:app/src/main/java/com/sdbiosensor/covicatch/network/ApiClient.java
-
                     if (response.code() == 401 || response.code() == 403) {
                         Log.d("Covi-Catch", "Authorization error, relogin needed");
-                    }
-
-=======
-                    if (response.code() == 401 || response.code() == 403) {
                         SharedPrefUtils.getInstance(context).resetAll();
                         EventBus.getDefault().post(new CloseAllScreens());
                         context.startActivity(new Intent(context, SplashActivity.class));
                     }
->>>>>>> 5a38f3ac6be6601e8ce6e8b5c394b10bcbaf8246:app/src/main/java/com/dotvik/covify/network/ApiClient.java
                     return response;
                 } else {
                     return chain.proceed(chain.request());

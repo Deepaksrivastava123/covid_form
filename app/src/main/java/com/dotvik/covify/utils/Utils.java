@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.view.inputmethod.InputMethodManager;
 
+import com.dotvik.covify.screens.CustomScannerActivity;
+import com.google.zxing.integration.android.IntentIntegrator;
+
 import org.json.JSONArray;
 
 import java.io.BufferedReader;
@@ -140,5 +143,18 @@ public class Utils {
         return sb.toString();
     }
 
+
+    static public void launchZxingQRScanner(Activity activity) {
+        IntentIntegrator integrator = new IntentIntegrator(activity);
+        integrator.setDesiredBarcodeFormats(IntentIntegrator.QR_CODE, IntentIntegrator.DATA_MATRIX);
+
+        integrator.setCaptureActivity(CustomScannerActivity.class);
+
+        integrator.setPrompt("Scan a QR Code");
+        integrator.setCameraId(0);  // Use a specific camera of the device
+        integrator.setBeepEnabled(true);
+        integrator.setBarcodeImageEnabled(true);
+        integrator.initiateScan();
+    }
 
 }

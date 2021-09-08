@@ -144,12 +144,7 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             idTypeKeyList.add(Constants.ID_TYPE.VOTER_ID_CARD.name());
             idTypeKeyList.add(Constants.ID_TYPE.PASSPORT.name());
             for (int i = 0; i < idTypeKeyList.size(); i++) {
-<<<<<<< HEAD:app/src/main/java/com/sdbiosensor/covicatch/screens/FormProfileActivity.java
-                if(existingUser.getIdType()!=null && existingUser.getIdType().equalsIgnoreCase(idTypeKeyList.get(i)))
-                {
-=======
                 if (existingUser.getIdType()!=null && existingUser.getIdType().equalsIgnoreCase(idTypeKeyList.get(i))) {
->>>>>>> 5a38f3ac6be6601e8ce6e8b5c394b10bcbaf8246:app/src/main/java/com/dotvik/covify/screens/FormProfileActivity.java
                     selectedIdType = i;
                     break;
                 }
@@ -469,7 +464,8 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             }
         } else {
             if (Constants.USE_ZXING) {
-                new IntentIntegrator(this).initiateScan();
+                //new IntentIntegrator(this).initiateScan();
+                Utils.launchZxingQRScanner(this);
             } else {
                 Intent intent = new Intent(this, ScannerActivity.class);
                 qrScannerResultLauncher.launch(intent);
@@ -611,7 +607,8 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
                     // Permission is granted. Continue the action or workflow
                     // in your app.
                     if (Constants.USE_ZXING) {
-                        new IntentIntegrator(this).initiateScan();
+                        //new IntentIntegrator(this).initiateScan();
+                        Utils.launchZxingQRScanner(this);
                     } else {
                         Intent intent = new Intent(this, ScannerActivity.class);
                         qrScannerResultLauncher.launch(intent);

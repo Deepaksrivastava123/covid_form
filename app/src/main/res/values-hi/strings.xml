@@ -108,5 +108,8 @@
     <string name="mail_us"><u>हमें abc@xyz.com पर ईमेल करें</u></string>
     <string name="sms_us"><u>हमें 1234567890 पर SMS करें</u></string>
     <string name="see_video"><u>वीडियो देखें</u></string>
+    <string name="error_reupload_image">परिणाम अनिर्णायक था, कृपया कैसेट छवि को पुनः अपलोड करने का प्रयास करें</string>
+    <string name="turn_on_flashlight">Flashlight On</string>
+    <string name="turn_off_flashlight">Flashlight Off</string>
 
 </resources>
