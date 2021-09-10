@@ -43,7 +43,7 @@
     <string name="submit">Submit</string>
     <string name="select_symptom">Select Symptom</string>
     <string name="select_medical_condition">Select Medical Condition</string>
-    <string name="tnc_agreement">I understand that the data form the Covi-Catch app of my mobile phone will be shared with Indian Council for Medical Research(ICMR)</string>
+    <string name="tnc_agreement">I understand that the data form the CoviFY app of my mobile phone will be shared with Indian Council for Medical Research(ICMR)</string>
     <string name="start_the_timer">Start the Timer</string>
 
     <string name="error_server_error">We\'ve encountered a technical error. Please try again.</string>
