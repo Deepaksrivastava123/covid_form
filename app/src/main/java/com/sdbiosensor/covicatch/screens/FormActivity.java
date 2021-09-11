@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,6 +42,9 @@ import com.sdbiosensor.covicatch.adapters.StringRecyclerAdapter;
 import com.sdbiosensor.covicatch.constants.Constants;
 import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.network.ApiClient;
+import com.sdbiosensor.covicatch.network.models.AddressRequestModel;
+import com.sdbiosensor.covicatch.network.models.CreatePatientRequestModel;
+import com.sdbiosensor.covicatch.network.models.CreatePatientResponseModel;
 import com.sdbiosensor.covicatch.network.models.GenericResponseModel;
 import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
@@ -303,13 +308,13 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
     private void openChooseNationalityDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
-        final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
+        final View dialogView = inflater.inflate(R.layout.dialog_string_selection_with_search, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setView(dialogView);
 
         RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
         dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        dialogRecyclerView.setAdapter(new JsonArrayRecyclerAdapter(this, nationalityList, new JsonArrayRecyclerAdapter.OnItemClickListener() {
+        JsonArrayRecyclerAdapter adapter = new JsonArrayRecyclerAdapter(this, nationalityList, new JsonArrayRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String item, int position) {
                 edit_nationality.setText(item);
@@ -322,7 +327,34 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 }
                 alertDialog.dismiss();
             }
-        }));
+        });
+        dialogRecyclerView.setAdapter(adapter);
+
+        EditText edit_search = dialogView.findViewById(R.id.edit_search);
+        edit_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {  }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    JSONArray temp = new JSONArray();
+                    for (int i = 0; i < nationalityList.length(); i++) {
+                        String str = nationalityList.getString(i);
+                        if(str.toLowerCase().contains(s.toString().toLowerCase())){
+                            temp.put(str);
+                        }
+                    }
+
+                    adapter.updateList(temp);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -335,7 +367,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void openDobDialog() {
-        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        new DatePickerDialog(this, android.R.style.Theme_Holo_Dialog, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 dobCalendar.set(year, monthOfYear, dayOfMonth);
@@ -823,7 +855,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             }
         } else {
             if (Constants.USE_ZXING) {
-               //  new IntentIntegrator(this).initiateScan();
+                //  new IntentIntegrator(this).initiateScan();
                 Utils.launchZxingQRScanner(this);
             } else {
                 Intent intent = new Intent(this, ScannerActivity.class);
@@ -845,8 +877,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                         Intent data = result.getData();
                         String qrString = data.getStringExtra("qr");
                         saveLocalModel(qrString);
-                        startActivity(new Intent(FormActivity.this, InstructionActivity.class));
-                        finish();
+                        sendFormData();
                     }
                 }
             });
@@ -859,8 +890,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 showErrorDialog("Cancelled");
             } else {
                 saveLocalModel(result.getContents());
-                startActivity(new Intent(FormActivity.this, InstructionActivity.class));
-                finish();
+                sendFormData();
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
@@ -977,6 +1007,108 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         }
         // Other 'case' lines to check for other
         // permissions this app might request.
+    }
+
+    private void sendFormData() {
+        if (ApiClient.getBaseInstance(this) != null) {
+            ApiClient.getBaseInstance(this).uploadPatientDetails(getFormRequestModel()).enqueue(new Callback<CreatePatientResponseModel>() {
+                @Override
+                public void onResponse(Call<CreatePatientResponseModel> call, Response<CreatePatientResponseModel> response) {
+                    if (response.errorBody() == null) {
+                        handleFormResponse(response);
+                    } else {
+                        showErrorDialog(getString(R.string.error_server_error));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CreatePatientResponseModel> call, Throwable t) {
+                    Log.v("Debug", t.getLocalizedMessage());
+                    showErrorDialog(t.getLocalizedMessage());
+                }
+            });
+        }
+    }
+
+    private void handleFormResponse(Response<CreatePatientResponseModel> response) {
+        if(response.body().getStatus().equalsIgnoreCase("SUCCESS")) {
+            moveToNextScreen(response.body().getData());
+        } else {
+            showErrorDialog(response.body().getMessage());
+        }
+    }
+
+    private void moveToNextScreen(String uniqueId) {
+        SharedPrefUtils.getInstance(this).putString(Constants.PREF_UNIQUE_ID, uniqueId);
+        startActivity(new Intent(FormActivity.this, InstructionActivity.class));
+        finish();
+    }
+
+    private CreatePatientRequestModel getFormRequestModel() {
+        String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
+        LocalDataModel localDataModel = new Gson().fromJson(tempString, LocalDataModel.class);
+
+        CreatePatientRequestModel model = new CreatePatientRequestModel();
+        AddressRequestModel addressModel = new AddressRequestModel();
+
+        addressModel.setAddress1(localDataModel.getAddress());
+        addressModel.setAddress2("");
+        addressModel.setAddress3("");
+        addressModel.setAddressType("");
+        addressModel.setCity(localDataModel.getDistrict());
+        addressModel.setCountry("INDIA");
+        addressModel.setLocality("");
+        addressModel.setPinCode(localDataModel.getPincode());
+        addressModel.setState(localDataModel.getState());
+
+        model.setAddress(addressModel);
+        model.setUserIdNo(localDataModel.getId_no());
+        model.setIdType(localDataModel.getId_type());
+        model.setCity(localDataModel.getCity());
+        model.setCollectedBy("");
+        model.setFirstName(localDataModel.getFirstName());
+        model.setGender(localDataModel.getGender());
+        model.setIcmrReference("");
+        model.setLastName(localDataModel.getLastName());
+        model.setMailId("");
+        model.setMobileNo(localDataModel.getMobile());
+        model.setPinCode(localDataModel.getPincode());
+        model.setRemarks("");
+        model.setResult("");
+        model.setProfileId(localDataModel.getExistingId());
+        model.setState(localDataModel.getState());
+        model.setStateCode(localDataModel.getStateId());
+        model.setKitSerialNumber(localDataModel.getQrCode());
+        model.setDistrict(localDataModel.getDistrict());
+        model.setDistrictCode(localDataModel.getDistrictId());
+        model.setNationality(localDataModel.getNationality());
+        model.setDob(localDataModel.getDob());
+        model.setOccupation(localDataModel.getOccupation());
+        model.setContactNumberBelongsTo(localDataModel.getContactNumberBelongsTo());
+        model.setVaccineReceived(localDataModel.isVaccinated());
+        if (localDataModel.isVaccinated()) {
+            model.setVaccineType(localDataModel.getVaccineType());
+        }
+
+        if (localDataModel.getEditableProfileFields() != null && !localDataModel.getEditableProfileFields().isEmpty()) {
+            model.setEditableProfileFields(localDataModel.getEditableProfileFields());
+        }
+
+        ArrayList<String> symptomList = localDataModel.getSymptoms();
+        if (symptomList.contains("Others")) {
+            symptomList.add(localDataModel.getOtherSymptoms());
+        }
+        model.setSymptoms(symptomList);
+
+        ArrayList<String> conditionsList = localDataModel.getConditions();
+        if (conditionsList.contains("Others")) {
+            conditionsList.add(localDataModel.getOtherConditions());
+        }
+        model.setUnderlyingMedicalCondition(conditionsList);
+
+        model.setSymtomStatus("");
+
+        return model;
     }
 
 }

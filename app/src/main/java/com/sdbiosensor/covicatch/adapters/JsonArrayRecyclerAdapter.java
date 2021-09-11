@@ -69,4 +69,9 @@ public class JsonArrayRecyclerAdapter extends RecyclerView.Adapter<JsonArrayRecy
         void onItemClick(String item, int position);
     }
 
+    public void updateList(JSONArray list){
+        this.list = list;
+        notifyDataSetChanged();
+    }
+
 }

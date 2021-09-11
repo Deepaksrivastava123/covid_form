@@ -1,12 +1,17 @@
 package com.sdbiosensor.covicatch.network;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sdbiosensor.covicatch.constants.Constants;
+import com.sdbiosensor.covicatch.events.CloseAllScreens;
+import com.sdbiosensor.covicatch.screens.SplashActivity;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -70,11 +75,12 @@ public class ApiClient {
                     //TODO uncomment 2 lines to see response, download PDF does not work when this is uncommented
 //                    Object[] clones = cloneResponseBody(response);
 //                    response = (Response) clones[1];
-
                     if (response.code() == 401 || response.code() == 403) {
                         Log.d("Covi-Catch", "Authorization error, relogin needed");
+                        SharedPrefUtils.getInstance(context).resetAll();
+                        EventBus.getDefault().post(new CloseAllScreens());
+                        context.startActivity(new Intent(context, SplashActivity.class));
                     }
-
                     return response;
                 } else {
                     return chain.proceed(chain.request());

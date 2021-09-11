@@ -33,7 +33,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     private boolean isTimerUp = false;
     private CountDownTimer mainCountdownTimer;
 
-    int CAMERA_PERMISSIONS_CODE  = 1001;
+    public static final int CAMERA_PERMISSIONS_CODE  = 1001;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -148,7 +148,6 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
             ImagePicker.with(this)
                     .compress(1024)
                     .cameraOnly()
-                    .crop(1080, 1920)
                     .start();
         }
     }

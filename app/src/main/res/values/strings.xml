@@ -101,8 +101,10 @@
     <string name="contact_support">Contact Support</string>
     <string name="scan">Scan</string>
     <string name="error_otp_incorrect">OTP you entered is not correct</string>
-
+    <string name="instructions">Instructions</string>
+    <string name="error_reupload_image">The result was inconclusive, please try to re-upload the cassette image</string>
     <string name="turn_on_flashlight">Flash Light On</string>
     <string name="turn_off_flashlight">Flash Light Off</string>
+    <string name="search">Search</string>
 
 </resources>
