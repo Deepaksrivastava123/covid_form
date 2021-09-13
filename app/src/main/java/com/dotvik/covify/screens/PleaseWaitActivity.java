@@ -224,7 +224,7 @@ public class PleaseWaitActivity extends BaseActivity {
     private void handleDownloadResponse(Response<ResponseBody> response) {
         ResponseBody body = response.body();
         File downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        String name = "COVI-CATCH-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf";
+        String name = "COVIFY-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf";
         File file = new File(downloadsPath, name);
 
         InputStream in = null;

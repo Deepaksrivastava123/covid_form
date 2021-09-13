@@ -103,9 +103,9 @@
     <string name="error_otp_incorrect">OTP you entered is not correct</string>
     <string name="instructions">Instructions</string>
 
-    <string name="call_us"><u>Call us at 1234567890</u></string>
-    <string name="mail_us"><u>Email us at abc@xyz.com</u></string>
-    <string name="sms_us"><u>SMS us at 1234567890</u></string>
+    <string name="call_us"><u>Call us at 18001237599</u></string>
+    <string name="mail_us"><u>Email us at  rps.online@roche.com</u></string>
+    <string name="sms_us"><u>SMS us at 18001237599</u></string>
     <string name="see_video"><u>See Video</u></string>
     <string name="error_reupload_image">The result was inconclusive, please try to re-upload the cassette image</string>
     <string name="turn_on_flashlight">Flashlight On</string>

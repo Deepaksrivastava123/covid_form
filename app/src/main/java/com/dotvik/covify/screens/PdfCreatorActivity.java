@@ -59,7 +59,7 @@ public class PdfCreatorActivity extends PDFCreatorActivity {
             @Override
             public void pdfGenerationSuccess(File savedPDFFile) {
                 File downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                File resultFile = new File(downloadsPath, "COVI-CATCH-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf");
+                File resultFile = new File(downloadsPath, "COVIFY-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf");
                 try {
                     exportFile(savedPDFFile, resultFile);
                 } catch (IOException e) {

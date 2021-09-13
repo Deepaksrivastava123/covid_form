@@ -151,7 +151,7 @@ public class HistoryActivity extends BaseActivity{
     private void handleDownloadResponse(Response<ResponseBody> response) {
         ResponseBody body = response.body();
         File downloadsPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        File file = new File(downloadsPath, "COVI-CATCH-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf");
+        File file = new File(downloadsPath, "COVIFY-" + Utils.getFormattedDateTime(Calendar.getInstance()) + ".pdf");
 
         InputStream in = null;
         FileOutputStream out = null;
