@@ -77,6 +77,8 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private String selectedStateId, selectedDistrictId, verifiedMobileNumber = "";
     private Calendar dobCalendar = Calendar.getInstance();
     private boolean hasOTPVerified = false;
+    private ArrayList<String>occupationList = new ArrayList<>();
+    private String occupationKey;
 
 
     public static final int CAMERA_PERMISSIONS_CODE  = 1001;
@@ -377,12 +379,20 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void openChooseOccupationDialog() {
-        ArrayList<String> genderList = new ArrayList<String>();
-        genderList.add(Constants.OCCUPATION.HCW.name());
-        genderList.add(Constants.OCCUPATION.POLICE.name());
-        genderList.add(Constants.OCCUPATION.SNTN.name());
-        genderList.add(Constants.OCCUPATION.SECG.name());
-        genderList.add(Constants.OCCUPATION.OTHER.name());
+        // new list added for occupation description
+        ArrayList<String> occupationDesc = new ArrayList<>();
+
+        occupationList.add(Constants.OCCUPATION.HCW.name());
+        occupationList.add(Constants.OCCUPATION.POLICE.name());
+        occupationList.add(Constants.OCCUPATION.SNTN.name());
+        occupationList.add(Constants.OCCUPATION.SECG.name());
+        occupationList.add(Constants.OCCUPATION.OTHER.name());
+
+        occupationDesc.add("Health Care Worker");
+        occupationDesc.add("Police");
+        occupationDesc.add("Sanitation Worker");
+        occupationDesc.add("Security Guard");
+        occupationDesc.add("Others");
 
         LayoutInflater inflater = LayoutInflater.from(this);
         final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
@@ -391,10 +401,12 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
         RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
         dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        dialogRecyclerView.setAdapter(new StringRecyclerAdapter(this, genderList, new StringRecyclerAdapter.OnItemClickListener() {
+        dialogRecyclerView.setAdapter(new StringRecyclerAdapter(this, occupationDesc, new StringRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String item, int position) {
                 edit_occupation.setText(item);
+                // occupation key is saved in localmodel
+                occupationKey = occupationList.get(position);
                 alertDialog.dismiss();
             }
         }));
@@ -907,7 +919,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         model.setMobile(edit_mobile.getText().toString().trim());
         model.setContactNumberBelongsTo(edit_contact_number_belongs.getText().toString().trim());
         model.setAddress(edit_address.getText().toString().trim());
-        model.setOccupation(edit_occupation.getText().toString().trim());
+        model.setOccupation(occupationKey);
         model.setPincode(edit_pincode.getText().toString().trim());
         switch (selectedGender) {
             case 0:
