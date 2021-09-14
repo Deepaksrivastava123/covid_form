@@ -94,8 +94,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             if (responseBody == null ||
                     responseBody.getStatus() == null ||
                     !responseBody.getStatus().equals("SUCCESS")) {
-                showErrorDialog(responseBody.getMessage());
-                return;
+                String message = responseBody.getMessage();
+                if(message!=null)  {
+                    if(!message.toLowerCase().contains("Please use last sent OTP".toLowerCase())) {
+                        // need to forward to next screen
+                        showErrorDialog(responseBody.getMessage());
+                        return;
+                    }
+                }
             }
             Intent intent = new Intent(this, LoginOtpActivity.class);
             intent.putExtra("mobile", mobileNo);

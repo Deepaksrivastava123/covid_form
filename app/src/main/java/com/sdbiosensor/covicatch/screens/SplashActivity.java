@@ -3,6 +3,7 @@ package com.sdbiosensor.covicatch.screens;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import com.sdbiosensor.covicatch.R;
 import com.sdbiosensor.covicatch.constants.Constants;
@@ -10,6 +11,7 @@ import com.sdbiosensor.covicatch.customcomoponents.BaseActivity;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 
 public class SplashActivity extends BaseActivity {
+    static String TAG = "SplashActivity";
     private boolean IS_ALIVE = false;
 
     @Override
@@ -58,15 +60,19 @@ public class SplashActivity extends BaseActivity {
     private void moveToNextActivity() {
         if (IS_ALIVE) {
             IS_ALIVE = false;
-            Intent intent;
-            if (SharedPrefUtils.getInstance(this).getLong(Constants.PREF_TIMER_ALARM_TIME, -1) == -1) {
-                if (SharedPrefUtils.getInstance(this).getBoolean(Constants.PREF_LOGGED_IN, false)) {
-                    intent = new Intent(SplashActivity.this, SelectLanguageActivity.class);
-                } else {
-                    intent = new Intent(SplashActivity.this, StartActivity.class);
-                }
+
+            Intent intent = null;
+
+            Log.d(TAG, "PREF_TIMER_START_TIME = " + SharedPrefUtils.getInstance(this).getLong(Constants.PREF_TIMER_ALARM_TIME, -1));
+
+            if (SharedPrefUtils.getInstance(this).getBoolean(Constants.PREF_LOGGED_IN, false)) {
+                intent = new Intent(SplashActivity.this, SelectLanguageActivity.class);
             } else {
-                intent = new Intent(SplashActivity.this, TimerActivity.class);
+                if (SharedPrefUtils.getInstance(this).getLong(Constants.PREF_TIMER_ALARM_TIME, -1) == -1) {
+                    intent = new Intent(SplashActivity.this, StartActivity.class);
+                } else {
+                    intent = new Intent(SplashActivity.this, TimerActivity.class);
+                }
             }
             startActivity(intent);
             finish();
