@@ -2,9 +2,16 @@ package com.sdbiosensor.covicatch.screens;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,9 +28,15 @@ import com.sdbiosensor.covicatch.network.models.LocalDataModel;
 import com.sdbiosensor.covicatch.utils.SharedPrefUtils;
 import com.sdbiosensor.covicatch.utils.Utils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Calendar;
 
 public class TimerActivity extends BaseActivity implements View.OnClickListener {
+
+    static String TAG = "TimerActivity";
 
     public static final int TIMER_INTERVAL = 1;     //In minutes
     private TextView text_timer;
@@ -161,11 +174,72 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
         }
         if (resultCode == RESULT_OK) {
             String currentPhotoPath = data.getData().getPath();
+
+            Log.d(TAG, "currentPhotoPath = " + currentPhotoPath);
+            // handling of exif information
+            try {
+                File f = new File(currentPhotoPath);
+                ExifInterface exif = new ExifInterface(f.getPath());
+                int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+
+                int angle = 0;
+
+                if (orientation == ExifInterface.ORIENTATION_ROTATE_90)
+                {
+                    angle = 90;
+                }
+                else if (orientation == ExifInterface.ORIENTATION_ROTATE_180)
+                {
+                    angle = 180;
+                }
+                else if (orientation == ExifInterface.ORIENTATION_ROTATE_270)
+                {
+                    angle = 270;
+                }
+
+                Matrix mat = new Matrix();
+                mat.postRotate(angle);
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inSampleSize = 1;
+
+                Log.d(TAG, "Angle = " + angle);
+                Bitmap inComing = BitmapFactory.decodeStream(new FileInputStream(f), null, options);
+                Bitmap converted = Bitmap.createBitmap(inComing, 0, 0, inComing.getWidth(), inComing.getHeight(), mat, true);
+
+                String newFileName = "";
+                if(currentPhotoPath.endsWith(".png") || currentPhotoPath.endsWith(".jpg")) {
+                    newFileName = currentPhotoPath.substring(0, currentPhotoPath.length() - 4) + "_resize.jpg";
+                } else if(currentPhotoPath.endsWith(".jpeg")) {
+                    newFileName = currentPhotoPath.substring(0, currentPhotoPath.length() - 5) + "_resize.jpg";
+                } else {
+                    newFileName = currentPhotoPath;
+                }
+                OutputStream stream = new FileOutputStream(newFileName);
+                Log.d(TAG, "newFileName = " + newFileName);
+                converted.compress(Bitmap.CompressFormat.JPEG, 95, stream);
+                currentPhotoPath = newFileName;
+            } catch(Exception e) {
+                e.printStackTrace();
+            }
+
             Intent intent = new Intent(this, PleaseWaitActivity.class);
             intent.putExtra("photo", currentPhotoPath);
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        lockScreenRotation(Configuration.ORIENTATION_PORTRAIT);
+    }
+
+    private void lockScreenRotation(int orientation)
+    {
+        // Stop the screen orientation changing during an event
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
 }

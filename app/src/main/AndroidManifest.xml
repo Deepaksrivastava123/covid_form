@@ -42,7 +42,9 @@
         -->
 
         <activity android:name=".screens.StartActivity"/>
-        <activity android:name=".screens.TimerActivity"/>
+        <activity android:name=".screens.TimerActivity"
+            android:screenOrientation="portrait"
+            />
         <activity android:name=".screens.InstructionActivity" />
         <activity android:name=".screens.AgreementActivity" />
         <activity android:name=".screens.PleaseWaitActivity" />
