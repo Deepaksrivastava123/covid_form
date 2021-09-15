@@ -32,7 +32,8 @@
             </intent-filter>
         </activity>
         <activity android:name="com.dotvik.covify.screens.StartActivity"/>
-        <activity android:name="com.dotvik.covify.screens.TimerActivity"/>
+        <activity android:name="com.dotvik.covify.screens.TimerActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name="com.dotvik.covify.screens.InstructionActivity" />
         <activity android:name="com.dotvik.covify.screens.AgreementActivity" />
         <activity android:name="com.dotvik.covify.screens.PleaseWaitActivity" />
