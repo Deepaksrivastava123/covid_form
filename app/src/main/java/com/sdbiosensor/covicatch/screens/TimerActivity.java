@@ -41,6 +41,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     public static final int TIMER_INTERVAL = 1;     //In minutes
     private TextView text_timer;
     private Button button_take_picture;
+    private View progress;
     private Calendar savedCalendar;
     private Calendar currentCalendar;
     private boolean isTimerUp = false;
@@ -61,6 +62,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     private void initViews() {
         text_timer = findViewById(R.id.text_timer);
         button_take_picture = findViewById(R.id.button_take_picture);
+        progress = findViewById(R.id.progress);
 
         try {
             String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
@@ -158,6 +160,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
                 // Grant Permission
             }
         } else {
+            progress.setVisibility(View.VISIBLE);
             ImagePicker.with(this)
                     .compress(1024)
                     .cameraOnly()
@@ -170,6 +173,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_CANCELED) {
+            progress.setVisibility(View.GONE);
             return;
         }
         if (resultCode == RESULT_OK) {
