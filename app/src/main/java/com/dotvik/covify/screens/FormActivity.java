@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,7 +77,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private String selectedStateId, selectedDistrictId, verifiedMobileNumber = "";
     private Calendar dobCalendar = Calendar.getInstance();
     private boolean hasOTPVerified = false;
-
+    private String selectedOccupation;
 
     public static final int CAMERA_PERMISSIONS_CODE  = 1001;
 
@@ -306,13 +308,13 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
     private void openChooseNationalityDialog() {
         LayoutInflater inflater = LayoutInflater.from(this);
-        final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
+        final View dialogView = inflater.inflate(R.layout.dialog_string_selection_with_search, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
         alertDialog.setView(dialogView);
 
         RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
         dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        dialogRecyclerView.setAdapter(new JsonArrayRecyclerAdapter(this, nationalityList, new JsonArrayRecyclerAdapter.OnItemClickListener() {
+        JsonArrayRecyclerAdapter adapter = new JsonArrayRecyclerAdapter(this, nationalityList, new JsonArrayRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String item, int position) {
                 edit_nationality.setText(item);
@@ -325,7 +327,34 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
                 }
                 alertDialog.dismiss();
             }
-        }));
+        });
+        dialogRecyclerView.setAdapter(adapter);
+
+        EditText edit_search = dialogView.findViewById(R.id.edit_search);
+        edit_search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {  }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                try {
+                    JSONArray temp = new JSONArray();
+                    for (int i = 0; i < nationalityList.length(); i++) {
+                        String str = nationalityList.getString(i);
+                        if(str.toLowerCase().contains(s.toString().toLowerCase())){
+                            temp.put(str);
+                        }
+                    }
+
+                    adapter.updateList(temp);
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         dialogView.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -338,7 +367,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void openDobDialog() {
-        new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        new DatePickerDialog(this, android.R.style.Theme_Holo_Dialog, new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 dobCalendar.set(year, monthOfYear, dayOfMonth);
@@ -348,12 +377,21 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void openChooseOccupationDialog() {
-        ArrayList<String> genderList = new ArrayList<String>();
-        genderList.add(Constants.OCCUPATION.HCW.name());
-        genderList.add(Constants.OCCUPATION.POLICE.name());
-        genderList.add(Constants.OCCUPATION.SNTN.name());
-        genderList.add(Constants.OCCUPATION.SECG.name());
-        genderList.add(Constants.OCCUPATION.OTHER.name());
+        // new list added for occupation description
+        ArrayList<String> occupationDesc = new ArrayList<>();
+        ArrayList<String> occupationList = new ArrayList<>();
+
+        occupationList.add(Constants.OCCUPATION.HCW.name());
+        occupationList.add(Constants.OCCUPATION.POLICE.name());
+        occupationList.add(Constants.OCCUPATION.SNTN.name());
+        occupationList.add(Constants.OCCUPATION.SECG.name());
+        occupationList.add(Constants.OCCUPATION.OTHER.name());
+
+        occupationDesc.add("Health Care Worker");
+        occupationDesc.add("Police");
+        occupationDesc.add("Sanitation Worker");
+        occupationDesc.add("Security Guard");
+        occupationDesc.add("Others");
 
         LayoutInflater inflater = LayoutInflater.from(this);
         final View dialogView = inflater.inflate(R.layout.dialog_string_selection, null);
@@ -362,10 +400,12 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
         RecyclerView dialogRecyclerView = dialogView.findViewById(R.id.recyclerView);
         dialogRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        dialogRecyclerView.setAdapter(new StringRecyclerAdapter(this, genderList, new StringRecyclerAdapter.OnItemClickListener() {
+        dialogRecyclerView.setAdapter(new StringRecyclerAdapter(this, occupationDesc, new StringRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(String item, int position) {
                 edit_occupation.setText(item);
+                // occupation key is saved in localmodel
+                selectedOccupation = occupationList.get(position);
                 alertDialog.dismiss();
             }
         }));
@@ -878,7 +918,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         model.setMobile(edit_mobile.getText().toString().trim());
         model.setContactNumberBelongsTo(edit_contact_number_belongs.getText().toString().trim());
         model.setAddress(edit_address.getText().toString().trim());
-        model.setOccupation(edit_occupation.getText().toString().trim());
+        model.setOccupation(selectedOccupation);
         model.setPincode(edit_pincode.getText().toString().trim());
         switch (selectedGender) {
             case 0:

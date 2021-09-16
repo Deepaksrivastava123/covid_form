@@ -64,6 +64,7 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
     private String selectedStateId, selectedDistrictId;
     private Calendar dobCalendar = Calendar.getInstance();
     private CreatePatientRequestModel existingUser;
+    private String selectedOccupation;
 
     static final int CAMERA_PERMISSIONS_CODE  = 1001;
 
@@ -106,8 +107,15 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
     }
 
     private void setDefaultValues() {
+        existingUser = (CreatePatientRequestModel) getIntent().getSerializableExtra("user");
+        initBasicDetails();
+        initIdType();
+        initOccupation();
+        //TODO fill other fields if required
+    }
+
+    private void initBasicDetails() {
         try {
-            existingUser = (CreatePatientRequestModel) getIntent().getSerializableExtra("user");
             edit_first_name.setText(existingUser.getFirstName());
             edit_last_name.setText(existingUser.getLastName());
             edit_dob.setText(existingUser.getDob());
@@ -129,43 +137,72 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
             selectedStateId = existingUser.getStateCode();
             edit_district.setText(existingUser.getDistrict());
             selectedDistrictId = existingUser.getDistrictCode();
-
-            ArrayList<String> idTypeList = new ArrayList<String>();
-            idTypeList.add(getString(R.string.aadhar_card));
-            idTypeList.add(getString(R.string.driving_license));
-            idTypeList.add(getString(R.string.pan_card));
-            idTypeList.add(getString(R.string.voter_id_card));
-            idTypeList.add(getString(R.string.passport));
-
-            ArrayList<String> idTypeKeyList = new ArrayList<String>();
-            idTypeKeyList.add(Constants.ID_TYPE.AADHAR_CARD.name());
-            idTypeKeyList.add(Constants.ID_TYPE.DRIVING_LICENSE.name());
-            idTypeKeyList.add(Constants.ID_TYPE.PAN_CARD.name());
-            idTypeKeyList.add(Constants.ID_TYPE.VOTER_ID_CARD.name());
-            idTypeKeyList.add(Constants.ID_TYPE.PASSPORT.name());
-            for (int i = 0; i < idTypeKeyList.size(); i++) {
-                if (existingUser.getIdType()!=null && existingUser.getIdType().equalsIgnoreCase(idTypeKeyList.get(i))) {
-                    selectedIdType = i;
-                    break;
-                }
-            }
-            if (selectedIdType != -1) {
-                edit_id_type.setText(idTypeList.get(selectedIdType));
-            } else {
-                selectedIdType = 0;
-                edit_id_type.setText(idTypeList.get(selectedIdType));
-            }
-
-            edit_occupation.setText(existingUser.getOccupation());
-            edit_mobile.setText(existingUser.getMobileNo());
-            edit_address.setText(existingUser.getAddress().getAddress1());
-            edit_pincode.setText(existingUser.getPinCode());
-            edit_city.setText(existingUser.getCity());
-            edit_id_no.setText(existingUser.getUserIdNo());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //TODO fill other fields if required
+    }
+
+    private void initIdType() {
+        ArrayList<String> idTypeList = new ArrayList<String>();
+        idTypeList.add(getString(R.string.aadhar_card));
+        idTypeList.add(getString(R.string.driving_license));
+        idTypeList.add(getString(R.string.pan_card));
+        idTypeList.add(getString(R.string.voter_id_card));
+        idTypeList.add(getString(R.string.passport));
+
+        ArrayList<String> idTypeKeyList = new ArrayList<String>();
+        idTypeKeyList.add(Constants.ID_TYPE.AADHAR_CARD.name());
+        idTypeKeyList.add(Constants.ID_TYPE.DRIVING_LICENSE.name());
+        idTypeKeyList.add(Constants.ID_TYPE.PAN_CARD.name());
+        idTypeKeyList.add(Constants.ID_TYPE.VOTER_ID_CARD.name());
+        idTypeKeyList.add(Constants.ID_TYPE.PASSPORT.name());
+        for (int i = 0; i < idTypeKeyList.size(); i++) {
+            if(existingUser.getIdType()!=null && existingUser.getIdType().equalsIgnoreCase(idTypeKeyList.get(i)))
+            {
+                selectedIdType = i;
+                break;
+            }
+        }
+        if (selectedIdType != -1) {
+            edit_id_type.setText(idTypeList.get(selectedIdType));
+        } else {
+            selectedIdType = 0;
+            edit_id_type.setText(idTypeList.get(selectedIdType));
+        }
+
+        edit_mobile.setText(existingUser.getMobileNo());
+        edit_address.setText(existingUser.getAddress().getAddress1());
+        edit_pincode.setText(existingUser.getPinCode());
+        edit_city.setText(existingUser.getCity());
+        edit_id_no.setText(existingUser.getUserIdNo());
+    }
+
+    private void initOccupation() {
+        ArrayList<String> occupationList = new ArrayList<>();
+        ArrayList<String> occupationDesc = new ArrayList<>();
+
+        occupationList.add(Constants.OCCUPATION.HCW.name());
+        occupationList.add(Constants.OCCUPATION.POLICE.name());
+        occupationList.add(Constants.OCCUPATION.SNTN.name());
+        occupationList.add(Constants.OCCUPATION.SECG.name());
+        occupationList.add(Constants.OCCUPATION.OTHER.name());
+
+        occupationDesc.add("Health Care Worker");
+        occupationDesc.add("Police");
+        occupationDesc.add("Sanitation Worker");
+        occupationDesc.add("Security Guard");
+        occupationDesc.add("Others");
+
+        int pos = 0;
+        try  {
+            pos = occupationList.indexOf(existingUser.getOccupation());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        edit_occupation.setText(occupationDesc.get(pos));
+
+        selectedOccupation = existingUser.getOccupation();
     }
 
     private void handleClicks() {
@@ -516,7 +553,7 @@ public class FormProfileActivity extends BaseActivity implements View.OnClickLis
         model.setMobile(edit_mobile.getText().toString().trim());
         model.setContactNumberBelongsTo(edit_contact_number_belongs.getText().toString().trim());
         model.setAddress(edit_address.getText().toString().trim());
-        model.setOccupation(edit_occupation.getText().toString().trim());
+        model.setOccupation(selectedOccupation);
         model.setPincode(edit_pincode.getText().toString().trim());
         switch (selectedGender) {
             case 0:

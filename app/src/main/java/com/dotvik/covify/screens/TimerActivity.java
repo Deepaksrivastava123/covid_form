@@ -2,7 +2,9 @@ package com.dotvik.covify.screens;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -33,11 +35,13 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 public class TimerActivity extends BaseActivity implements View.OnClickListener {
-    public static String TAG = "TimerActivity";
+
+    static String TAG = "TimerActivity";
 
     public static final int TIMER_INTERVAL = 1;     //In minutes
     private TextView text_timer;
     private Button button_take_picture;
+    private View progress;
     private Calendar savedCalendar;
     private Calendar currentCalendar;
     private boolean isTimerUp = false;
@@ -58,6 +62,7 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
     private void initViews() {
         text_timer = findViewById(R.id.text_timer);
         button_take_picture = findViewById(R.id.button_take_picture);
+        progress = findViewById(R.id.progress);
 
         try {
             String tempString = SharedPrefUtils.getInstance(this).getString(Constants.PREF_LOCAL_MODEL, "");
@@ -155,10 +160,10 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
                 // Grant Permission
             }
         } else {
+            progress.setVisibility(View.VISIBLE);
             ImagePicker.with(this)
                     .compress(1024)
                     .cameraOnly()
-                    .crop(1080, 1920)
                     .start();
         }
     }
@@ -168,11 +173,11 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
 
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_CANCELED) {
+            progress.setVisibility(View.GONE);
             return;
         }
         if (resultCode == RESULT_OK) {
             String currentPhotoPath = data.getData().getPath();
-
 
             Log.d(TAG, "currentPhotoPath = " + currentPhotoPath);
             // handling of exif information
@@ -221,14 +226,24 @@ public class TimerActivity extends BaseActivity implements View.OnClickListener 
                 e.printStackTrace();
             }
 
-
-
-
             Intent intent = new Intent(this, PleaseWaitActivity.class);
             intent.putExtra("photo", currentPhotoPath);
             startActivity(intent);
             finish();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig)
+    {
+        super.onConfigurationChanged(newConfig);
+        lockScreenRotation(Configuration.ORIENTATION_PORTRAIT);
+    }
+
+    private void lockScreenRotation(int orientation)
+    {
+        // Stop the screen orientation changing during an event
+        this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
 
 }

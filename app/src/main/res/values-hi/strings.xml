@@ -109,7 +109,8 @@
     <string name="sms_us"><u>हमें 18001237599 पर SMS करें</u></string>
     <string name="see_video"><u>वीडियो देखें</u></string>
     <string name="error_reupload_image">परिणाम अनिर्णायक था, कृपया कैसेट छवि को पुनः अपलोड करने का प्रयास करें</string>
-    <string name="turn_on_flashlight">Flashlight On</string>
-    <string name="turn_off_flashlight">Flashlight Off</string>
+    <string name="turn_on_flashlight">टॉर्च जलाए</string>
+    <string name="turn_off_flashlight">टॉर्च बुझाये</string>
+    <string name="search">खोजें</string>
 
 </resources>

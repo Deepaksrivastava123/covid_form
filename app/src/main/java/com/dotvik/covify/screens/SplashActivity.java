@@ -11,15 +11,15 @@ import com.dotvik.covify.customcomoponents.BaseActivity;
 import com.dotvik.covify.utils.SharedPrefUtils;
 
 public class SplashActivity extends BaseActivity {
-
     static String TAG = "SplashActivity";
-
     private boolean IS_ALIVE = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+
+        IS_ALIVE = true;
 
         initView();
     }
@@ -60,6 +60,7 @@ public class SplashActivity extends BaseActivity {
     private void moveToNextActivity() {
         if (IS_ALIVE) {
             IS_ALIVE = false;
+
             Intent intent = null;
 
             Log.d(TAG, "PREF_TIMER_START_TIME = " + SharedPrefUtils.getInstance(this).getLong(Constants.PREF_TIMER_ALARM_TIME, -1));
@@ -73,7 +74,6 @@ public class SplashActivity extends BaseActivity {
                     intent = new Intent(SplashActivity.this, TimerActivity.class);
                 }
             }
-
             startActivity(intent);
             finish();
         }

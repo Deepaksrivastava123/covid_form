@@ -110,5 +110,6 @@
     <string name="error_reupload_image">The result was inconclusive, please try to re-upload the cassette image</string>
     <string name="turn_on_flashlight">Flashlight On</string>
     <string name="turn_off_flashlight">Flashlight Off</string>
+    <string name="search">Search</string>
 
 </resources>
