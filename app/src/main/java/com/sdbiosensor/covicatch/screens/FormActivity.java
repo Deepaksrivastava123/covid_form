@@ -77,9 +77,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private String selectedStateId, selectedDistrictId, verifiedMobileNumber = "";
     private Calendar dobCalendar = Calendar.getInstance();
     private boolean hasOTPVerified = false;
-    private ArrayList<String>occupationList = new ArrayList<>();
-    private String occupationKey;
-
+    private String selectedOccupation;
 
     public static final int CAMERA_PERMISSIONS_CODE  = 1001;
 
@@ -381,6 +379,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
     private void openChooseOccupationDialog() {
         // new list added for occupation description
         ArrayList<String> occupationDesc = new ArrayList<>();
+        ArrayList<String> occupationList = new ArrayList<>();
 
         occupationList.add(Constants.OCCUPATION.HCW.name());
         occupationList.add(Constants.OCCUPATION.POLICE.name());
@@ -406,7 +405,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             public void onItemClick(String item, int position) {
                 edit_occupation.setText(item);
                 // occupation key is saved in localmodel
-                occupationKey = occupationList.get(position);
+                selectedOccupation = occupationList.get(position);
                 alertDialog.dismiss();
             }
         }));
@@ -919,7 +918,7 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         model.setMobile(edit_mobile.getText().toString().trim());
         model.setContactNumberBelongsTo(edit_contact_number_belongs.getText().toString().trim());
         model.setAddress(edit_address.getText().toString().trim());
-        model.setOccupation(occupationKey);
+        model.setOccupation(selectedOccupation);
         model.setPincode(edit_pincode.getText().toString().trim());
         switch (selectedGender) {
             case 0:
