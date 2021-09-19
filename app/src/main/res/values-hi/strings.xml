@@ -112,5 +112,10 @@
     <string name="turn_on_flashlight">टॉर्च जलाए</string>
     <string name="turn_off_flashlight">टॉर्च बुझाये</string>
     <string name="search">खोजें</string>
+    <string name="arogya_setu_downloaded">क्या आरोग्य सेतु डाउनलोड किया गया है?</string>
+    <string name="yes">हां</string>
+    <string name="no">नहीं</string>
+    <string name="does_1_date">खुराक 1 इस दिन प्राप्त हुआ:</string>
+    <string name="does_2_date">खुराक 2 को प्राप्त हुआ:</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.dotvik.covify.R;
+import com.dotvik.covify.constants.Constants;
 import com.dotvik.covify.customcomoponents.BaseActivity;
 
 public class ContactSupportActivity extends BaseActivity implements View.OnClickListener {
@@ -37,20 +38,20 @@ public class ContactSupportActivity extends BaseActivity implements View.OnClick
     }
 
     private void openSmsIntent() {
-        Intent intentDial = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + "1234567890"));
+        Intent intentDial = new Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:" + "18001237599"));
         startActivity(intentDial);
     }
 
     private void openMailIntent() {
         Intent intent = new Intent(Intent.ACTION_SENDTO);
-        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"abc@xyz.com"});
+        intent.putExtra(Intent.EXTRA_EMAIL, new String[]{Constants.CONTACT_SUPPORT_EMAIL});
         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.app_name));
         intent.setData(Uri.parse("mailto:"));
         startActivity(Intent.createChooser(intent, "Choose an Email client :"));
     }
 
     private void openCallIntent() {
-        Intent intentDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "1234567890"));
+        Intent intentDial = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "18001237599"));
         startActivity(intentDial);
     }
 }

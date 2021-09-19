@@ -25,10 +25,13 @@ public class LocalDataModel implements Serializable {
     private String otherConditions;
     private String nationality;
     private String dob;
+    private String dose1;
+    private String dose2;
     private String occupation;
     private String qrCode;
     private String contactNumberBelongsTo;
     private boolean isVaccinated;
+    private boolean isArogyaSetuDownloaded;
     private String vaccineType;
     private ArrayList<String> editableProfileFields;
 
@@ -239,5 +242,29 @@ public class LocalDataModel implements Serializable {
 
     public void setVaccineType(String vaccineType) {
         this.vaccineType = vaccineType;
+    }
+
+    public boolean isArogyaSetuDownloaded() {
+        return isArogyaSetuDownloaded;
+    }
+
+    public void setArogyaSetuDownloaded(boolean arogyaSetuDownloaded) {
+        isArogyaSetuDownloaded = arogyaSetuDownloaded;
+    }
+
+    public String getDose1() {
+        return dose1;
+    }
+
+    public void setDose1(String dose1) {
+        this.dose1 = dose1;
+    }
+
+    public String getDose2() {
+        return dose2;
+    }
+
+    public void setDose2(String dose2) {
+        this.dose2 = dose2;
     }
 }

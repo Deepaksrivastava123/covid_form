@@ -37,6 +37,9 @@ public class CreatePatientRequestModel implements Serializable {
     private boolean isVaccineReceived;
     private String vaccineType;
     private ArrayList<String> editableProfileFields;
+    private boolean isArogyaSetuDownloaded;
+    private String dose1;
+    private String dose2;
 
     public CreatePatientRequestModel() {
     }
@@ -295,5 +298,29 @@ public class CreatePatientRequestModel implements Serializable {
 
     public void setResultStatus(String resultStatus) {
         this.resultStatus = resultStatus;
+    }
+
+    public boolean isArogyaSetuDownloaded() {
+        return isArogyaSetuDownloaded;
+    }
+
+    public void setArogyaSetuDownloaded(boolean arogyaSetuDownloaded) {
+        isArogyaSetuDownloaded = arogyaSetuDownloaded;
+    }
+
+    public String getDose1() {
+        return dose1;
+    }
+
+    public void setDose1(String dose1) {
+        this.dose1 = dose1;
+    }
+
+    public String getDose2() {
+        return dose2;
+    }
+
+    public void setDose2(String dose2) {
+        this.dose2 = dose2;
     }
 }

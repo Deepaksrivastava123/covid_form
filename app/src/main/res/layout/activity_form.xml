@@ -430,6 +430,47 @@
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
                     android:layout_marginTop="15dp"
+                    android:text="@string/arogya_setu_downloaded"/>
+
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp">
+
+                    <RadioButton
+                        android:id="@+id/radioArogyaSetuYes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="@string/yes"
+                        android:textColor="@color/black"
+                        android:buttonTint="@color/app_blue"/>
+
+                    <RadioButton
+                        android:id="@+id/radioArogyaSetuNo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:padding="10dp"
+                        android:text="@string/no"
+                        android:textColor="@color/black"
+                        android:checked="true"
+                        android:buttonTint="@color/app_blue"/>
+
+                </RadioGroup>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_marginTop="15dp"
                     android:text="@string/vaccinated"/>
 
                 <TextView
@@ -457,28 +498,80 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="15sp"
-                        android:textAllCaps="false"
-                        android:textColor="@color/black"
+                        android:layout_marginTop="15dp"
                         android:paddingStart="10dp"
                         android:paddingEnd="10dp"
-                        android:layout_marginTop="15dp"
-                        android:text="@string/vaccine_received"/>
+                        android:text="@string/vaccine_received"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
 
                     <TextView
                         android:id="@+id/edit_vaccine"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
                         android:layout_marginTop="10dp"
-                        android:padding="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/bg_edittext"
+                        android:drawableEnd="@drawable/ic_arrow_down"
                         android:hint="@string/vaccine_received"
+                        android:padding="10dp"
                         android:textColor="@color/black"
                         android:textColorHint="@color/grey"
-                        android:textSize="17sp"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/does_1_date"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/edit_dose_1_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
                         android:background="@drawable/bg_edittext"
-                        android:drawableEnd="@drawable/ic_arrow_down"/>
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:hint="@string/does_1_date"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/does_2_date"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/edit_dose_2_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/bg_edittext"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:hint="@string/does_2_date"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"
+                        android:textSize="17sp" />
 
                 </LinearLayout>
 
