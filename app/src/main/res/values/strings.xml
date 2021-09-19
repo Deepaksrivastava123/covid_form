@@ -106,5 +106,10 @@
     <string name="turn_on_flashlight">Flash Light On</string>
     <string name="turn_off_flashlight">Flash Light Off</string>
     <string name="search">Search</string>
+    <string name="arogya_setu_downloaded">Is Arogya Setu downloaded?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="does_1_date">Dose 1 received on:</string>
+    <string name="does_2_date">Dose 2 received on:</string>
 
 </resources>

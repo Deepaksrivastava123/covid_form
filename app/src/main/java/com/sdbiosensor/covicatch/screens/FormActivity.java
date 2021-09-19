@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResult;
@@ -68,14 +69,15 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             edit_city;
     private TextView edit_gender, edit_state, edit_district, edit_id_type, edit_symptoms,
             edit_conditions, edit_nationality, edit_dob, edit_occupation, edit_contact_number_belongs,
-            edit_vaccinated, edit_vaccine;
+            edit_vaccinated, edit_vaccine, edit_dose_1_date, edit_dose_2_date;
+    private RadioButton radioArogyaSetuYes, radioArogyaSetuNo;
     private View progress, layout_vaccine;
     private int selectedGender = -1, selectedIdType = -1;
     private JSONArray stateMaster, stateDistrictMaster, selectedStateDistrictMaster, nationalityList;
     private ArrayList<String> selectedSymptoms = new ArrayList<>(), selectedConditions = new ArrayList<>();
     private String otherSymptoms, otherConditions;
     private String selectedStateId, selectedDistrictId, verifiedMobileNumber = "";
-    private Calendar dobCalendar = Calendar.getInstance();
+    private Calendar dobCalendar = Calendar.getInstance(), dose1Calendar = Calendar.getInstance(), dose2Calendar = Calendar.getInstance();
     private boolean hasOTPVerified = false;
     private String selectedOccupation;
 
@@ -112,6 +114,10 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         edit_contact_number_belongs = findViewById(R.id.edit_contact_number_belongs);
         edit_vaccinated = findViewById(R.id.edit_vaccinated);
         edit_vaccine = findViewById(R.id.edit_vaccine);
+        radioArogyaSetuYes = findViewById(R.id.radioArogyaSetuYes);
+        radioArogyaSetuNo = findViewById(R.id.radioArogyaSetuNo);
+        edit_dose_1_date = findViewById(R.id.edit_dose_1_date);
+        edit_dose_2_date = findViewById(R.id.edit_dose_2_date);
         progress = findViewById(R.id.progress);
         layout_vaccine = findViewById(R.id.layout_vaccine);
 
@@ -147,6 +153,8 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         edit_contact_number_belongs.setOnClickListener(this);
         edit_vaccinated.setOnClickListener(this);
         edit_vaccine.setOnClickListener(this);
+        edit_dose_1_date.setOnClickListener(this);
+        edit_dose_2_date.setOnClickListener(this);
     }
 
     private void initJsonArray() {
@@ -199,10 +207,34 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
             openVaccinatedDialog();
         } else if (view.getId() == R.id.edit_vaccine) {
             openVaccineDialog();
+        } else if (view.getId() == R.id.edit_dose_1_date) {
+            openDose1Dialog();
+        } else if (view.getId() == R.id.edit_dose_2_date) {
+            openDose2Dialog();
         } else {
             Utils.hideKeyboard(this);
             validateForm();
         }
+    }
+
+    private void openDose1Dialog() {
+        new DatePickerDialog(this, android.R.style.Theme_Holo_Dialog, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dose1Calendar.set(year, monthOfYear, dayOfMonth);
+                edit_dose_1_date.setText(Utils.getFormattedDate(dose1Calendar));
+            }
+        }, dose1Calendar.get(Calendar.YEAR), dose1Calendar.get(Calendar.MONTH), dose1Calendar.get(Calendar.DATE)).show();
+    }
+
+    private void openDose2Dialog() {
+        new DatePickerDialog(this, android.R.style.Theme_Holo_Dialog, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                dose2Calendar.set(year, monthOfYear, dayOfMonth);
+                edit_dose_2_date.setText(Utils.getFormattedDate(dose2Calendar));
+            }
+        }, dose2Calendar.get(Calendar.YEAR), dose2Calendar.get(Calendar.MONTH), dose2Calendar.get(Calendar.DATE)).show();
     }
 
     private void openChooseGenderDialog() {
@@ -718,7 +750,8 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         }
 
         if (edit_vaccinated.getText().toString().equals(Constants.VACCINATED.YES.name()) &&
-                !ValidationUtils.blankValidation(edit_vaccine)) {
+                !ValidationUtils.blankValidation(edit_vaccine)  &&
+                !ValidationUtils.blankValidation(edit_dose_1_date)) {
             return;
         }
 
@@ -971,8 +1004,12 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
 
         model.setVaccinated(isVaccinated);
 
+        model.setArogyaSetuDownloaded(radioArogyaSetuYes.isChecked());
+
         if (isVaccinated) {
             model.setVaccineType(edit_vaccine.getText().toString());
+            model.setDose1(edit_dose_1_date.getText().toString().trim());
+            model.setDose2(edit_dose_2_date.getText().toString().trim());
         }
 
         if (selectedSymptoms.contains("Others")) {
@@ -1099,7 +1136,14 @@ public class FormActivity extends BaseActivity implements View.OnClickListener{
         model.setVaccineReceived(localDataModel.isVaccinated());
         if (localDataModel.isVaccinated()) {
             model.setVaccineType(localDataModel.getVaccineType());
+            model.setDose1(localDataModel.getDose1());
+            if (localDataModel.getDose2() != null && !localDataModel.getDose2().isEmpty()) {
+                model.setDose2(localDataModel.getDose2());
+            } else {
+                model.setDose2("");
+            }
         }
+        model.setArogyaSetuDownloaded(localDataModel.isArogyaSetuDownloaded());
 
         if (localDataModel.getEditableProfileFields() != null && !localDataModel.getEditableProfileFields().isEmpty()) {
             model.setEditableProfileFields(localDataModel.getEditableProfileFields());

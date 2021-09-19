@@ -36,7 +36,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
@@ -48,47 +48,46 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/edit_first_name"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginEnd="10dp"
-                        android:padding="10dp"
                         android:hint="@string/first_name"
                         android:textColor="@color/black"
                         android:textColorHint="@color/grey"
-                        android:textSize="17sp"
-                        android:background="@drawable/bg_edittext"
-                        android:inputType="textPersonName|textCapWords"/>
+                        android:textSize="17sp"/>
 
                     <TextView
                         android:id="@+id/edit_last_name"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
+                        android:layout_marginStart="5dp"
                         android:hint="@string/last_name"
                         android:textColor="@color/black"
                         android:textColorHint="@color/grey"
-                        android:textSize="17sp"
-                        android:background="@drawable/bg_edittext"
-                        android:inputType="textPersonName|textCapWords"/>
+                        android:textSize="17sp"/>
 
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/gender"/>
 
                 <TextView
@@ -97,24 +96,28 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
                     android:hint="@string/gender"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:drawableEnd="@drawable/ic_arrow_down"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/dob"/>
 
                 <TextView
@@ -123,24 +126,28 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
                     android:hint="@string/dob"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:drawableEnd="@drawable/ic_calendar"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/nationality"/>
 
                 <TextView
@@ -149,50 +156,58 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
                     android:hint="@string/nationality"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:drawableEnd="@drawable/ic_arrow_down"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/mobile_number"/>
 
                 <TextView
                     android:id="@+id/edit_mobile_number"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/enter_mobile_number"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:inputType="phone"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/contact_number_belongs"/>
 
                 <TextView
@@ -201,78 +216,89 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
                     android:hint="@string/contact_number_belongs"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:drawableEnd="@drawable/ic_arrow_down"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/current_address"/>
 
                 <TextView
                     android:id="@+id/edit_address"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/enter_address"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
                     android:textSize="17sp"
-                    android:minLines="2"
-                    android:maxLines="2"
-                    android:gravity="top"
-                    android:background="@drawable/bg_edittext"/>
+                    android:gravity="top"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/pin_code"/>
 
                 <TextView
                     android:id="@+id/edit_pin_code"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/enter_pincode"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:inputType="number"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/state"/>
 
                 <TextView
@@ -281,24 +307,28 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
                     android:hint="@string/state"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:drawableEnd="@drawable/ic_arrow_down"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/district"/>
 
                 <TextView
@@ -307,50 +337,58 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
                     android:hint="@string/district"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:drawableEnd="@drawable/ic_arrow_down"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/city"/>
 
                 <TextView
                     android:id="@+id/edit_city"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/city"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:inputType="textCapWords"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/type_of_id"/>
 
                 <TextView
@@ -359,51 +397,59 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
                     android:hint="@string/type_of_id"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:drawableEnd="@drawable/ic_arrow_down"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/id_card_no"/>
 
                 <TextView
                     android:id="@+id/edit_id_no"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="10dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
                     android:hint="@string/id_card_no"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
                     android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:textAllCaps="true"
-                    android:inputType="textCapCharacters"/>
+                    android:textAllCaps="true"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textAllCaps="false"
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/occupation"/>
 
                 <TextView
@@ -412,14 +458,48 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:layout_marginTop="10dp"
-                    android:padding="10dp"
                     android:hint="@string/occupation"
                     android:textColor="@color/black"
                     android:textColorHint="@color/grey"
-                    android:textSize="17sp"
-                    android:background="@drawable/bg_edittext"
-                    android:drawableEnd="@drawable/ic_arrow_down"/>
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:textAllCaps="false"
+                    android:textColor="@color/black"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/arogya_setu_downloaded"/>
+
+                <TextView
+                    android:id="@+id/edit_arogya_setu_downloaded"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:hint="@string/arogya_setu_downloaded"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/grey"
+                    android:textSize="17sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/light_grey"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginTop="5dp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -429,7 +509,7 @@
                     android:textColor="@color/black"
                     android:paddingStart="10dp"
                     android:paddingEnd="10dp"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="5dp"
                     android:text="@string/vaccinated"/>
 
                 <TextView
@@ -479,6 +559,58 @@
                         android:textSize="17sp"
                         android:background="@drawable/bg_edittext"
                         android:drawableEnd="@drawable/ic_arrow_down"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/does_1_date"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/edit_dose_1_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/bg_edittext"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:hint="@string/does_1_date"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"
+                        android:textSize="17sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="@string/does_2_date"
+                        android:textAllCaps="false"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/edit_dose_2_date"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:background="@drawable/bg_edittext"
+                        android:drawableEnd="@drawable/ic_calendar"
+                        android:hint="@string/does_2_date"
+                        android:padding="10dp"
+                        android:textColor="@color/black"
+                        android:textColorHint="@color/grey"
+                        android:textSize="17sp" />
 
                 </LinearLayout>
 
